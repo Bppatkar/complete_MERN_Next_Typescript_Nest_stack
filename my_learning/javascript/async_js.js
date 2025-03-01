@@ -133,32 +133,91 @@
 // );
 
 //! promise.all
-console.log("wait all data are coming.......");
-function fetchPostData() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Post data fetching successfully");
-    }, 2000);
-  });
+
+// function fetchPostData() {
+//   return new Promise((resolve) => {
+//     console.log("Post data are comming....");
+//     setTimeout(() => {
+
+//       resolve("Post data fetching successfully");
+//     }, 2000);
+//   });
+// }
+
+// function fetchCommentData() {
+//   return new Promise((resolve) => {
+//     console.log("Comment data are comming....");
+//     setTimeout(() => {
+
+//       resolve("Comment data fetching successfully");
+//     }, 3000);
+//   });
+// }
+
+// async function getBlogData() {
+//   try {
+//     let postData = await fetchPostData();
+//     let commentData = await fetchCommentData();
+//     let final = Promise.all([postData, commentData]);
+//     return final;
+//   } catch (err) {
+//     throw new Error(err);
+//   }
+// }
+
+// getBlogData().then((data) => console.log(data , "fetching complete"));
+
+//! iterator and generator
+// function* generator() {
+//   //generator function
+//   yield 1;
+//   yield 2;
+//   yield 3;
+// }
+
+// let gen = generator();
+// let gen1 = generator();
+
+// console.log(gen.next().value);
+// console.log(gen.next().value);
+// console.log(gen.next().value);
+// console.log("--------------------");
+// console.log(gen.next().value);
+// console.log("--------------------");
+
+// console.log(gen1.next().value);
+// console.log(gen1.next().value);
+// console.log(gen1.next().value);
+// console.log("--------------------");
+
+//! Es6 Module  //[add type module in html file]
+// export function add(a, b) {
+//   return a + b;
+// }
+// export function sub(a, b) {
+//   return a - b;
+// }
+
+// export default function mul(a, b) {
+//   return a * b;
+// }
+
+//! other way of exporting functions
+
+function areaOfCircle(radius) {
+  return Math.PI * radius * radius;
 }
 
-function fetchCommentData() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Comment data fetching successfully");
-    }, 3000);
-  });
+function areaOfRectangle(length, width) {
+  return length * width;
 }
 
-async function getBlogData() {
-  try {
-    let postData = await fetchPostData();
-    let commentData = await fetchCommentData();
-    let final = Promise.all([postData, commentData]);
-    return final;
-  } catch (err) {
-    throw new Error(err);
-  }
+function isTriangle(a, b, c) {
+  return a + b > c && a + c > b && b + c > a;
 }
 
-getBlogData().then((data) => console.log(data));
+module.exports = {
+  areaOfCircle,
+  areaOfRectangle,
+  isTriangle,
+};
