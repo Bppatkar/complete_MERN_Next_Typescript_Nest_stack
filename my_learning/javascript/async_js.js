@@ -250,6 +250,7 @@ binding();
 //   areaOfRectangle,
 //   isTriangle,
 // };
+<<<<<<< HEAD
 
 //! Debouncing
 
@@ -278,3 +279,5 @@ Useful for search bars, resizing windows, etc.
 //! deep cloning
 
 function deepclone(obj, )
+=======
+>>>>>>> cf193f1f19d64e9682adcf70b0c8799eb19100a2
