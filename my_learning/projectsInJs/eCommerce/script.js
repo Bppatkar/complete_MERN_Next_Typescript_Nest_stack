@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: 6, name: "Product 6", price: 689.1 },
   ];
 
-  const cart = [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const productList = document.getElementById("product-list");
   const cartItems = document.getElementById("cart-items");
   const emptyCartMessage = document.getElementById("empty-cart");
@@ -36,31 +36,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addToCart(data) {
     cart.push(data);
+    updateLocalStorage();
     renderCart(data);
   }
 
   function renderCart() {
     cartItems.innerText = "";
     let totalPrice = 0;
+
     if (cart.length > 0) {
       emptyCartMessage.classList.add("hidden");
       cartTotalMessage.classList.remove("hidden");
+
       cart.forEach((item, index) => {
         totalPrice += item.price;
+
         const cartItem = document.createElement("div");
         cartItem.innerHTML = `
-        ${item.name} =$${item.price.toFixed(2)}`;
+        ${item.name} =$${item.price.toFixed(2)} 
+        <button class="remove-btn" data-index="${index}">✖</button>
+        `;
+
         cartItems.appendChild(cartItem);
-        totalPriceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
       });
-    } else emptyCartMessage.classList.remove("hidden");
+
+      totalPriceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+    } else {
+      emptyCartMessage.classList.remove("hidden");
+      cartTotalMessage.classList.add("hidden");
+    }
   }
+
+  cartItems.addEventListener("click", (e) => {
+    if (e.target.classList.contains("remove-btn")) {
+      const index = parseInt(e.target.getAttribute("data-index"));
+      cart.splice(index, 1);
+      updateLocalStorage();
+
+      renderCart();
+    }
+  });
 
   checkOutBtn.addEventListener("click", () => {
     alert("Checkout Successfully");
-    cart.length = 0;
+    cart = [];
+    updateLocalStorage();
+
     renderCart();
-    cartTotalMessage.classList.add("hidden");
-    emptyCartMessage.classList.add("hidden");
   });
+
+  function updateLocalStorage() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  renderCart();
 });
