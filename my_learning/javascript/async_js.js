@@ -94,6 +94,35 @@
 // boundGreet();
 
 //* call apply and bind method
+
+/* function greeting(greet) {
+  fName = "chacha";
+  fName = "foofa";
+  console.log(
+    `hello , my name is ${this.fName} ${this.lName} thanks for ${greet}`
+  );
+}
+
+let user1 = {
+  fName: "bhanu",
+  lName: "patkar",
+};
+let user2 = {
+  fName: "anurag",
+  lName: "patkar",
+};
+let user3 = {
+  fName: "mummy",
+  lName: "papa",
+};
+
+let calling = greeting.call(user1, "calling");
+let applying = greeting.apply(user2, ["serving"]);
+let binding = greeting.bind(user3, "inviting");
+binding();
+
+ */
+
 // let detail = {
 //   fullName: "Bhanu Pratap Patkar",
 // };
@@ -204,20 +233,20 @@
 
 //! other way of exporting functions
 
-function areaOfCircle(radius) {
-  return Math.PI * radius * radius;
-}
+// function areaOfCircle(radius) {
+//   return Math.PI * radius * radius;
+// }
 
-function areaOfRectangle(length, width) {
-  return length * width;
-}
+// function areaOfRectangle(length, width) {
+//   return length * width;
+// }
 
-function isTriangle(a, b, c) {
-  return a + b > c && a + c > b && b + c > a;
-}
+// function isTriangle(a, b, c) {
+//   return a + b > c && a + c > b && b + c > a;
+// }
 
-module.exports = {
-  areaOfCircle,
-  areaOfRectangle,
-  isTriangle,
-};
+// module.exports = {
+//   areaOfCircle,
+//   areaOfRectangle,
+//   isTriangle,
+// };
