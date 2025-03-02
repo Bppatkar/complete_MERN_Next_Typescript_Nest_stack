@@ -29,8 +29,9 @@ body {
 }
 
 h1,
+h2,
 p {
-  color: #fff; /* White text for visibility */
+  color: #2c2b2b;
 }
 
 input[type="text"] {
