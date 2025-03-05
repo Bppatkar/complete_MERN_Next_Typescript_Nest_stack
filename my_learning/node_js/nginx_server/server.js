@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
     __dirname,
     req.url === "/" ? "index.html" : req.url
   );
-  console.log("checking filepath:-- ", filePath);
+  // console.log("checking filepath:-- ", filePath);
   const extName = String(path.extname(filePath)).toLowerCase();
   const mineTypes = {
     ".html": "text/html",

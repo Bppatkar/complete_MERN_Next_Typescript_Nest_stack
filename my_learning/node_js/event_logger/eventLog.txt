@@ -1,0 +1,10 @@
+3/5/2025- Application started
+3/5/2025- Application event occurred
+3/5/2025- Current memory usages 35.61
+3/5/2025- Current memory usages 35.72
+3/5/2025- Current memory usages 36.02
+2:41:56 PM- Application started
+2:41:56 PM- Application event occurred
+2:41:59 PM- Current memory usages 35.91
+2:42:02 PM- Current memory usages 36.20
+2:42:05 PM- Current memory usages 36.21

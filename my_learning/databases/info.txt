@@ -1,0 +1,4 @@
+// download 3 things
+// 1) MongoDB shell
+// 2) MongoDB compass
+// 3) MongoDB community server
