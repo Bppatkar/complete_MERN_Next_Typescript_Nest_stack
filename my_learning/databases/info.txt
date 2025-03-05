@@ -1,4 +1,8 @@
+// if u want to use database online go to mongodb login and use atlas online
+// or if u want to download then
+
 // download 3 things
 // 1) MongoDB shell
 // 2) MongoDB compass
 // 3) MongoDB community server
+
