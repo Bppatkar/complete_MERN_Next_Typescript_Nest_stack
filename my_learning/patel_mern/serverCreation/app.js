@@ -59,6 +59,30 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "content-type": "text/html" });
   const htmlContent = fs.readFileSync(__dirname + "/index.html");
   res.end(htmlContent);
+
+  // handling post data
+  if (req.method === "POST" && req.url === "/submit") {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      console.log(JSON.parse(body));
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: true,
+          message: "Account created successfully",
+        })
+      );
+    });
+  } else {
+    res.writeHead(404, { "content-type": "application/json" });
+    JSON.stringify({
+      success: false,
+      message: "Something Error!!!!",
+    })
+  }
 });
 
 server.listen(3000, () => {
