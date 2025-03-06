@@ -1,4 +1,4 @@
-import express from "express";
+/* import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 dotenv.config();
@@ -9,12 +9,9 @@ const PORT = process.env._PORT || 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200);
-  res.send("<h1>This is homepage 🏡 welcome</h1>");
-});
 
 //! post method
+//! saving data
 app.post("/api/v1/user/register", (req, res) => {
   // const { name, age, email } = req.body;
   const obj = req.body;
@@ -35,6 +32,73 @@ app.post("/api/v1/user/register", (req, res) => {
     data: obj,
   });
 });
+
+// login api creation
+app.post("/api/v1/user/login", (req, res) => {
+  // const { email, password } = req.body;
+  const obj = req.body;
+  console.log(obj);
+  //* we already using 2 middleware body parser and express.json
+
+  res.status(200).json({
+    login: true,
+    timeStamp: Date.now(),
+    message: "Login Successfully",
+    data: obj,
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is Connected port at ${PORT}`);
+}); */
+
+//! above clean code
+
+/* import express from "express";
+import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import userRoutes from "./routes/user.js";
+dotenv.config();
+
+const app = express();
+
+const PORT = process.env._PORT || 8000;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+// routing middleware
+app.use(userRoutes);
+
+
+
+//! post method
+//! saving data
+//* importing routing from routes folder and we have to user it into middleware so we removed these both lines of below code
+// app.post("/api/v1/user/register", userRoutes);
+// app.post("/api/v1/user/login", userRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is Connected port at ${PORT}`);
+});
+ */
+
+//! more clean code
+
+import express from "express";
+import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import userRoutes from "./routes/user.js";
+dotenv.config();
+
+const app = express();
+
+const PORT = process.env._PORT || 8000;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+
+// routing middleware
+app.use("/api/v1/user",userRoutes);
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is Connected port at ${PORT}`);
