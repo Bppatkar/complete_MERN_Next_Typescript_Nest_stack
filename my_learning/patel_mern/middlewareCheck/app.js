@@ -52,7 +52,8 @@ app.listen(PORT, () => {
   console.log(`Server is Connected port at ${PORT}`);
 }); */
 
-//! above clean code
+// ____________________________________________________________
+//! above clean code***************************
 
 /* import express from "express";
 import dotenv from "dotenv";
@@ -78,10 +79,11 @@ app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is Connected port at ${PORT}`);
-});
- */
+  });
+  */
 
-//! more clean code
+// ____________________________________________________________
+//! more clean code********************
 
 import express from "express";
 import dotenv from "dotenv";
@@ -96,9 +98,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // routing middleware
-app.use("/api/v1/user",userRoutes);
-
-
+app.use("/api/v1/user", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is Connected port at ${PORT}`);
