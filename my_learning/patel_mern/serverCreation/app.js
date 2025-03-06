@@ -1,5 +1,6 @@
 const http = require("http");
 const fs = require("fs");
+const path = require("path");
 
 // const server = http.createServer((req, res) => {
 //   res.writeHead(200, { "content-type": "plain/text" });
@@ -57,7 +58,12 @@ const server = http.createServer((req, res) => {
   //we have to use fs module to read frontend html file [any] file
   // i created a simple html file now we use it here
   res.writeHead(200, { "content-type": "text/html" });
-  const htmlContent = fs.readFileSync(__dirname + "/index.html");
+  // const htmlContent = fs.readFileSync(__dirname + "/index.html");
+  // res.end(htmlContent);
+  // we can to this thing __dirname + "/index.html" using path module from node so we have to import it
+  
+  const dirPath = path.join(__dirname, "index.html");
+  const htmlContent = fs.readFileSync(dirPath);
   res.end(htmlContent);
 });
 
