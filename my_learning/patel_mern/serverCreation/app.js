@@ -19,10 +19,10 @@ const server = http.createServer((req, res) => {
   //   console.log(data);
   //   res.writeHead(200, { "Content-Type": "application/json" });
   //   res.end(data);
-  // } else if (req.url === "login") {
+  // } else if (req.url === "/login") {
   //   res.writeHead(200, { "content-type": "text/plain" });
   //   res.end("<h1>Login Successfully </h1>");
-  // } else if (req.url === "SignUp") {
+  // } else if (req.url === "/SignUp") {
   //   res.writeHead(200, { "content-type": "text/plain" });
   //   res.end("<h1>SignUp Successfully </h1>");
   // } else {
@@ -31,6 +31,28 @@ const server = http.createServer((req, res) => {
   // }
 
   // handling post data
+  if (req.method === "POST" && req.url === "/submit") {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      console.log(JSON.parse(body));
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: true,
+          message: "Account created successfully",
+        })
+      );
+    });
+  } else {
+    res.writeHead(404, { "content-type": "application/json" });
+    JSON.stringify({
+      success: false,
+      message: "Something Error!!!!",
+    })
+  }
 });
 
 server.listen(3000, () => {
