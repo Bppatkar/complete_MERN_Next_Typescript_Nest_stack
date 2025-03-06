@@ -29,7 +29,7 @@ app.get("/api/v1/user/product/:bhanu", (req, res) => {
   // const { bhanu } = req.params;
   // console.log(bhanu);
   // _________________________
-  // const id = req.params.bhanu;
+  const id = req.params.bhanu;
   console.log(id);
 
   const product = {
