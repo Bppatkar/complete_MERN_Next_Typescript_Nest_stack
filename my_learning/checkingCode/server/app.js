@@ -16,6 +16,7 @@ app.use(
   cors({
     origin: "http://localhost:5173", // Update based on frontend
     credentials: true, // This allows cookies in requests
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
