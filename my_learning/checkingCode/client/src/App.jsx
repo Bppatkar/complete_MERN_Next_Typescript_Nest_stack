@@ -157,7 +157,7 @@ export default function App() {
               <p>
                 Already have an account?{" "}
                 <span
-                  style={{ color: "blue", cursor: "pointer" }}
+                  style={{ color: "red", cursor: "pointer" }}
                   onClick={() => setIsRegistering(false)}
                 >
                   Login here
@@ -182,7 +182,7 @@ export default function App() {
               <p>
                 Don't have an account?{" "}
                 <span
-                  style={{ color: "blue", cursor: "pointer" }}
+                  style={{ color: "red", cursor: "pointer" }}
                   onClick={() => setIsRegistering(true)}
                 >
                   Register here
