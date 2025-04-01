@@ -181,7 +181,7 @@ server.listen(3000, () =>
 
 //? _______________________________________________________
 
-//! redirecting request (using fs module)
+/* //! redirecting request (using fs module)
 //using same code as above
 
 const http = require("http");
@@ -218,3 +218,47 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () =>
   console.log(`server is running at http://localhost:3000`)
 );
+ */
+
+//? _______________________________________________________
+
+//! Parsing Request
+// we are facing problem to read the form data so we learn
+// 1) Streams 2) Chunks 3) Buffers 4) Reading Chunk 5) Buffering Chunks 6) Parsing Request 7) Using Modules
+
+const http = require("http");
+const fs = require("fs");
+
+const server = http.createServer((req, res) => {
+  console.log(req.url, req.method, req.headers);
+  if (req.url === "/") {
+    res.setHeader("Content-type", "text-html");
+    res.write("<html>");
+    res.write("<head><title>User Input Form</title></head>");
+    res.write("<body>");
+    res.write('<form action="/submit" method="POST">');
+    res.write('<label for="name">Name:</label>');
+    res.write('<input type="text" id="name" name="name" required><br><br>');
+    res.write('<label for="gender">Gender:</label>');
+    res.write('<input type="radio" id="male" name="gender" value="male">');
+    res.write('<label for="male">Male</label>');
+    res.write('<input type="radio" id="female" name="gender" value="female">');
+    res.write('<label for="female">Female</label><br><br>');
+    res.write('<button type="submit">Submit</button>');
+    res.write("</form>");
+    res.write("</body>");
+    res.write("</html>");
+    res.end();
+  } else if (req.method == "POST" && req.url.toLowerCase() === "/submit") {
+    fs.writeFileSync("data.txt", "bhanu pratap patkar"); //creating new file data.txt
+
+    res.statusCode = 301; // redirecting to home page
+    res.setHeader("Location", "/"); // redirecting to home page
+    res.end();
+  }
+});
+server.listen(3000, () =>
+  console.log(`server is running at http://localhost:3000`)
+);
+
+//? _______________________________________________________

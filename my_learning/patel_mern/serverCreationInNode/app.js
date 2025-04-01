@@ -60,7 +60,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "content-type": "text/html" });
   // const htmlContent = fs.readFileSync(__dirname + "/index.html");
   // res.end(htmlContent);
-  // we can to this thing __dirname + "/index.html" using path module from node so we have to import it
+  // we can do this thing __dirname + "/index.html" using path module from node so we have to import it
   
   const dirPath = path.join(__dirname, "index.html");
   const htmlContent = fs.readFileSync(dirPath);
