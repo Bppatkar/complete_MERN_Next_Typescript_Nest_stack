@@ -226,30 +226,64 @@ server.listen(3000, () =>
 // we are facing problem to read the form data so we learn
 // 1) Streams 2) Chunks 3) Buffers 4) Reading Chunk 5) Buffering Chunks 6) Parsing Request 7) Using Modules
 
+//* Streams are sequences of data that can be read or written in a continuous flow.
+//* Chunks are pieces of data that are processed in streams.
+//* Buffers are temporary storage areas for chunks of data.
+
 const http = require("http");
 const fs = require("fs");
 
 const server = http.createServer((req, res) => {
-  console.log(req.url, req.method, req.headers);
+  console.log(req.url, req.method);
   if (req.url === "/") {
     res.setHeader("Content-type", "text-html");
-    res.write("<html>");
-    res.write("<head><title>User Input Form</title></head>");
-    res.write("<body>");
-    res.write('<form action="/submit" method="POST">');
-    res.write('<label for="name">Name:</label>');
-    res.write('<input type="text" id="name" name="name" required><br><br>');
-    res.write('<label for="gender">Gender:</label>');
-    res.write('<input type="radio" id="male" name="gender" value="male">');
-    res.write('<label for="male">Male</label>');
-    res.write('<input type="radio" id="female" name="gender" value="female">');
-    res.write('<label for="female">Female</label><br><br>');
-    res.write('<button type="submit">Submit</button>');
-    res.write("</form>");
-    res.write("</body>");
-    res.write("</html>");
+    // res.write("<html>");
+    // res.write("<head><title>User Input Form</title></head>");
+    // res.write("<body>");
+    // res.write('<form action="/submit" method="POST">');
+    // res.write('<label for="name">Name:</label>');
+    // res.write('<input type="text" id="name" name="name" required><br><br>');
+    // res.write('<label for="gender">Gender:</label>');
+    // res.write('<input type="radio" id="male" name="gender" value="male">');
+    // res.write('<label for="male">Male</label>');
+    // res.write('<input type="radio" id="female" name="gender" value="female">');
+    // res.write('<label for="female">Female</label><br><br>');
+    // res.write('<button type="submit">Submit</button>');
+    // res.write("</form>");
+    // res.write("</body>");
+    // res.write("</html>");
+    res.write(`<html>
+      <head><title>User Input Form</title></head>
+      <body>
+        <form action="/submit" method="POST">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required><br><br>
+          <label for="gender">Gender:</label>
+          <input type="radio" id="male" name="gender" value="male">
+          <label for="male">Male</label>
+          <input type="radio" id="female" name="gender" value="female">
+          <label for="female">Female</label><br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </body>
+      </html>`);
     res.end();
   } else if (req.method == "POST" && req.url.toLowerCase() === "/submit") {
+    //! here i made change
+    const body = [];
+    req.on("data", (chunk) => {
+      console.log(chunk);
+      body.push(chunk);
+      //! we got this
+      // <Buffer 6e 61 6d 65 3d 6d 75 6d 6d 79 26 67 65 6e 64 65 72 3d 66 65 6d 61 6c 65>
+      // we have to put it in buffer because it is in buffer format and if we are dealing with big data so we dont want that big data at same time we want that data in small small chunks so we use this--->
+    });
+    //! changes made (we have to create empty object called body where data will be stored and push data when chunk is arrived so where we are logging console chunk we push data into that object)
+    req.on("end", () => {
+      const parsedBody = Buffer.concat(body).toString();
+      console.log(parsedBody); //name=radheRani&gender=female
+    });
+
     fs.writeFileSync("data.txt", "bhanu pratap patkar"); //creating new file data.txt
 
     res.statusCode = 301; // redirecting to home page
