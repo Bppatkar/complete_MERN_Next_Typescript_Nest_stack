@@ -424,5 +424,84 @@ server.listen(3000, () => {
 //? _______________________________________________________
 
 //! Using Modules
+//* we are going to break that whole code into small small chunks and then we are going to import that modules into our code
 
-const fs = require("fs");
+// i am giving a demo [not actually creating new file ok]
+
+//TODO: app.js
+
+/* const http = require('http');
+const requestHandler = require('./requestHandler');
+
+const server = http.createServer(requestHandler);
+
+server.listen(3000, () => {
+  console.log("Server is running at http://localhost:3000");
+}); */
+
+//TODO: requestHandler.js
+
+/* const fs = require('fs');
+const { showForm, handleSubmit } = require('./handlers');
+
+function requestHandler(req, res) {
+  console.log(req.url, req.method);
+  
+  if (req.url === "/") {
+    showForm(res);
+  } 
+  else if (req.method === "POST" && req.url.toLowerCase() === "/submit") {
+    handleSubmit(req, res);
+  }
+}
+
+module.exports = requestHandler; */
+
+
+//TODO: handlers.js
+
+/* const fs = require('fs');
+//! function showForm
+function showForm(res) {
+  res.setHeader("Content-type", "text-html");
+  res.write(`
+    <html>
+      <head><title>User Input Form</title></head>
+      <body>
+        <form action="/submit" method="POST">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required><br><br>
+          <label for="gender">Gender:</label>
+          <input type="radio" id="male" name="gender" value="male">
+          <label for="male">Male</label>
+          <input type="radio" id="female" name="gender" value="female">
+          <label for="female">Female</label><br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </body>
+    </html>
+  `);
+  res.end();
+}
+
+//! function handleSubmit
+function handleSubmit(req, res) {
+  const body = [];
+  
+  req.on("data", (chunk) => {
+    body.push(chunk);
+  });
+  
+  req.on("end", () => {
+    const outputData = Buffer.concat(body).toString();
+    console.log(outputData);
+    // You might want to save this data to file here
+    fs.writeFileSync("data.txt", outputData);
+  });
+
+  res.statusCode = 301;
+  res.setHeader("Location", "/");
+  res.end();
+}
+
+module.exports = { showForm, handleSubmit }; */
