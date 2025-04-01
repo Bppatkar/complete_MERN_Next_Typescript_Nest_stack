@@ -230,7 +230,7 @@ server.listen(3000, () =>
 //* Chunks are pieces of data that are processed in streams.
 //* Buffers are temporary storage areas for chunks of data.
 
-const http = require("http");
+/* const http = require("http");
 const fs = require("fs");
 
 const server = http.createServer((req, res) => {
@@ -280,8 +280,8 @@ const server = http.createServer((req, res) => {
     });
     //! changes made (we have to create empty object called body where data will be stored and push data when chunk is arrived so where we are logging console chunk we push data into that object)
     req.on("end", () => {
-      const parsedBody = Buffer.concat(body).toString();
-      console.log(parsedBody); //name=radheRani&gender=female
+      const outputData = Buffer.concat(body).toString();
+      console.log(outputData); //name=radhe+rani&gender=female
     });
 
     fs.writeFileSync("data.txt", "bhanu pratap patkar"); //creating new file data.txt
@@ -293,6 +293,136 @@ const server = http.createServer((req, res) => {
 });
 server.listen(3000, () =>
   console.log(`server is running at http://localhost:3000`)
-);
+); */
 
 //? _______________________________________________________
+
+/* //! above code without comment
+
+const http = require("http");
+const fs = require("fs");
+
+const server = http.createServer((req, res) => {
+  console.log(req.url, req.method);
+  
+  if (req.url === "/") {
+    res.setHeader("Content-type", "text-html");
+    res.write(`
+      <html>
+        <head><title>User Input Form</title></head>
+        <body>
+          <form action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label><br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </body>
+      </html>
+    `);
+    res.end();
+  } 
+  else if (req.method === "POST" && req.url.toLowerCase() === "/submit") {
+    const body = [];
+    //trigging event
+    req.on("data", (chunk) => {
+      body.push(chunk);
+    });
+    
+    req.on("end", () => {
+      const outputData = Buffer.concat(body).toString();
+      console.log(outputData);
+    });
+
+    fs.writeFileSync("data.txt", "bhanu pratap patkar");
+    
+    res.statusCode = 301;
+    res.setHeader("Location", "/");
+    res.end();
+  }
+});
+
+server.listen(3000, () => {
+  console.log("Server is running at http://localhost:3000");
+}); */
+
+//? _______________________________________________________
+
+// now we got actual body [name=radhe+rani&gender=female]
+// now we are going to parsing that request means we are going to read that request [actually when we send a request it become encrypted , so when we want to get that request we have to decrypt to read it]
+/* //! Using URLSearchParams method
+//? using above code
+
+const http = require("http");
+const fs = require("fs");
+const { URLSearchParams } = require("url");
+
+const server = http.createServer((req, res) => {
+  console.log(req.url, req.method);
+
+  if (req.url === "/") {
+    res.setHeader("Content-type", "text-html");
+    res.write(`
+      <html>
+        <head><title>User Input Form</title></head>
+        <body>
+          <form action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label><br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </body>
+      </html>
+    `);
+    res.end();
+  } else if (req.method === "POST" && req.url.toLowerCase() === "/submit") {
+    const body = [];
+    //trigging event
+    req.on("data", (chunk) => {
+      body.push(chunk);
+    });
+
+    req.on("end", () => {
+      const outputData = Buffer.concat(body).toString();
+      console.log(outputData);
+      //! changes made here
+
+      const checkNewParam = new URLSearchParams(outputData);
+      console.log(checkNewParam);
+      //? we got object - URLSearchParams { 'name' => 'sok som ething', 'gender' => 'female' }
+      // we are going to store that object data into new object in key value pair
+      const jsonData = {};
+      for (const [key, value] of checkNewParam.entries()) {
+        jsonData[key] = value;
+      }
+      console.log(jsonData); //{name:'sok som ething', 'gender' 'female'}
+      fs.writeFileSync("data.txt", JSON.stringify(jsonData));
+    });
+
+    // fs.writeFileSync("data.txt", "bhanu pratap patkar");
+
+    res.statusCode = 301;
+    res.setHeader("Location", "/");
+    res.end();
+    }
+    });
+    
+server.listen(3000, () => {
+  console.log("Server is running at http://localhost:3000");
+});
+ */
+
+//? _______________________________________________________
+
+//! Using Modules
+
+const fs = require("fs");
