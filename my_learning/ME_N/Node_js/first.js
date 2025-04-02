@@ -508,3 +508,8 @@ module.exports = { showForm, handleSubmit }; */
 //? _______________________________________________________
 
 //! Event Loop
+//? For Blog reading
+[LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
+//? for video - check Piyush Garg video on Utube
+
+
