@@ -499,12 +499,13 @@ function handleSubmit(req, res) {
     const formData = new URLSearchParams(outputData);
     console.log("Parsed URLSearchParams:", formData);
     
-    // Convert to plain object
-    const jsonData = {};
-    for (const [key, value] of formData.entries()) {
-      jsonData[key] = value;
-    }
-    console.log("JSON data:", jsonData);
+    // // Convert to plain object
+    // const jsonData = {};
+    // for (const [key, value] of formData.entries()) {
+    //   jsonData[key] = value;
+    // }
+    // console.log("JSON data:", jsonData);
+    const jsonData = Object.fromEntries(formData.entries());
     
     // Save to file
     fs.writeFileSync("data.txt", JSON.stringify(jsonData, null, 2));
@@ -524,5 +525,3 @@ module.exports = { showForm, handleSubmit }; */
 //? For Blog reading
 [LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
 //? for video - check Piyush Garg video on Utube
-
-
