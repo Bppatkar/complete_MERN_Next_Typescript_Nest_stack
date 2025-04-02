@@ -493,14 +493,27 @@ function handleSubmit(req, res) {
   
   req.on("end", () => {
     const outputData = Buffer.concat(body).toString();
-    console.log(outputData);
-    // You might want to save this data to file here
-    fs.writeFileSync("data.txt", outputData);
+    console.log("Raw form data:", outputData);
+    
+    // Parse the form data using URLSearchParams
+    const formData = new URLSearchParams(outputData);
+    console.log("Parsed URLSearchParams:", formData);
+    
+    // Convert to plain object
+    const jsonData = {};
+    for (const [key, value] of formData.entries()) {
+      jsonData[key] = value;
+    }
+    console.log("JSON data:", jsonData);
+    
+    // Save to file
+    fs.writeFileSync("data.txt", JSON.stringify(jsonData, null, 2));
+    
+    // Redirect
+    res.statusCode = 301;
+    res.setHeader("Location", "/");
+    res.end();
   });
-
-  res.statusCode = 301;
-  res.setHeader("Location", "/");
-  res.end();
 }
 
 module.exports = { showForm, handleSubmit }; */
