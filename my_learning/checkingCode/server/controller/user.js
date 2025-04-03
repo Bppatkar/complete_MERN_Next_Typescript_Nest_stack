@@ -33,7 +33,7 @@ export const register = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Account created successfully 👤",
+      message: "Account created successfully 🧑‍🦱",
     });
   } catch (error) {
     console.log(error);

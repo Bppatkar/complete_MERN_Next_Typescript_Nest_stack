@@ -152,7 +152,6 @@ app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 }); */
 
-
 //! Small Project [form input and print response from body]
 //* get data from body using body parser [app.use(express.urlencoded({ extended: true }));]
 
@@ -189,5 +188,59 @@ const PORT = 3000;
 app.listen(3000, () => {
   console.log(`server is running at port http://localhost:${PORT}`);
 }); */
+
+//! Express Routing
+//* you have to create separate "Routes folder" and put all the route in that folder
+
+/* // ==========================================
+// This is a combined version demonstrating how
+// the code would work if split into two files:
+// app.js and userRouter.js
+// ==========================================
+
+const express = require("express");
+const app = express();
+
+// ==========================================
+// This section represents what would be in userRouter.js
+// ==========================================
+const userRouter = express.Router();
+
+userRouter.get("/", (req, res) => {
+  console.log("Home page accessed", req.url, req.method);
+  res.send(`
+    <h2>Welcome to Home Page</h2>
+    <a href="/contact">Go to Contact Page</a>
+  `);
+});
+
+userRouter.get("/contact", (req, res) => {
+  console.log("Contact page accessed", req.url, req.method);
+  res.send(`
+    <h2>Contact Page</h2>
+    <a href="/">Back to Home</a>
+  `);
+});
+
+// ==========================================
+// This section represents what would be in app.js
+// ==========================================
+// Normally you would import the router like this:
+// const userRouter = require("./userRouter");
+
+// Use the router
+app.use("/", userRouter);
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+}); */
+
+
+
+
+
+
+
 
 
