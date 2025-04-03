@@ -118,7 +118,7 @@ app.use("/about", (req, res) => {
  */
 
 //! Correct version of code
-/* const express = require("express");
+/* const express = require("express");  
 const app = express();
 
 // Use const since PORT shouldn't change
@@ -151,3 +151,43 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 }); */
+
+
+//! Small Project [form input and print response from body]
+//* get data from body using body parser [app.use(express.urlencoded({ extended: true }));]
+
+/* const express = require("express");
+const app = express();
+
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (req, res, next) => {
+  res.send(`
+    <form action="/contact" method="POST">
+      <input type="text" name="username" placeholder="username">
+      <input type="gmail" name="gmail" placeholder="gmail">
+      <button type="submit">Submit</button>
+    </form>
+    `);
+});
+
+app.post("/contact", (req, res) => {
+  const { username, gmail } = req.body;
+  // console.log(req.body); // we get undefined because data is not /parsed
+
+  res.send(`
+    <h1>Form Submitted Successfully!</h1>
+    <h2>Submitted Data:</h2>
+    <p>Username: ${username}</p>
+    <p>Email: ${gmail}</p>
+    <a href="/">Back to Form</a>
+  `);
+});
+
+const PORT = 3000;
+app.listen(3000, () => {
+  console.log(`server is running at port http://localhost:${PORT}`);
+}); */
+
+
