@@ -73,7 +73,81 @@ app.use((req,res, next)=>{console.log("Second middleware",req.url, req.method); 
 
 // app.use([path,]callback[,callback...]);
 // arguments: by default '/' is path and callback is a function for instance
-
+// with "/"
 /*  app.use("/about", (req, res) => {
   res.send("<h1>About Page</h1>");
- }); */
+  }); */
+// --------------------------------------------------------------
+/* const express = require("express");
+const app = express();
+
+let PORT = 3000;
+
+app.listen(3000, () => {
+  console.log(`server is running at port http://localhost:${PORT}`);
+});
+
+// ✅ Corrected middleware and routes (should be defined BEFORE app.listen)
+app.use((req, res, next) => {
+  console.log("First middleware", req.url, req.method);
+  next(); // Call next() BEFORE sending a response
+});
+
+// Home route - use app.get() instead of app.use() for specific routes
+app.get("/", (req, res) => {
+  res.send("<h1>Home Page</h1>");
+  // ⚠️ Never call next() after res.send()
+});
+
+//* // ⚠️ WARNING: This is BAD PRACTICE (but technically works in some cases)
+//* // Using "about" without a leading slash means:
+//* // - It will match "/aboutabout" (path contains "about")
+//* // - It will NOT match "/about" or "/about/" (unexpected behavior!)
+//* // - This is confusing and should be avoided!
+//* app.use("about", (req, res) => {
+//*   res.send("<h1>About Page (Flawed Implementation)</h1>");
+//* });
+
+// ✅ CORRECT WAY: Always use leading slashes in Express paths
+// - Matches EXACTLY "/about" and "/about/" (Express normalizes trailing slashes)
+// - Does NOT match "/about123" or other variations
+// - This is the standard Express routing behavior
+app.use("/about", (req, res) => {
+  res.send("<h1>About Page (Correct Implementation)</h1>");
+});
+ */
+
+//! Correct version of code
+/* const express = require("express");
+const app = express();
+
+// Use const since PORT shouldn't change
+const PORT = 3000;
+
+// 1️⃣ General middleware - runs for all requests
+app.use((req, res, next) => {
+  console.log("Middleware:", req.method, req.url);
+  next(); // Important to call next() to continue processing
+});
+
+// 2️⃣ Home route - proper GET handler
+app.get("/", (req, res) => {
+  res.send("<h1>Home Page</h1>");
+  // Never call next() after sending response
+});
+
+// 3️⃣ Correct about route - proper GET handler
+app.get("/about", (req, res) => {
+  res.send("<h1>About Page</h1>");
+});
+
+// 4️⃣ Error handling middleware (should be last)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
+// Start server AFTER all routes are configured
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+}); */
