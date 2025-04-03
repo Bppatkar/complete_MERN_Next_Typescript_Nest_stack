@@ -608,75 +608,107 @@ EVENT LOOP PHASES DEMO (Execution Order):
 //? so solution is to use writeFile which is non-blocking code
 //* rewrite code again without comment
 
+//! SERVER SETUP (app.js)
 /* const http = require("http");
 const fs = require("fs");
 const { URLSearchParams } = require("url");
 const path = require("path");
 
-const server = http.createServer((req, res) => {
-  console.log(`req url and req method:${req.method} ${req.url}`);
+// Create HTTP server
+const server = http.createServer(requestHandler);
+
+// Start server
+server.listen(3000, () => {
+  console.log("Server running at http://localhost:3000");
+  console.log("Working directory:", process.cwd());
+}); */
+
+//! REQUEST HANDLER (requestHandler.js)
+/* function requestHandler(req, res) {
+  console.log(`${req.method} ${req.url}`);
 
   if (req.url === "/") {
-    res.setHeader("Content-type", "text/html"); // Fixed content-type
-    res.end(`
-      <html>
-        <head><title>User Input Form</title></head>
-        <body>
-          <form action="/submit" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br><br>
-            <label for="gender">Gender:</label>
-            <input type="radio" id="male" name="gender" value="male" required>
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">Female</label><br><br>
-            <button type="submit">Submit</button>
-          </form>
-        </body>
-      </html>
-    `);
-  } else if (req.method === "POST" && req.url.toLowerCase() === "/submit") {
-    let body = [];
-
-    req.on("data", (chunk) => {
-      console.log("chunk: ", chunk);
-      body.push(chunk);
-    });
-
-    req.on("end", () => {
-      try {
-        const outputData = Buffer.concat(body).toString();
-        const formData = new URLSearchParams(outputData);
-        const jsonData = Object.fromEntries(formData);
-        const filePath = path.join(__dirname, "data.txt");
-
-        console.log("Form data to save:", jsonData);
-        console.log("Saving to:", filePath);
-
-        // Async file write with error handling
-        fs.writeFile(filePath, JSON.stringify(jsonData), (err) => {
-          if (err) {
-            console.error("Error saving file:", err);
-            res.writeHead(500).end("Server Error");
-            return;
-          }
-
-          console.log("Data saved successfully");
-          res.writeHead(302, { Location: "/" }).end();
-        });
-      } catch (err) {
-        console.error("Processing error:", err);
-        res.writeHead(500).end("Server Error");
-      }
-    });
-  } else {
+    showForm(res);
+  } 
+  else if (req.method === "POST" && req.url === "/submit") {
+    handleSubmit(req, res);
+  }
+  else {
     res.writeHead(404).end("Not Found");
   }
-});
+} */
 
-server.listen(3000, () => {
-  console.log("Server is running at http://localhost:3000");
-}); */
+//! HANDLERS (handlers.js)
+//! showForm (function)
+/* function showForm(res) {
+  res.setHeader("Content-Type", "text/html");
+  res.end(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>User Input Form</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          form { max-width: 400px; }
+          label { display: block; margin-top: 10px; }
+          button { margin-top: 15px; padding: 8px 16px; }
+        </style>
+      </head>
+      <body>
+        <form action="/submit" method="POST">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+          
+          <label>Gender:</label>
+          <div>
+            <input type="radio" id="male" name="gender" value="male" required>
+            <label for="male">Male</label>
+            
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label>
+          </div>
+          
+          <button type="submit">Submit</button>
+        </form>
+      </body>
+    </html>
+  `);
+} */
+
+//! handleSubmit (function)
+/*  function handleSubmit(req, res) {
+  let body = [];
+  
+  req.on("data", (chunk) => {
+    console.log("chunk: ", chunk);
+    body.push(chunk);
+  });
+
+  req.on("end", () => {
+    try {
+      const outputData = Buffer.concat(body).toString();
+      const formData = new URLSearchParams(outputData);
+      const jsonData = Object.fromEntries(formData);
+      const filePath = path.join(__dirname, "data.txt");
+      
+      console.log("Form data to save:", jsonData);
+      console.log("Saving to:", filePath);
+
+      fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), (err) => {
+        if (err) {
+          console.error("Save failed:", err);
+          return res.writeHead(500).end("Server Error");
+        }
+        
+        console.log("Save successful to", filePath);
+        res.writeHead(302, { "Location": "/" }).end();
+      });
+    } catch (err) {
+      console.error("Processing error:", err);
+      res.writeHead(500).end("Server Error");
+    }
+  });
+}  */
 
 
 
