@@ -523,7 +523,83 @@ module.exports = { showForm, handleSubmit }; */
 
 //! Event Loop
 //? For Blog reading
-[LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
+// [LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
 //? for video - check Piyush Garg video on Utube
 
+//! Blocking vs Non Blocking code [install  Mermaid extension in VsCode]
+//? predict the output
+console.log("1. Start - Synchronous"); // 1️⃣ First (main thread)
+
+// Timers Phase
+setTimeout(() => console.log("7. Timer 1 - 0ms"), 0); // 7️⃣
+setImmediate(() => console.log("8. Immediate 1")); // 8️⃣
+
+// Microtasks (Promise)
+Promise.resolve().then(() => console.log("3. Promise 1")); // 3️⃣
+
+// I/O Phase
+const fs = require("fs");
+fs.readFile(__filename, () => {
+  console.log("6. I/O Callback"); // 6️⃣
+
+  // Inside I/O we get different immediate/timer order
+  setTimeout(() => console.log("10. Timer 2"), 0); // 🔟
+  setImmediate(() => console.log("9. Immediate 2")); // 9️⃣
+  process.nextTick(() => console.log("5. Next Tick 2")); // 5️⃣
+});
+
+// Microtasks (Promise)
+Promise.resolve().then(() => console.log("4. Promise 2")); // 4️⃣
+
+// Next Tick Queue
+process.nextTick(() => console.log("2. Next Tick 1")); // 2️⃣
+
+console.log("11. End - Synchronous"); // 1️⃣1️⃣ Last synchronous
+
+//* Output
+/* 
+1. Start - Synchronous
+11. End - Synchronous
+2. Next Tick 1       
+3. Promise 1
+4. Promise 2
+7. Timer 1 - 0ms     
+8. Immediate 1       
+6. I/O Callback      
+5. Next Tick 2       
+9. Immediate 2       
+10. Timer 2
+ */
+
+/*
+EVENT LOOP PHASES DEMO (Execution Order):
+
+┌───────────────────────┐
+│       Synchronous     │ → 1, 11
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐
+│   Next Tick Queue     │ → 2
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐
+│    Microtasks         │ → 3, 4
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐ 
+│        I/O            │ → 6
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐
+│       Timers          │ → 7
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐
+│       Check           │ → 8, 9
+└──────────┬────────────┘
+           │
+┌──────────▼────────────┐
+│   Close Callbacks     │
+└──────────────────────┘
+*/
 
