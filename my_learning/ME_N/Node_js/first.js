@@ -608,6 +608,8 @@ const fs = require("fs");
 const { URLSearchParams } = require("url");
 const path = require("path");
 
+const nodeJsDir = path.join(__dirname);
+
 // Create HTTP server
 const server = http.createServer(requestHandler);
 
@@ -623,11 +625,9 @@ server.listen(3000, () => {
 
   if (req.url === "/") {
     showForm(res);
-  } 
-  else if (req.method === "POST" && req.url === "/submit") {
+  } else if (req.method === "POST" && req.url === "/submit") {
     handleSubmit(req, res);
-  }
-  else {
+  } else {
     res.writeHead(404).end("Not Found");
   }
 } */
@@ -638,40 +638,40 @@ server.listen(3000, () => {
   res.setHeader("Content-Type", "text/html");
   res.end(`
     <html>
-      <head>
-        <title>User Input Form</title>
-        <style>
-          body { font-family: Arial, sans-serif; margin: 20px; }
-          form { max-width: 400px; }
-          label { display: block; margin-top: 10px; }
-          button { margin-top: 15px; padding: 8px 16px; }
-        </style>
-      </head>
-      <body>
-        <form action="/submit" method="POST">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" required>
-          
-          <label>Gender:</label>
-          <div>
-            <input type="radio" id="male" name="gender" value="male" required>
-            <label for="male">Male</label>
+        <head>
+          <title>User Input Form</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            form { max-width: 400px; }
+            label { display: block; margin-top: 10px; }
+            button { margin-top: 15px; padding: 8px 16px; }
+          </style>
+        </head>
+        <body>
+          <form action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
             
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">Female</label>
-          </div>
-          
-          <button type="submit">Submit</button>
-        </form>
-      </body>
+            <label>Gender:</label>
+            <div>
+              <input type="radio" id="male" name="gender" value="male" required>
+              <label for="male">Male</label>
+              
+              <input type="radio" id="female" name="gender" value="female">
+              <label for="female">Female</label>
+            </div>
+            
+            <button type="submit">Submit</button>
+          </form>
+        </body>
     </html>
   `);
 } */
 
 //! handleSubmit (function)
-/*  function handleSubmit(req, res) {
+/* function handleSubmit(req, res) {
   let body = [];
-  
+
   req.on("data", (chunk) => {
     console.log("chunk: ", chunk);
     body.push(chunk);
@@ -682,8 +682,8 @@ server.listen(3000, () => {
       const outputData = Buffer.concat(body).toString();
       const formData = new URLSearchParams(outputData);
       const jsonData = Object.fromEntries(formData);
-      const filePath = path.join(__dirname, "data.txt");
-      
+      const filePath = path.join(nodeJsDir, "data.txt");
+
       console.log("Form data to save:", jsonData);
       console.log("Saving to:", filePath);
 
@@ -692,17 +692,15 @@ server.listen(3000, () => {
           console.error("Save failed:", err);
           return res.writeHead(500).end("Server Error");
         }
-        
+
         console.log("Save successful to", filePath);
-        res.writeHead(302, { "Location": "/" }).end();
+        res.writeHead(302, { Location: "/" }).end();
       });
     } catch (err) {
       console.error("Processing error:", err);
       res.writeHead(500).end("Server Error");
     }
   });
-}  */
+} */
 
 //? _______________________________________________________
-
-

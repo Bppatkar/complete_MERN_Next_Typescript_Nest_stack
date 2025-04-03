@@ -1,4 +1,4 @@
 {
-  "name": "kaki",
-  "gender": "female"
+  "name": "sok som ething",
+  "gender": "male"
 }
