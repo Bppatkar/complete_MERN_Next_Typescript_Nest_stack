@@ -527,49 +527,41 @@ module.exports = { showForm, handleSubmit }; */
 // [LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
 //? for video - check Piyush Garg video on Utube
 
+//? _______________________________________________________
+
 /* //! Blocking vs Non Blocking code 
 //? predict the output
-console.log("1. Start - Synchronous"); // 1️⃣ First (main thread)
+console.log('1. Start of script');
 
-// Timers Phase
-setTimeout(() => console.log("7. Timer 1 - 0ms"), 0); // 7️⃣
-setImmediate(() => console.log("8. Immediate 1")); // 8️⃣
+// Microtask queue (Promise)
+Promise.resolve().then(() => console.log('2. Microtask 1'));
 
-// Microtasks (Promise)
-Promise.resolve().then(() => console.log("3. Promise 1")); // 3️⃣
+// Timer queue
+setTimeout(() => console.log('3. Timer 1'), 0);
 
-// I/O Phase
-const fs = require("fs");
-fs.readFile(__filename, () => {
-  console.log("6. I/O Callback"); // 6️⃣
+// I/O queue
+const fs = require('fs');
+fs.readFile('user-details.txt', () => console.log('4. I/O operation'));
 
-  // Inside I/O we get different immediate/timer order
-  setTimeout(() => console.log("10. Timer 2"), 0); // 🔟
-  setImmediate(() => console.log("9. Immediate 2")); // 9️⃣
-  process.nextTick(() => console.log("5. Next Tick 2")); // 5️⃣
+// Check queue
+setImmediate(() => console.log('5. Immediate 1'));
+
+// Close queue
+process.on('exit', (code) => {
+    console.log('6. Exit event');
 });
 
-// Microtasks (Promise)
-Promise.resolve().then(() => console.log("4. Promise 2")); // 4️⃣
-
-// Next Tick Queue
-process.nextTick(() => console.log("2. Next Tick 1")); // 2️⃣
-
-console.log("11. End - Synchronous"); // 1️⃣1️⃣ Last synchronous */
+console.log('7. End of script');*/
 
 //* Output
 /* 
-1. Start - Synchronous
-11. End - Synchronous
-2. Next Tick 1       
-3. Promise 1
-4. Promise 2
-7. Timer 1 - 0ms     
-8. Immediate 1       
-6. I/O Callback      
-5. Next Tick 2       
-9. Immediate 2       
-10. Timer 2
+1) 1. Start of script (synchronous)
+2) 7. End of script (synchronous)
+3) 2. Microtask 1 (microtask queue)
+4) 5. Immediate 1 (check queue)
+5) 3. Timer 1 (timer queue)
+6) 4. I/O operation (I/O queue - if file exists)
+7) 6. Exit event (close queue)
  */
 
 /*
@@ -603,6 +595,8 @@ EVENT LOOP PHASES DEMO (Execution Order):
 │   Close Callbacks     │
 └──────────────────────┘
 */
+
+//? _______________________________________________________
 
 //! above code is using writeFileSync which is blocking code
 //? so solution is to use writeFile which is non-blocking code
@@ -639,11 +633,10 @@ server.listen(3000, () => {
 } */
 
 //! HANDLERS (handlers.js)
-//! showForm (function)
-/* function showForm(res) {
+/* //! showForm (function)
+function showForm(res) {
   res.setHeader("Content-Type", "text/html");
   res.end(`
-    <!DOCTYPE html>
     <html>
       <head>
         <title>User Input Form</title>
@@ -710,5 +703,4 @@ server.listen(3000, () => {
   });
 }  */
 
-
-
+//? _______________________________________________________
