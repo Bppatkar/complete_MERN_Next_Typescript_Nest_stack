@@ -459,8 +459,8 @@ module.exports = requestHandler; */
 
 //TODO: handlers.js
 
-/* const fs = require('fs');
-//! function showForm
+/* //! function showForm
+const fs = require('fs');
 function showForm(res) {
   res.setHeader("Content-type", "text-html");
   res.write(`
@@ -481,9 +481,10 @@ function showForm(res) {
     </html>
   `);
   res.end();
-}
+} 
+*/
 
-//! function handleSubmit
+/* //! function handleSubmit
 function handleSubmit(req, res) {
   const body = [];
   
@@ -526,7 +527,7 @@ module.exports = { showForm, handleSubmit }; */
 // [LINK]("https://www.builder.io/blog/visual-guide-to-nodejs-event-loop");
 //? for video - check Piyush Garg video on Utube
 
-//! Blocking vs Non Blocking code [install  Mermaid extension in VsCode]
+/* //! Blocking vs Non Blocking code 
 //? predict the output
 console.log("1. Start - Synchronous"); // 1️⃣ First (main thread)
 
@@ -554,7 +555,7 @@ Promise.resolve().then(() => console.log("4. Promise 2")); // 4️⃣
 // Next Tick Queue
 process.nextTick(() => console.log("2. Next Tick 1")); // 2️⃣
 
-console.log("11. End - Synchronous"); // 1️⃣1️⃣ Last synchronous
+console.log("11. End - Synchronous"); // 1️⃣1️⃣ Last synchronous */
 
 //* Output
 /* 
@@ -602,4 +603,80 @@ EVENT LOOP PHASES DEMO (Execution Order):
 │   Close Callbacks     │
 └──────────────────────┘
 */
+
+//! above code is using writeFileSync which is blocking code
+//? so solution is to use writeFile which is non-blocking code
+//* rewrite code again without comment
+
+/* const http = require("http");
+const fs = require("fs");
+const { URLSearchParams } = require("url");
+const path = require("path");
+
+const server = http.createServer((req, res) => {
+  console.log(`req url and req method:${req.method} ${req.url}`);
+
+  if (req.url === "/") {
+    res.setHeader("Content-type", "text/html"); // Fixed content-type
+    res.end(`
+      <html>
+        <head><title>User Input Form</title></head>
+        <body>
+          <form action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label><br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </body>
+      </html>
+    `);
+  } else if (req.method === "POST" && req.url.toLowerCase() === "/submit") {
+    let body = [];
+
+    req.on("data", (chunk) => {
+      console.log("chunk: ", chunk);
+      body.push(chunk);
+    });
+
+    req.on("end", () => {
+      try {
+        const outputData = Buffer.concat(body).toString();
+        const formData = new URLSearchParams(outputData);
+        const jsonData = Object.fromEntries(formData);
+        const filePath = path.join(__dirname, "data.txt");
+
+        console.log("Form data to save:", jsonData);
+        console.log("Saving to:", filePath);
+
+        // Async file write with error handling
+        fs.writeFile(filePath, JSON.stringify(jsonData), (err) => {
+          if (err) {
+            console.error("Error saving file:", err);
+            res.writeHead(500).end("Server Error");
+            return;
+          }
+
+          console.log("Data saved successfully");
+          res.writeHead(302, { Location: "/" }).end();
+        });
+      } catch (err) {
+        console.error("Processing error:", err);
+        res.writeHead(500).end("Server Error");
+      }
+    });
+  } else {
+    res.writeHead(404).end("Not Found");
+  }
+});
+
+server.listen(3000, () => {
+  console.log("Server is running at http://localhost:3000");
+}); */
+
+
 
