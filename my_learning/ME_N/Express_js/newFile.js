@@ -236,8 +236,29 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 }); */
 
+//! Handling 404 page
+// app.use middleware use for every page because it is using .use so we put 404 page in app.use middleware
 
+/* app.use((req, res,next) => {
+res.status(404).send("<h1>404 Page Not Found</h1>"
+}) */
 
+//! common paths
+
+/* // common paths
+router.get("/about-us", (req, res) => {
+  res.send("<h1>About Us</h1>");
+});
+
+router.get("/contact-us", (req, res) => {
+  res.send("<h1>Contact Us</h1>");
+});
+
+// common paths is like [/api/v1/users] so we put that path somewhere else so that we can use it in other routes
+
+app.use("/api/v1/users", router);
+// it become [/api/v1/users/about-us] and [/api/v1/users/contact-us]
+ */
 
 
 
