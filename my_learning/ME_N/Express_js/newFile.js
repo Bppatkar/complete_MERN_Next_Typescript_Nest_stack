@@ -260,7 +260,7 @@ app.use("/api/v1/users", router);
 // it become [/api/v1/users/about-us] and [/api/v1/users/contact-us]
  */
 
-//! Views folder
+//! Views folder [serving HTML files]
 // we have to create a views folder and put all the html file in that folder [we are writing html file in res.send previously to solved that problem we put html file in views folder]
 
 // i have created that views folder and one home.html file and i am using that file in res.send let's see how
@@ -285,7 +285,7 @@ app.listen(3000, () => {
   console.log("server is running at port http://localhost:3000");
 }); */
 
-//? if it is in diff folder than we can write like this
+//? if it is in diff folder than we can write like this and use res.sendFile because we are sending html file instead res.send
 // res.sendFile(path.join(__dirname, "../", "views", "home.html"));
 
 //* why we use path.join in express js
@@ -296,7 +296,6 @@ app.listen(3000, () => {
 /* const filePath = path.join(__dirname, "views", "home.html");
 console.log( "filepath is: ",filePath); // output: /Users/username/project/views/home.html */
 
-
 //! Different between path file
 // console.log("Complete Path", __dirname, "/views/home.html");
 // const filePath = path.join(__dirname, "views", "home.html");
@@ -306,6 +305,19 @@ console.log( "filepath is: ",filePath); // output: /Users/username/project/views
 
 // means path.join version is correctly to use in our application.
 
+//! File Helper
+//* [alternative methods of path where we write path in a const variable and we can use it anywhere in our code]
+//? creating a utils folder and  simple html file
 
+/* // core module
+const path = require("path");
+module.exports = path.dirname(require.main.filename);
 
+// local module
+const rootDir = require("../Express_js");
 
+userRouter.get("/", (req, res, next) => {
+  console.log("File Helper", req.url, req.method);
+  res.sendFile(path.join(rootDir, "utils", "simple.html"));
+});
+ */
