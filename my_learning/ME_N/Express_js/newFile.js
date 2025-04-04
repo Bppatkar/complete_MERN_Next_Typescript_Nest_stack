@@ -260,7 +260,51 @@ app.use("/api/v1/users", router);
 // it become [/api/v1/users/about-us] and [/api/v1/users/contact-us]
  */
 
+//! Views folder
+// we have to create a views folder and put all the html file in that folder [we are writing html file in res.send previously to solved that problem we put html file in views folder]
 
+// i have created that views folder and one home.html file and i am using that file in res.send let's see how
+//* we use res.sendFile method for that we have to use core module
+// const path = require("path");
+
+/* app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/views/home.html");
+  }); */
+
+/* const express = require("express");
+const path = require("path");
+const app = express();
+
+app.get("/", (req, res) => {
+  // console.log("Directory Name", __dirname);
+  console.log("Complete Path", __dirname, "/views/home.html");
+  res.sendFile(__dirname + "/views/home.html");
+});
+
+app.listen(3000, () => {
+  console.log("server is running at port http://localhost:3000");
+}); */
+
+//? if it is in diff folder than we can write like this
+// res.sendFile(path.join(__dirname, "../", "views", "home.html"));
+
+//* why we use path.join in express js
+// path.join is used to create a full path to a file or directory
+// it takes multiple arguments and joins them together with the appropriate directory separator for the current operating system
+// it is more efficient and less error-prone than using string concatenation to build file paths
+//? example
+/* const filePath = path.join(__dirname, "views", "home.html");
+console.log( "filepath is: ",filePath); // output: /Users/username/project/views/home.html */
+
+
+//! Different between path file
+// console.log("Complete Path", __dirname, "/views/home.html");
+// const filePath = path.join(__dirname, "views", "home.html");
+
+//* they both are giving same result then which one we can use
+//? The first version is just for display/debugging, while the second version creates an actual usable filesystem path that will work correctly in your application.
+
+// means path.join version is correctly to use in our application.
 
 
 
