@@ -321,3 +321,8 @@ userRouter.get("/", (req, res, next) => {
   res.sendFile(path.join(rootDir, "utils", "simple.html"));
 });
  */
+
+//! Serving Static Files
+//* if we want to add css or image or any pdf so we have to put that in "public" folder , because without public folder we cant access that static files ok
+//? we are putting files in public because we clearing our intent that public folder is accessible from outside [by-default nothing is accessible from outside but we are making public by putting in public folder]
+//* and for that we have to use one middleware called -"express.static"----------- "[app.use(express.static("public"));]"
