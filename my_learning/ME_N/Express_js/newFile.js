@@ -386,13 +386,14 @@ app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 //* controller - handle data [processes user input, interacts with the modal , and update the view accordingly]
 //? Routes are a part of controllers.
 
-
 //?[ mvc simply means - we divide our responsibility into 3 parts because we don't want messy code so we put logic in controller and view in view folder and model in model folder]
 
-
-/* const express = require("express");
+/* 
+const express = require("express");
 const app = express();
 const PORT = 3000;
+const fs = require("fs");
+const path = require("path");
 
 //! MIDDLEWARE to parse form data
 app.use(express.urlencoded({ extended: true }));
@@ -443,11 +444,40 @@ const postAddUser = (req, res) => {
   res.redirect("/users");
 };
 
+// Read file from users.txt
+const getUsersFromFile = (req, res) => {
+  const filePath = path.join(__dirname, "users.txt");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("<h1>Error reading file</h1>");
+    } else {
+      res.send(`<h1>Users from File</h1><ul>${data.split("\n").map((line) => `<li>${line}</li>`).join("")}</ul><a href="/">Back to Home</a>`);
+    }
+  });
+};
+
+// Create new file with user data
+const postCreateFile = (req, res) => {
+  const { name, email } = req.body;
+  const filePath = path.join(__dirname, "users.txt");
+  fs.appendFile(filePath, `${name} (${email})\n`, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("<h1>Error creating file</h1>");
+    } else {
+      res.redirect("/users-from-file");
+    }
+  });
+};
+
 //! ===== ROUTES (Controller ↔️ View) =====
 app.get("/", getHome);
 app.get("/users", getUsers);
 app.get("/add-user", getAddUserForm);
 app.post("/add-user", postAddUser);
+app.get("/users-from-file", getUsersFromFile);
+app.post("/create-file", postCreateFile);
 
 //! ===== 404 Handler =====
 app.use((req, res) => {
@@ -457,17 +487,18 @@ app.use((req, res) => {
 //! ===== SERVER START =====
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+});
+ */
+
+//! Dynamic Path
+//? Path parameters:-  
+// are variables embedded directly in the URL path to capture dynamic values, like /users/:userId where userId is replaced with the actual value when the route is accessed.
+
+//? Query parameters:- 
+//  are key-value pairs appended to the URL after the question mark [?], used to send additional information like /search?query=nodejs. where query=nodejs specifies the search term.
+
+/* 
+app.get("/:id", (req, res) => {
+  const id = req.params.id;
+  res.send(`<h1>Dynamic Path: ${id}</h1>`);
 }); */
-
-
-
-
-
-
-
-
-
-
-
-
-
