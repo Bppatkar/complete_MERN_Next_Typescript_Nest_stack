@@ -491,10 +491,10 @@ app.listen(PORT, () => {
  */
 
 //! Dynamic Path
-//? Path parameters:-  
+//? Path parameters:-
 // are variables embedded directly in the URL path to capture dynamic values, like /users/:userId where userId is replaced with the actual value when the route is accessed.
 
-//? Query parameters:- 
+//? Query parameters:-
 //  are key-value pairs appended to the URL after the question mark [?], used to send additional information like /search?query=nodejs. where query=nodejs specifies the search term.
 
 /* 
@@ -502,3 +502,35 @@ app.get("/:id", (req, res) => {
   const id = req.params.id;
   res.send(`<h1>Dynamic Path: ${id}</h1>`);
 }); */
+
+/* const express = require("express");
+const app = express();
+const PORT = 3000;
+
+// Routes
+app.get("/", (req, res) => res.send(`
+  <h1>Home</h1>
+  <a href="/about">About</a> | 
+  <a href="/search/123?query=express">Search Example</a>
+`));
+
+app.get("/about", (req, res) => res.send(`
+  <h1>About</h1>
+  <a href="/">Home</a>
+`));
+
+app.get("/search/:id", (req, res) => res.send(`
+  <h1>Search</h1>
+  <p>ID: ${req.params.id}</p>
+  <p>Query: ${req.query.query || 'none'}</p>
+  <a href="/">Home</a>
+`));
+
+//  req.params.id will be '123' (from the route path /search/:id)
+// req.query will be { query: 'express' }
+// Therefore, req.query.query will be 'express' 
+
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); */
+
+//* NOw DATABASE
