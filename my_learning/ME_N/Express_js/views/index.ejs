@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+      .header { background: #f4f4f4; padding: 20px; margin-bottom: 20px; }
+      .product { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+      .in-stock { color: green; }
+      .out-of-stock { color: red; }
+    </style>
+</head>
+<body>
+    <!-- 1. Basic Data Output -->
+    <div class="header">
+        <h1>Welcome to <%= title %></h1>
+        <p>Current date: <%= currentDate.toLocaleDateString() %></p>
+    </div>
+
+    <!-- 2. Conditional Rendering -->
+    <% if (user.isAdmin) { %>
+        <div class="admin-notice">
+            <p><strong>ADMIN NOTICE:</strong> You have administrative privileges.</p>
+        </div>
+    <% } %>
+
+    <!-- 3. Looping Through Data -->
+    <h2>Our Products</h2>
+    <% products.forEach(product => { %>
+        <div class="product">
+            <h3><%= product.name %></h3>
+            <p>Price: $<%= product.price.toFixed(2) %></p>
+            <p class="<%= product.inStock ? 'in-stock' : 'out-of-stock' %>">
+                <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+            </p>
+        </div>
+    <% }); %>
+
+    <!-- 4. Include Form Partial -->
+    <%- include('partials/form') %>
+
+    <!-- 5. Escaped vs Unescaped Output -->
+    <h2>User Content Example</h2>
+    <% const userContent = '<script>alert("XSS attack!");</script> Safe content'; %>
+    <p><strong>Escaped:</strong> <%= userContent %></p>
+    <p><strong>Unescaped (dangerous):</strong> <%- userContent %></p>
+
+    <!-- 6. JavaScript Logic -->
+    <% 
+        const totalValue = products.reduce((sum, product) => sum + product.price, 0);
+        const averagePrice = totalValue / products.length;
+    %>
+    <div class="stats">
+        <p>Total inventory value: $<%= totalValue.toFixed(2) %></p>
+        <p>Average product price: $<%= averagePrice.toFixed(2) %></p>
+    </div>
+</body>
+</html>

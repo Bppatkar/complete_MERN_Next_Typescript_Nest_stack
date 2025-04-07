@@ -326,3 +326,54 @@ userRouter.get("/", (req, res, next) => {
 //* if we want to add css or image or any pdf so we have to put that in "public" folder , because without public folder we cant access that static files ok
 //? we are putting files in public because we clearing our intent that public folder is accessible from outside [by-default nothing is accessible from outside but we are making public by putting in public folder]
 //* and for that we have to use one middleware called -"express.static"----------- "[app.use(express.static("public"));]"
+//? for more details - [https://www.geeksforgeeks.org/express-js-express-static-function/]
+
+//! Dynamic UI using EJS (Embedded JavaScript)
+//* Learn more -[https://medium.com/@adarshahelvar/using-ejs-embedded-javascript-as-a-template-engine-in-node-j-8b54ac30539b]
+//[like instagram or gmail - every user has diff UI](this is called dynamic UI)
+// EJS stands for Embedded JavaScript. It enables the use of JavaScript to generate dynamic HTML on the server-side.
+//? we have to install ejs package by "npm i ejs"
+
+//* creating index.ejs file [i am creating it in views folder as per doc link]
+//TODO [code i have written below is from doc link and i tried to put all things in single ejs file so it become easy to understand , only partial folder i have to made because of from.ejs]
+
+/*  const express = require('express');
+const app = express();
+const path = require('path');
+
+// Set EJS as view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+
+// Sample data
+const products = [
+  { id: 1, name: 'Laptop', price: 999.99, inStock: true },
+  { id: 2, name: 'Smartphone', price: 699.99, inStock: false },
+  { id: 3, name: 'Headphones', price: 149.99, inStock: true }
+];
+
+// Routes
+app.get('/', (req, res) => {
+  res.render('index', { 
+    title: 'EJS Complete Example',
+    user: { name: 'John Doe', isAdmin: true },
+    products,
+    currentDate: new Date()
+  });
+});
+
+// Add this route before app.listen()
+app.post('/submit', (req, res) => {
+  console.log('Form submitted:', req.body);
+  // Process form data here
+  res.redirect('/'); // Redirect back to home after submission
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+ 
+ */
+
+
