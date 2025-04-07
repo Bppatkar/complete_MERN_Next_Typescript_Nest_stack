@@ -333,7 +333,7 @@ userRouter.get("/", (req, res, next) => {
 //[like instagram or gmail - every user has diff UI](this is called dynamic UI)
 // EJS stands for Embedded JavaScript. It enables the use of JavaScript to generate dynamic HTML on the server-side.
 //? we have to install ejs package by "npm i ejs"
-//? and we have to use these two line 
+//? and we have to use these two line
 //* app.set("view engine", "ejs"); // this will search ejs file automatically
 //* app.set("folderName", "pathOfFolder");
 
@@ -381,32 +381,83 @@ app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 
 //!  MVC [Modal View Controller]
 
-//* model - represent data
-//* view - display data
-//* controller - handle data
+//* model - represent data [manages the data and business logic]
+//* view - display data [handles the display and presentation of data]
+//* controller - handle data [processes user input, interacts with the modal , and update the view accordingly]
+//? Routes are a part of controllers.
+
 
 //?[ mvc simply means - we divide our responsibility into 3 parts because we don't want messy code so we put logic in controller and view in view folder and model in model folder]
 
 
+/* const express = require("express");
+const app = express();
+const PORT = 3000;
 
+//! MIDDLEWARE to parse form data
+app.use(express.urlencoded({ extended: true }));
 
+//! ===== MODEL =====
+//* In real apps, you'd connect to DB here. We're using simple JS array
+const users = [];
 
+//! ===== CONTROLLER FUNCTIONS =====
+//* Handles logic for routes
 
+// Home page controller
+const getHome = (req, res) => {
+  res.send(`
+    <h1>Home Page</h1>
+    <a href="/users">View Users</a><br/>
+    <a href="/add-user">Add New User</a>
+  `);
+};
 
+// Display all users
+const getUsers = (req, res) => {
+  let html = `<h1>All Users</h1><ul>`;
+  users.forEach((user, index) => {
+    html += `<li>${index + 1}) ${user.name} (${user.email})</li>`;
+  });
+  html += `</ul><a href="/">Back to Home</a>`;
+  res.send(html);
+};
 
+// Render Add User Form
+const getAddUserForm = (req, res) => {
+  res.send(`
+    <h1>Add New User</h1>
+    <form method="POST" action="/add-user">
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <button type="submit">Add User</button>
+    </form>
+    <a href="/">Back to Home</a>
+  `);
+};
 
+// Handle form submission
+const postAddUser = (req, res) => {
+  const { name, email } = req.body;
+  users.push({ name, email });
+  res.redirect("/users");
+};
 
+//! ===== ROUTES (Controller ↔️ View) =====
+app.get("/", getHome);
+app.get("/users", getUsers);
+app.get("/add-user", getAddUserForm);
+app.post("/add-user", postAddUser);
 
+//! ===== 404 Handler =====
+app.use((req, res) => {
+  res.status(404).send("<h1>404 - Page Not Found</h1><a href='/'>Go Home</a>");
+});
 
-
-
-
-
-
-
-
-
-
+//! ===== SERVER START =====
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+}); */
 
 
 
