@@ -333,9 +333,12 @@ userRouter.get("/", (req, res, next) => {
 //[like instagram or gmail - every user has diff UI](this is called dynamic UI)
 // EJS stands for Embedded JavaScript. It enables the use of JavaScript to generate dynamic HTML on the server-side.
 //? we have to install ejs package by "npm i ejs"
+//? and we have to use these two line 
+//* app.set("view engine", "ejs"); // this will search ejs file automatically
+//* app.set("folderName", "pathOfFolder");
 
 //* creating index.ejs file [i am creating it in views folder as per doc link]
-//TODO [code i have written below is from doc link and i tried to put all things in single ejs file so it become easy to understand , only partial folder i have to made because of from.ejs]
+//TODO [code i have written below is from doc link and i tried to put all things in single ejs file so it become easy to understand , only partial folder i have to made because of from.ejs, and partial folder is use for common things like header and footer , means which things we are using multiple times and on multiple pages like utils folder]
 
 /*  const express = require('express');
 const app = express();
@@ -375,5 +378,45 @@ app.post('/submit', (req, res) => {
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
  
  */
+
+//!  MVC [Modal View Controller]
+
+//* model - represent data
+//* view - display data
+//* controller - handle data
+
+//?[ mvc simply means - we divide our responsibility into 3 parts because we don't want messy code so we put logic in controller and view in view folder and model in model folder]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
