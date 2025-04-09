@@ -37,3 +37,45 @@
 // saving session in DB */
 
 
+//! Cookies
+//? Cookies are small pieces of data stored in the user's browser by server
+//* They help website remember user information and preferences between page loads or visit
+//? They are often used for authentication and session management
+//* Cookies can manage user sessions and store data for personalized experiences
+
+/* //TODO-- npm init-y, npm i express, npm i cookie-parser, npm i express-session
+
+const express = require("express");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+
+const app = express();
+const PORT = 3000;
+
+// Middleware to parse cookies
+app.use(cookieParser());
+
+// Middleware to handle sessions
+app.use(session({
+  secret: 'your_secret_key', // replace with a strong secret key
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // set to true if using https
+}));
+
+app.get("/", (req, res) => {
+  if (req.session.views) {
+    req.session.views++;
+    res.send(`<h1>Welcome back! You've visited this page ${req.session.views} times.</h1>`);
+  } else {
+    req.session.views = 1;
+    res.send("<h1>Welcome to the site! This is your first visit.</h1>");
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+}); */
+
+
+
