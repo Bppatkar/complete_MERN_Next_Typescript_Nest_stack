@@ -21,3 +21,19 @@
 //? Supports Middleware for pre and post- processing of data
 //* Helps manage relationships between data with built-in functions.
 
+
+//! Cookies & Sessions
+
+//**
+// what are cookies
+// Adding login functionality
+// checking login state
+// using a cookie
+// define the logout feature
+// problem with cookies
+// what are sessions
+// installing session package
+// creating a sessions
+// saving session in DB */
+
+
