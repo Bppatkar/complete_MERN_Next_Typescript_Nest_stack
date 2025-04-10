@@ -21,6 +21,7 @@
 //* Helps manage relationships between data with built-in functions.
 
 //! Cookies & Sessions
+//? notes of jonas [https://medium.com/@DanielJWagener/express-authentication-and-security-dac99e6b33c]
 
 //**
 // what are cookies
@@ -198,8 +199,8 @@ app.listen(PORT, () => {
 });
  */
 
-
 //! Problem with cookies
+//[If we provide proper login credentials, the browser will create a cookie and we’ll be able to see our JWT on res.data.token. We want to be able to use this cookie for authorization.(To read cookies, we’ll install a package called cookie-parser,app.use(cookieParser());)]
 //? Cookies can be intercepted or stolen, posing security risks.
 //* They have limited storage capacity (about 4KB).
 //? Users can delete or modify cookies, leading to data loss or tampering.
@@ -213,6 +214,110 @@ app.listen(PORT, () => {
 //* They maintain user state and data across multiple requests in a web application
 //? Sessions enable persistent user experiences by maintaining state between the client and server over stateless HTTP.
 
+
+
+``` Notes
+//! 1. Why do we use Cookies?
+Cookies are small pieces of data stored on the client's browser. They are primarily used to:
+
+Maintain state in HTTP (which is stateless).
+
+Store user preferences (e.g., theme, language).
+
+Track user behavior (e.g., analytics, ads).
+
+Authentication: Store session IDs or tokens to identify logged-in users.
+
+Example: When you log in to a website, a cookie may store a session_id so the server recognizes you in subsequent requests
+```
+
+
+
+``` Notes 
+//! 2. Why use Sessions when we have Cookies?
+Sessions are server-side storage mechanisms for user data, while cookies are client-side. They work together:
+
+Cookie: Stores a unique session_id (e.g., PHPSESSID).
+
+Session: The server uses this session_id to fetch user-specific data (e.g., user ID, permissions) from a server-side store (database, Redis, etc.).
+
+Why not just use cookies for everything?
+
+Cookies are sent with every HTTP request, so storing large data in them is inefficient.
+
+Sensitive data in cookies can be tampered with (unless signed/encrypted).
+
+Sessions keep sensitive data on the server, only exposing a reference (the session_id) via cookies.
+```
+
+
+``` Notes
+//! 3. Where does JWT come in when we have Cookies and Sessions?
+JWT (JSON Web Token) is an alternative to session-based authentication. Here’s how it compares:
+
+Feature	Sessions (with Cookies)	JWT (Token-based)
+Storage	Session ID in cookie, data on server	Self-contained token (client-side)
+Scalability	Needs server-side storage (harder to scale)	Stateless (easier to scale)
+Use Case	Traditional web apps (server-rendered)	APIs, SPAs, microservices
+How JWT Works:
+
+User logs in → Server generates a JWT (signed, containing user data) → Sent to client (cookie or local storage).
+
+Client sends JWT in Authorization: Bearer <token> header (or cookie).
+
+Server verifies the JWT’s signature (no DB lookup needed).
+
+Why JWT?
+
+Stateless: No server-side storage.
+
+Cross-domain friendly (useful for APIs/microservices).
+
+Can store metadata (e.g., user roles) in the token.
+
+Drawbacks:
+
+Tokens cannot be easily invalidated (unlike sessions).
+
+Larger payload than a session_id.
+```
+
+
+
+
+
+
+
+
+
+//! Implementing Authentication
+//* WARNING! This part is complex, but very important to get right. If we mess up this part of the application and leak users’ data, it’s really hard to come back from that. We’ll go over how to implement authentication using no outside libraries other than JWTs.
+
+//! JWTs
+//? JSON web tokens are a stateless solution for authentication, making them perfect for REST APIs. A common alternative to JWTs is storing users’ session info on the server, but that doesn’t really fall in line with REST conventions. When the user logs in via POST request, the server sends back a JWT, which is then stored locally in the user’s browser or machine. Then, when the user accesses a protected route, the server checks the JWT like a passport to make sure it’s valid.
+
+//! A quick overview:
+
+//1) To prevent our database getting compromised, we need to hash passwords with bcrypt and encrypt password reset tokens with SHA 256.
+//2) To prevent brute force attacks, we should make logins slow. Thankfully, bcrypt handles that for us. We should also implement rate limiting and/or maximum login attempts.
+//3) To prevent against cross-site scripting (XSS) attacks, we should store JWTs in HTTPonly cookies, so that the browser can’t access or modify them. We should also sanitize user input data and set some special HTTP headers.
+//4) To prevent denial-of-service (DOS) attacks, we should implement rate limiting and also limit the size of body requests. We also need to avoid “evil” regular expressions that can take a long time to run.
+//5) To prevent against NoSQL query injections, we should make specific Mongoose schemas and sanitize user input data.
+
+//* A few more practices:
+
+//* Always use HTTPS.
+//? Create random password reset tokens with expiry dates.
+//* Deny access to JWT after password change.
+//? Don’t commit sensitive config data to Git.
+//* Don’t sent error details to clients.
+//? Prevent cross-site request forgery (using the csurf package).
+//* Require re-authentication before a high-value action.
+//? Implement a blacklist of untrusted JWTs.
+//* Confirm user email address after first creating account.
+//? Keep user logged in with refresh tokens.
+//* Implement two-factor authentication.
+//? Prevent parameter pollution causing Uncaught Exceptions.
 
 /* 
 //! For a **MERN Stack** (MongoDB, Express, React, Node.js) project, here are the recommended authentication tools:
@@ -242,10 +347,3 @@ app.listen(PORT, () => {
 Avoid mixing **Sessions + JWT**—pick one. For MERN (API-driven), **JWT is standard**.  
 
 */
-
-
-
-
-
-
-
