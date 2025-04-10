@@ -46,6 +46,7 @@
 //* Cookies can manage user sessions and store data for personalized experiences
 
 /** //?-- npm init-y, npm i express, npm i cookie-parser, npm i express-session and npm i bcrypt*/
+//* check cookies.md file
 
 //TODO LOGIN & LOGOUT with cookies and sessions
 
@@ -406,23 +407,143 @@ Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
 
 // _____________________________________________
 
+// ! file upload and download [using multer]
+//? use file picker by html  [<input type = "file"/>]
+//* Multiple files - add multiple attribute to allow selecting multiple files
+//? file types: use accept attribute (e.g: accept= ".jpg, .png")
+// <input type = "file" multiple accept=".jpg , .png" />
+// or accept="image/*"
+//? means it should be image and any extension type - jpb, png, webp
+
+//! Multer kya hai?
+//* Multer ek middleware hai jo Express.js ke saath use hota hai file uploads handle karne ke liye. Ye specially multipart/form-data (forms jo files upload karte hain) ke liye design kiya gaya hai.
+
+//! 1. File Upload using Multer (Server-side)
+// Setup Multer in Express
+
+``` //! Code for multer
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+// Multer Storage Configuration (Files kaha save honge?)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // "uploads/" folder mein save hoga
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName); // Unique filename (timestamp + original name)
+  },
+});
+
+// Initialize Multer
+const upload = multer({ storage: storage });
+
+// Routes
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>File Upload</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <input type="file" name="myFile" />
+      <button type="submit">Upload</button>
+    </form>
+  `);
+});
+
+// Upload Route (Single File)
+app.post('/upload', upload.single('myFile'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded!');
+  }
+  res.send(`
+    <h2>File Uploaded Successfully!</h2>
+    <p>Filename: ${req.file.filename}</p>
+    <a href="/download/${req.file.filename}">Download File</a>
+  `);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
+
+```
+//! Key Points:
+//? multer.diskStorage() → Files ka storage location set karta hai.
+//? upload.single('myFile') → Ek single file upload ke liye (<input name="myFile">).
+//? req.file → Uploaded file ki details (filename, path, etc.).
+
+//! 2. File Download (Server to Client)
+
+``` //! Code
+/* // Download Route
+app.get('/download/:filename', (req, res) => {
+  const filePath = path.join(__dirname, 'uploads', req.params.filename);
+  res.download(filePath, (err) => {
+    if (err) {
+      res.status(404).send('File not found!');
+    }
+  });
+}); */
+
+//! Key Points:
+//? res.download() → Browser ko force karta hai file download karne ke liye.
+//? __dirname → Current directory ka path deta hai.
 
 
+```
+//! Multiple files upload
 
+```//! Code
 
+// HTML Form (Multiple Files)
+/* <form action="/upload-multiple" method="POST" enctype="multipart/form-data">
+  <input type="file" name="myFiles" multiple />
+  <button type="submit">Upload</button>
+</form> */
 
+// Route (Multiple Files)
+app.post('/upload-multiple', upload.array('myFiles', 5), (req, res) => {
+  if (!req.files) {
+    return res.status(400).send('No files uploaded!');
+  }
+  res.send(`${req.files.length} files uploaded!`);
+});
+```
+//? upload.array('myFiles', 5) → Max 5 files upload karne deta hai.
 
+//! Multer file filtering (only images)
 
+``` //! code
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true); // Accept file
+    } else {
+      cb(new Error('Only images are allowed!'), false); // Reject file
+    }
+  },
+});
+```
 
+// ! 5. Real-World Use Cases
+//   ? User Profile Pictures → upload.single('avatar')
+//   * PDF/Excel Uploads → fileFilter se check karo.
+//   ? Bulk Data Upload → upload.array('csvFiles', 10)
 
+//! Errors & Debugging
+  // * Error: "No file uploaded" → Check enctype="multipart/form-data" in <form>.
+  // ? Error: "File too large" → Use limits: { fileSize: 5 * 1024 * 1024 } (5MB max).
+  // * Folder Not Found → Create uploads/ folder manually.
 
-
-
-
-
+// ______________________________________
 
 //! Implementing Authentication
-//* WARNING! This part is complex, but very important to get right. If we mess up this part of the application and leak users’ data, it’s really hard to come back from that. We’ll go over how to implement authentication using no outside libraries other than JWTs.
+// * WARNING! This part is complex, but very important to get right. If we mess up this part of the application and leak users’ data, it’s really hard to come back from that. We’ll go over how to implement authentication using no outside libraries other than JWTs.
 
 //! JWTs
 //? JSON web tokens are a stateless solution for authentication, making them perfect for REST APIs. A common alternative to JWTs is storing users’ session info on the server, but that doesn’t really fall in line with REST conventions. When the user logs in via POST request, the server sends back a JWT, which is then stored locally in the user’s browser or machine. Then, when the user accesses a protected route, the server checks the JWT like a passport to make sure it’s valid.
@@ -450,7 +571,7 @@ Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
 //* Implement two-factor authentication.
 //? Prevent parameter pollution causing Uncaught Exceptions.
 
-/* 
+
 //! For a **MERN Stack** (MongoDB, Express, React, Node.js) project, here are the recommended authentication tools:
 
 //* ### **Backend (Node.js + Express)**  
@@ -477,4 +598,3 @@ Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
 
 Avoid mixing **Sessions + JWT**—pick one. For MERN (API-driven), **JWT is standard**.  
 
-*/
