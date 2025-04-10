@@ -10,6 +10,8 @@
 //? 9) Geospatial and Text Search: Includes support for location-based and full-text queries.
 //* 10) Cross-Platform Compatibility: Works with various operating systems and programming languages.
 //? 11) Easy Integration: Integrates smoothly with modern development stacks.
+// _____________________________________________
+
 
 //! Mongoose
 
@@ -19,6 +21,7 @@
 //* Enables easy interaction with MongoDB through intuitive methods
 //? Supports Middleware for pre and post- processing of data
 //* Helps manage relationships between data with built-in functions.
+// _____________________________________________
 
 //! Cookies & Sessions
 //? notes of jonas [https://medium.com/@DanielJWagener/express-authentication-and-security-dac99e6b33c]
@@ -34,6 +37,7 @@
 // installing session package
 // creating a sessions
 // saving session in DB */
+// _____________________________________________
 
 //! Cookies
 //? Cookies are small pieces of data stored in the user's browser by server
@@ -198,6 +202,7 @@ app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
  */
+// _____________________________________________
 
 //! Problem with cookies
 //[If we provide proper login credentials, the browser will create a cookie and we’ll be able to see our JWT on res.data.token. We want to be able to use this cookie for authorization.(To read cookies, we’ll install a package called cookie-parser,app.use(cookieParser());)]
@@ -206,6 +211,7 @@ app.listen(PORT, () => {
 //? Users can delete or modify cookies, leading to data loss or tampering.
 //* Data in cookies is not encrypted, making sensitive information vulnerable.
 //? Storing important info in cookies exposes it to client-side attacks.
+// _____________________________________________
 
 //!Solution
 //!Sessions
@@ -213,6 +219,7 @@ app.listen(PORT, () => {
 //? Sessions are server-side storage mechanism that tracks user interactions with a website [stored in client side called cookies and stored in server side call sessions]
 //* They maintain user state and data across multiple requests in a web application
 //? Sessions enable persistent user experiences by maintaining state between the client and server over stateless HTTP.
+// _____________________________________________
 
 ``` Story
 //! Part 1: Cookies – "Bhaiya, Yaad Rakho Na!"
