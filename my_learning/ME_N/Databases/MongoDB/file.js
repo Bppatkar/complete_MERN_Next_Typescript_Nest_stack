@@ -199,7 +199,49 @@ app.listen(PORT, () => {
  */
 
 
+//! Problem with cookies
+//? Cookies can be intercepted or stolen, posing security risks.
+//* They have limited storage capacity (about 4KB).
+//? Users can delete or modify cookies, leading to data loss or tampering.
+//* Data in cookies is not encrypted, making sensitive information vulnerable.
+//? Storing important info in cookies exposes it to client-side attacks.
 
+//!Solution
+//!Sessions
+
+//? Sessions are server-side storage mechanism that tracks user interactions with a website [stored in client side called cookies and stored in server side call sessions]
+//* They maintain user state and data across multiple requests in a web application
+//? Sessions enable persistent user experiences by maintaining state between the client and server over stateless HTTP.
+
+
+/* 
+//! For a **MERN Stack** (MongoDB, Express, React, Node.js) project, here are the recommended authentication tools:
+
+//* ### **Backend (Node.js + Express)**  
+🔹 **`bcrypt`** – Password hashing  
+🔹 **`jsonwebtoken` (JWT)** – Stateless authentication (APIs)  
+🔹 **`cookie-parser`** – If using HTTP-only cookies for JWT storage  
+
+//* ### **Frontend (React)**  
+🔹 **`axios`** – API calls with JWT in headers  
+🔹 **`react-router-dom`** – Protected routes  
+🔹 **Context API / Redux / Zustand** – Global auth state management  
+
+//* ### **Database (MongoDB)**  
+🔹 **`mongoose`** – Store user data (email, hashed passwords)  
+
+//* ### **Optional (Advanced Security)**  
+🔹 **`helmet`** – Secure HTTP headers (Express)  
+🔹 **`cors`** – Configure allowed origins  
+🔹 **`express-rate-limit`** – Prevent brute-force attacks  
+
+//* ### **🚀 Final Choice for MERN:**  
+✅ **JWT + `httpOnly` Cookies** (Best for security + scalability)  
+✅ **`bcrypt`** (Always for passwords)  
+
+Avoid mixing **Sessions + JWT**—pick one. For MERN (API-driven), **JWT is standard**.  
+
+*/
 
 
 
