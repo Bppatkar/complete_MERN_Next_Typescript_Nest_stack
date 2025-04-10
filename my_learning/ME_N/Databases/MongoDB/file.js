@@ -214,10 +214,75 @@ app.listen(PORT, () => {
 //* They maintain user state and data across multiple requests in a web application
 //? Sessions enable persistent user experiences by maintaining state between the client and server over stateless HTTP.
 
+``` Story
+//! Part 1: Cookies – "Bhaiya, Yaad Rakho Na!"
+Problem: HTTP stateless hai (har request naya aadmi lagta hai server ko).
+Solution: Cookies!
 
+User: "Login kiya, par dusri page pe jaate hi server bhool gaya? 😠"
 
-``` Notes
-//! 1. Why do we use Cookies?
+Server: "Thik hai bhai, tere browser ko ek cookie deta hoon (user_id=123). Agli baar dikhana!"
+
+User: "Accha, ab har baar request ke saath ye cookie bhejunga. Server ko yaad rahega!"
+
+Dikkat:
+
+Hacker: evil laugh "Cookie churake user_id=123 kar dunga! Pura account mera!" (🚨 Security Risk!)
+
+Server: "Arey! Cookie mein direct userID daala? Galat hai yaar!"
+
+//! Part 2: Sessions – "Server Ki Secret Diary"
+Solution: Cookie mein session_id (random string), aur server apne paas data store karega.
+
+Server: "Ab cookie mein sirf session_id=abc123 bhejta hoon. Actual data (user_id=123) toh meri diary (database) mein hai!"
+
+Hacker: "Cookie churai, par session_id=abc123 ka kya karunga? Server ke paas hi data hai!" 😑
+
+Dikkat:
+
+Server: "Lekin lakhon users hai... har kisi ka session store karna padega. Database bhari padi hai!" (💸 Scalability Issue)
+
+Microservices: "Hum alag-alag servers pe hai, session data share kaise karenge?!"
+
+//! Part 3: JWT – "Token Wala Magic"
+Solution: Self-contained JWT token (signature wala).
+
+Server: "Ab session_id ki jagah JWT bhejta hoon. Isme tumhara data + signature hai. Khud verify kar lena!"
+
+Example JWT: eyJhbGci... (encoded JSON: {user_id:123, exp:...})
+
+Other Servers: "Humko database check karne ki zaroorat nahi! Signature verify karo, chal gaya!" 🎉
+
+Advantage:
+
+Stateless (no server storage).
+
+Microservices-friendly.
+
+Par Dikkat:
+
+User: "Token expire nahi hua toh? Logout kaise karu?"
+
+Server: "Token revoke nahi kar sakte easily. Diary (session) mein toh kar lete the!" 😅
+
+Epilogue – Sabka Apna Use Case!
+Cookies: Chhoti-moti cheezein (theme/language).
+
+Sessions: Traditional websites (security + control).
+
+JWT: APIs, mobile apps, microservices (scalability).
+
+//! Aur Bcrypt?
+
+Password ko seedhe store mat karo! bcrypt se hash karo, warna hacker khush ho jayega. The end! 🔐
+
+Moral: Har technology ki ek dikkat, aur uska jugaad hota hai! 😂
+
+```
+
+// _________________________________________________________
+
+``` //! 1. Why do we use Cookies?
 Cookies are small pieces of data stored on the client's browser. They are primarily used to:
 
 Maintain state in HTTP (which is stateless).
@@ -233,8 +298,7 @@ Example: When you log in to a website, a cookie may store a session_id so the se
 
 
 
-``` Notes 
-//! 2. Why use Sessions when we have Cookies?
+``` //! 2. Why use Sessions when we have Cookies?
 Sessions are server-side storage mechanisms for user data, while cookies are client-side. They work together:
 
 Cookie: Stores a unique session_id (e.g., PHPSESSID).
@@ -251,8 +315,7 @@ Sessions keep sensitive data on the server, only exposing a reference (the sessi
 ```
 
 
-``` Notes
-//! 3. Where does JWT come in when we have Cookies and Sessions?
+``` //! 3. Where does JWT come in when we have Cookies and Sessions?
 JWT (JSON Web Token) is an alternative to session-based authentication. Here’s how it compares:
 
 Feature	Sessions (with Cookies)	JWT (Token-based)
@@ -282,9 +345,41 @@ Tokens cannot be easily invalidated (unlike sessions).
 Larger payload than a session_id.
 ```
 
+``` //! 4. What about bcrypt?
+bcrypt is a password-hashing function used to securely store passwords. It’s unrelated to cookies/sessions/JWT but critical for authentication.
 
+Why bcrypt?
 
+Salting: Adds random data to passwords before hashing (prevents rainbow table attacks).
 
+Adaptive Cost: Can be slowed down to counter brute force.
+
+Example Flow:
+
+User signs up → Password is hashed with bcrypt → Stored in DB.
+
+User logs in → Server compares hashed password with DB entry.
+
+Without bcrypt: Storing plain-text passwords is a massive security risk!
+```
+
+``` //!Summary
+Summary of Relationships:
+Cookies: Client-side storage for small data (e.g., session_id).
+
+Sessions: Server-side storage, referenced by cookies.
+
+JWT: Stateless alternative to sessions, often stored in cookies or headers.
+
+Bcrypt: Securely hashes passwords before storage (used in auth flows).
+```
+```//! When to Use What?
+Traditional Web App: Cookies + Sessions.
+
+API/SPA: JWT (stored in cookies or local storage).
+
+Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
+```
 
 
 
