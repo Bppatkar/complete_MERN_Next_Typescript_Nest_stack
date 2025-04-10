@@ -278,9 +278,7 @@ Password ko seedhe store mat karo! bcrypt se hash karo, warna hacker khush ho ja
 
 Moral: Har technology ki ek dikkat, aur uska jugaad hota hai! 😂
 
-```
-
-// _________________________________________________________
+```// _________________________________________________________
 
 ``` //! 1. Why do we use Cookies?
 Cookies are small pieces of data stored on the client's browser. They are primarily used to:
@@ -294,11 +292,7 @@ Track user behavior (e.g., analytics, ads).
 Authentication: Store session IDs or tokens to identify logged-in users.
 
 Example: When you log in to a website, a cookie may store a session_id so the server recognizes you in subsequent requests
-```
-
-
-
-``` //! 2. Why use Sessions when we have Cookies?
+`````` //! 2. Why use Sessions when we have Cookies?
 Sessions are server-side storage mechanisms for user data, while cookies are client-side. They work together:
 
 Cookie: Stores a unique session_id (e.g., PHPSESSID).
@@ -312,10 +306,7 @@ Cookies are sent with every HTTP request, so storing large data in them is ineff
 Sensitive data in cookies can be tampered with (unless signed/encrypted).
 
 Sessions keep sensitive data on the server, only exposing a reference (the session_id) via cookies.
-```
-
-
-``` //! 3. Where does JWT come in when we have Cookies and Sessions?
+`````` //! 3. Where does JWT come in when we have Cookies and Sessions?
 JWT (JSON Web Token) is an alternative to session-based authentication. Here’s how it compares:
 
 Feature	Sessions (with Cookies)	JWT (Token-based)
@@ -343,9 +334,7 @@ Drawbacks:
 Tokens cannot be easily invalidated (unlike sessions).
 
 Larger payload than a session_id.
-```
-
-``` //! 4. What about bcrypt?
+`````` //! 4. What about bcrypt?
 bcrypt is a password-hashing function used to securely store passwords. It’s unrelated to cookies/sessions/JWT but critical for authentication.
 
 Why bcrypt?
@@ -361,9 +350,7 @@ User signs up → Password is hashed with bcrypt → Stored in DB.
 User logs in → Server compares hashed password with DB entry.
 
 Without bcrypt: Storing plain-text passwords is a massive security risk!
-```
-
-``` //!Summary
+`````` //!Summary
 Summary of Relationships:
 Cookies: Client-side storage for small data (e.g., session_id).
 
@@ -372,14 +359,56 @@ Sessions: Server-side storage, referenced by cookies.
 JWT: Stateless alternative to sessions, often stored in cookies or headers.
 
 Bcrypt: Securely hashes passwords before storage (used in auth flows).
-```
-```//! When to Use What?
+``````//! When to Use What?
 Traditional Web App: Cookies + Sessions.
 
 API/SPA: JWT (stored in cookies or local storage).
 
 Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
-```
+```;
+// _____________________________________________
+
+//! what is Authentication
+//* 1. Authentication is the process of verifying the identity of a user or system accessing an application.
+
+//? 2. It ensures that only authorized users can access protected resources and features.
+
+//* 3. Authentication is crucial for security, protecting data, and providing personalized experiences in web applications.
+
+//! what is Authorization
+//? 1. Authorization is the process of determining what actions a user is permitted to perform within an application.
+
+//* 2. It ensures that users can access only the resources and functionalities they have permission for.
+
+//? 3. Authorization enhances security by restricting access to sensitive data and operations, complementing the authentication process.
+
+// _____________________________________________
+
+//! Session based authentication
+
+//* Login Request:
+//The user sends a login request to the server.
+
+//* Session Creation:
+// The server verifies the credentials, creates a session in the database, and sends a cookie (containing the session ID) back to the user.
+
+//* Subsequent Requests:
+// The user sends new requests with the session cookie.
+// The server checks the database for the session ID.
+// If valid, the server grants access and returns the requested content.
+
+// _____________________________________________
+
+
+
+
+
+
+
+
+
+
+
 
 
 
