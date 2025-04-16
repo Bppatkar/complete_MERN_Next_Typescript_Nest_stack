@@ -9,8 +9,12 @@
 //   res.send("Hello Owner from Express");
 // });
 
-// every time u make a change u have to restart the server again and again so it is better to restart install nodemon but remember download nodemon for dev dependencies not for production ok so use
+// every time u make a change u have to restart the server again and again so it is better to restart , install nodemon but remember download nodemon for dev dependencies not for production ok so use or we can use [node --watch-path=./someFolder someFile.js] or [node --watch someFile.js] but it is not recommended so use nodemon instead of this command
+
 // npm i -D nodemon
+
+/* Use the --watch flag with the node command followed by the filename of your main server file.
+Example: node --watch index.js   */
 
 // app.get("/about", (req, res) => {
 //   res.send("You are in About page my lord");
