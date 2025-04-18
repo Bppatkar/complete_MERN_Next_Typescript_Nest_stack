@@ -17,3 +17,5 @@ go to eraser and search ER-Diagram
 ### 3) Hospital Management System
 
 ![image](https://github.com/user-attachments/assets/8303fd82-27af-4c6f-a834-32494e34b852)
+
+
