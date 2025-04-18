@@ -15,5 +15,5 @@ go to eraser and search ER-Diagram
 ![image](https://github.com/user-attachments/assets/522a1067-f9c6-4389-be16-a3874bc46354)
 
 ### 3) Blog Application
-[preview]()
 
+[preview]()
