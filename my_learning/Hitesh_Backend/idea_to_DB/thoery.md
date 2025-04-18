@@ -21,3 +21,4 @@ go to eraser and search ER-Diagram
 
 ### 4) Library Management System
 
+![image](https://github.com/user-attachments/assets/abb4df90-dbb7-4a74-9877-c994b0ea0a11)
