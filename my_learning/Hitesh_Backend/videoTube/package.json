@@ -1,0 +1,20 @@
+{
+  "name": "videotube",
+  "version": "1.0.0",
+  "description": "Creating simillar structure as youtube",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "Complete",
+    "MERN",
+    "Node.js",
+    "Express.js",
+    "MongoDB"
+  ],
+  "author": "Bhanu Pratap Patakr",
+  "license": "ISC"
+}
