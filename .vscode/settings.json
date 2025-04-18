@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["bhanu", "jabera", "patkar", "pratap", "tailwindcss"]
+  "cSpell.words": ["bhanu", "jabera", "patkar", "pratap", "tailwindcss"],
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
 }
