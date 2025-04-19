@@ -68,6 +68,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+//! hook
 // we are triggring save event before saving data into database that's why we are using pre ok
 // but remember dont use arrow function here because we need context ok
 userSchema.pre("save", async next => {
@@ -79,6 +80,7 @@ userSchema.pre("save", async next => {
 });
 
 // comparing password [by creating own method and adding in prototype]
+//! method
 
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
@@ -117,13 +119,11 @@ userSchema.methods.generateRefreshToken = function () {
 
 export const User = mongoose.model("User", userSchema);
 
-
 //! Cookies
 //? Cookies are small pieces of data stored in the user's browser by server
 //* They help website remember user information and preferences between page loads or visit
 //? They are often used for authentication and session management
 //* Cookies can manage user sessions and store data for personalized experiences
-
 
 //! Problem with cookies
 //[If we provide proper login credentials, the browser will create a cookie and we’ll be able to see our JWT on res.data.token. We want to be able to use this cookie for authorization.(To read cookies, we’ll install a package called cookie-parser,app.use(cookieParser());)]
@@ -206,8 +206,7 @@ Password ko seedhe store mat karo! bcrypt se hash karo, warna hacker khush ho ja
 
 Moral: Har technology ki ek dikkat, aur uska jugaad hota hai! 😂
 
-```// _________________________________________________________
-
+``` // _________________________________________________________
 ``` //! 1. Why do we use Cookies?
 Cookies are small pieces of data stored on the client's browser. They are primarily used to:
 
@@ -327,29 +326,28 @@ Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
 
 // _____________________________________________
 
-
 //! For a **MERN Stack** (MongoDB, Express, React, Node.js) project, here are the recommended authentication tools:
 
-//* ### **Backend (Node.js + Express)**  
-// ⏩ **`bcrypt`** – Password hashing  
-// ⏩ **`jsonwebtoken` (JWT)** – Stateless authentication (APIs)  
-// ⏩ **`cookie-parser`** – If using HTTP-only cookies for JWT storage  
+//* ### **Backend (Node.js + Express)**
+// ⏩ **`bcrypt`** – Password hashing
+// ⏩ **`jsonwebtoken` (JWT)** – Stateless authentication (APIs)
+// ⏩ **`cookie-parser`** – If using HTTP-only cookies for JWT storage
 
-//* ### **Frontend (React)**  
-// ⏩ **`axios`** – API calls with JWT in headers  
-// ⏩ **`react-router-dom`** – Protected routes  
-// ⏩ **Context API / Redux / Zustand** – Global auth state management  
+//* ### **Frontend (React)**
+// ⏩ **`axios`** – API calls with JWT in headers
+// ⏩ **`react-router-dom`** – Protected routes
+// ⏩ **Context API / Redux / Zustand** – Global auth state management
 
-//* ### **Database (MongoDB)**  
-// ⏩ **`mongoose`** – Store user data (email, hashed passwords)  
+//* ### **Database (MongoDB)**
+// ⏩ **`mongoose`** – Store user data (email, hashed passwords)
 
-//* ### **Optional (Advanced Security)**  
-// ⏩ **`helmet`** – Secure HTTP headers (Express)  
-// ⏩ **`cors`** – Configure allowed origins  
-// ⏩ **`express-rate-limit`** – Prevent brute-force attacks 
+//* ### **Optional (Advanced Security)**
+// ⏩ **`helmet`** – Secure HTTP headers (Express)
+// ⏩ **`cors`** – Configure allowed origins
+// ⏩ **`express-rate-limit`** – Prevent brute-force attacks
 
-//* ### **🚀 Final Choice for MERN:**  
-// ✅ **JWT + `httpOnly` Cookies** (Best for security + scalability)  
-// ✅ **`bcrypt`** (Always for passwords)  
+//* ### **🚀 Final Choice for MERN:**
+// ✅ **JWT + `httpOnly` Cookies** (Best for security + scalability)
+// ✅ **`bcrypt`** (Always for passwords)
 
-// Avoid mixing **Sessions + JWT**—pick one. For MERN (API-driven), **JWT is standard**. 
+// Avoid mixing **Sessions + JWT**—pick one. For MERN (API-driven), **JWT is standard**.
