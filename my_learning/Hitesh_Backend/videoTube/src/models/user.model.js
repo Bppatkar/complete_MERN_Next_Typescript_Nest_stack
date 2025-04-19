@@ -145,7 +145,7 @@ export const User = mongoose.model("User", userSchema);
 //? Sessions enable persistent user experiences by maintaining state between the client and server over stateless HTTP.
 // _____________________________________________
 
-``` Story
+/* ``` Story
 //! Part 1: Cookies – "Bhaiya, Yaad Rakho Na!"
 Problem: HTTP stateless hai (har request naya aadmi lagta hai server ko).
 Solution: Cookies!
@@ -295,7 +295,7 @@ Traditional Web App: Cookies + Sessions.
 API/SPA: JWT (stored in cookies or local storage).
 
 Passwords: Always hash with bcrypt (or similar: Argon2, scrypt).
-```;
+```; */
 // _____________________________________________
 
 //! what is Authentication
