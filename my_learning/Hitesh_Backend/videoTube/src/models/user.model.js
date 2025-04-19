@@ -16,6 +16,7 @@
 //* accessToken and refreshToken  they both are JWT token , just usecase are different of each other
 //? AccessToken - we give the user for a short time, like hey just take this
 //? RefreshToken - it is a longTerm token which we store in database as well, and it allows us to disable the users as well whenever we want that like , hey user you need to fresh login, so we can just this out from the database.
+//? JWT is a bearer token means - whoever has this token, I'll provide data to them [in simple word - jiske pass token hai, main use data de dunga ab chahe wo user ho ya na ho i dont care]
 
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
