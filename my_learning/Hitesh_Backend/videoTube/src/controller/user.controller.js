@@ -48,7 +48,8 @@ const registerUser = asyncHandler(async (req, res) => {
   let avatar;
   try {
     avatar = await uploadOnCloudinary(avatarLocalPath);
-    console.log("avatar uploaded successfully", avatar);
+    console.log("avatar uploaded successfully");
+    // console.log("avatar uploaded successfully", avatar);
   } catch (error) {
     console.log("Error uploading avatar on cloudinary: ", error);
     throw new ApiError(500, "Error uploading avatar on cloudinary");
@@ -59,37 +60,46 @@ const registerUser = asyncHandler(async (req, res) => {
   let coverImage;
   try {
     coverImage = await uploadOnCloudinary(coverImageLocalPath);
-    console.log("coverImage uploaded successfully", coverImage);
+    console.log("coverImage uploaded successfully");
+    // console.log("coverImage uploaded successfully", coverImage);
   } catch (error) {
     console.log("Error uploading coverImage on cloudinary: ", error);
     throw new ApiError(500, "Error uploading coverImage on cloudinary");
   }
 
   //! constructing the user [this is a mongodb or mongose modal]
-  const user = await User.create({
-    fullName,
-    avatar: avatar.url,
-    coverImage: coverImage?.url || "",
-    email,
-    password,
-    userName: userName.toLowerCase(),
-  });
+  try {
+    const user = await User.create({
+      fullName,
+      avatar: avatar.url,
+      coverImage: coverImage?.url || "",
+      email,
+      password,
+      userName: userName.toLowerCase(),
+    });
 
-  // verifying that user is created in database or not , if it is created in database so in database ,_id will automatically generate so we are checking user by _id
-  // but we dont want user password , so we deselect password field
-  const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
-  // -password and -refreshToken means exclude password and refreshToken
+    // verifying that user is created in database or not , if it is created in database so in database ,_id will automatically generate so we are checking user by _id
+    // but we dont want user password , so we deselect password field
+    const createdUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+    // -password and -refreshToken means exclude password and refreshToken
 
-  //! check user is in database or not
-  if (!createdUser)
-    throw new ApiError(500, "something went wrong while registering user");
+    //! check user is in database or not
+    if (!createdUser)
+      throw new ApiError(500, "something went wrong while registering user");
 
-  //! sending response to the frontend [201 for created]
-  return res
-    .status(201)
-    .json(new ApiResponse(201, createdUser, "User Registered Successfully"));
+    //! sending response to the frontend [201 for created]
+    return res
+      .status(201)
+      .json(new ApiResponse(201, createdUser, "User Registered Successfully"));
+  } catch (error) {
+    console.log("User Creation Failed ");
+    // if  we have avatar and coverImage then we have to delete them from cloudinary because operation is failed
+    if (avatar) await deleteFromCloudinary(avatar.public_id);
+    if (coverImage) await deleteFromCloudinary(coverImage.public_id);
+    throw new ApiError(500, "User Registration Failed All Images are deleted");
+  }
 });
 export { registerUser };
 

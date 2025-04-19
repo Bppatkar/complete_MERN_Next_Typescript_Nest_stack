@@ -49,6 +49,7 @@ const uploadOnCloudinary = async function (localFilePath) {
   }
 };
 
+// in case there is any problem so we need to delete the file from cloudinary as well because cloudinary has limited space
 const deleteFromCloudinary = async function (publicId) {
   try {
     const result = await cloudinary.uploader.destroy(publicId);
