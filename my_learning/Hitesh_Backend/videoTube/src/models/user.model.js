@@ -105,6 +105,8 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
+//? refresh token and access token is same... and in refresh token there is less info because it will getting refresh again and again
+
 //! generating LongTerm Token [long lived]
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
