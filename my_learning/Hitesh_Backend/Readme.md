@@ -3230,6 +3230,9 @@ nodemon index.js
 3. You should see the uploaded file in the `uploads` folder.
 
 ---
+![image](https://github.com/user-attachments/assets/50aefee0-6750-4833-91dc-7d6f1aae83f8)
+![image](https://github.com/user-attachments/assets/9c728230-2f3a-4951-aef2-3950346b77d5)
+
 
 ### Summary
 
