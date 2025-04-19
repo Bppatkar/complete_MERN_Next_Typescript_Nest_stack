@@ -72,7 +72,9 @@ const userSchema = new mongoose.Schema(
 //! hook
 // we are triggring save event before saving data into database that's why we are using pre ok
 // but remember dont use arrow function here because we need context ok
-userSchema.pre("save", async next => {
+// Mongoose middleware (like pre('save')), you should not use an arrow function because arrow functions do not bind their own this. Instead, use a regular function so that this refers to the document.
+
+userSchema.pre("save", async function (next) {
   // it means when password is getting modified then it will triggered not on every single change
   if (!this.isModified("password")) return next();
 

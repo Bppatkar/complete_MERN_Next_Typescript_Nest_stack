@@ -23,7 +23,7 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 
 // routes
 app.use("/api/v1/healthCheck", healthCheckRouter);
-app.use("api/v1/users", userRouter);
+app.use("/api/v1/users", userRouter);
 
 // error middleware
 app.use(errorHandler);

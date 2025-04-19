@@ -7,6 +7,8 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import dotenv from "dotenv"; // whenever using process.env import this
+dotenv.config();
 
 // Configuration
 cloudinary.config({
@@ -20,24 +22,43 @@ cloudinary.config({
 
 //So we'll just wrap everything with the try catch.That's always a good idea.And handling the catch part is pretty simple.If there is something wrong in uploading to Cloudinary, we want to remove this file from our local storage as well so for that we need fs module
 
-const uploadOnCloudinary = async localFilePath => {
+const uploadOnCloudinary = async function (localFilePath) {
   try {
+    // // api key not found error so we are checking using logging on console
+    // console.log("Cloudinary Config:", {
+    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    //   api_key: process.env.CLOUDINARY_API_KEY,
+    //   api_secret: process.env.CLOUDINARY_API_SECRET,
+    // });
+
     if (!localFilePath) return null;
     // only simple thing to do
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto", // automatially handle file ext name
     });
-    console.log("File upload on cloudinary. File src: ", response.url);
+    console.log("File upload on cloudinary.");
+    // console.log("File upload on cloudinary. File src: ", response.url);
     // once the file is uploaded, we would like to delete it from our server/local storage/laptop
     fs.unlinkSync(localFilePath);
     return response;
   } catch (error) {
+    console.error("Error uploading file on cloudinary");
+    // console.error("Error uploading file on cloudinary: ", error);
     fs.unlinkSync(localFilePath);
     return null;
   }
 };
 
-export { uploadOnCloudinary };
+const deleteFromCloudinary = async function (publicId) {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    console.log("File deleted from cloudinary,: ", result, publicId);
+  } catch (error) {
+    console.log("Error deleting file from cloudinary: ", error);
+    return null;
+  }
+};
 
+export { uploadOnCloudinary, deleteFromCloudinary };
 
 // yeah it's done

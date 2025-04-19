@@ -1,7 +1,10 @@
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -29,15 +32,38 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User With Username And Email Already Exists");
 
   //! handling images [in router we use name avatar and coverImage so we use same name here]
-  const avatarLocalPath = req.files?.avatar[0]?.path;
+  // console.warn(req.files); // checking multer is working properly or not
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) throw new ApiError(400, "Avatar file is missing");
 
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
   //! upload on cloudinary
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  // const avatar = await uploadOnCloudinary(avatarLocalPath);
+  // let coverImage;
+  // if (coverImage) coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+  // new way of uploading because above code is facing problem so we use try and catch
+
+  let avatar;
+  try {
+    avatar = await uploadOnCloudinary(avatarLocalPath);
+    console.log("avatar uploaded successfully", avatar);
+  } catch (error) {
+    console.log("Error uploading avatar on cloudinary: ", error);
+    throw new ApiError(500, "Error uploading avatar on cloudinary");
+  }
+
+  // same thing for coverImage
+
   let coverImage;
-  if (coverImage) coverImage = await uploadOnCloudinary(coverImageLocalPath);
+  try {
+    coverImage = await uploadOnCloudinary(coverImageLocalPath);
+    console.log("coverImage uploaded successfully", coverImage);
+  } catch (error) {
+    console.log("Error uploading coverImage on cloudinary: ", error);
+    throw new ApiError(500, "Error uploading coverImage on cloudinary");
+  }
 
   //! constructing the user [this is a mongodb or mongose modal]
   const user = await User.create({

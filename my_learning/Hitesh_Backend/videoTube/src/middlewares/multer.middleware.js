@@ -1,5 +1,17 @@
 import multer from "multer";
 
+// creating temp folder inside public folder
+// middlewares/multer.middleware.js
+import fs from "fs";
+import path from "path";
+
+// Ensure temp directory exists (runs once when this file is imported)
+const tempDir = path.join(process.cwd(), "public", "temp");
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir, { recursive: true });
+}
+
+
 // copying from npm multer [DiskStorage]
 
 const storage = multer.diskStorage({
@@ -26,7 +38,7 @@ export const upload = multer({ storage });
 
 //? There are two options available, destination and filename. They are both functions that determine where the file should be stored.
 
-//* destination is used to determine within which folder the uploaded files should be stored. This can also be given as a string (e.g. '/tmp/uploads'). If no destination is given, the operating system's default directory for temporary files is used.
+//* destination is used to determine within which folder the uploaded files should be stored. This can also be given as a string (e.g. '/temp/uploads'). If no destination is given, the operating system's default directory for temporary files is used.
 
 //FIXME: Note: Multer will not append any file extension for you, your function should return a filename complete with an file extension.
 
