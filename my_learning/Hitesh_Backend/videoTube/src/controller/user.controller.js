@@ -7,6 +7,35 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+//! method for generating token
+
+const generateAccessAndRefreshToken = async userId => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) throw new ApiError(404, "User not found");
+
+    // genertaing access and refresh token
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    // we can directly return both token from here but,
+    // Now, refresh token is something which we can attach to the user itself as we check in the model as well. You're going to notice we have a field for it which is refresh token. So this is something that we are storing for a longer run in our database.
+    // So it makes sense since we have this access to this user object, we can just go ahead and say hey user, you will have this refresh token directly up here. how...? see
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false }); // we cant save it directly because it will throw error so we use validateBeforeSave: false
+    return { accessToken, refreshToken };
+  } catch (error) {
+    // console.log("Error generating access and refresh token: ", error);
+    throw new ApiError(
+      500,
+      "Somwthing went wrong while generating access and refresh token"
+    );
+  }
+};
+
+//! register user
+
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from body
   // validation - not empty
@@ -101,7 +130,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(500, "User Registration Failed All Images are deleted");
   }
 });
-export { registerUser };
 
 //! Database operation always use await ok
 
@@ -113,3 +141,56 @@ export { registerUser };
 //  coverImage     string
 //  password       string
 //  refreshToken   string
+
+//! login user
+// when we are loggin user , we also have machanism to grab access token and refresh token , so we will use it later first we grab it ok
+// so for that we create a method [top of the code after import] where in argument you just pass an user_id and that method will return token by generating them
+
+const loginUser = asyncHandler(async (req, res) => {
+  // req body -> data
+  // username or email
+  // find the user
+  // password check
+  // access and referesh token
+  // send cookie
+
+  const { email, userName, password } = req.body;
+
+  // validation
+  if ([email, userName, password].some(field => field?.trim() === ""))
+    throw new ApiError(400, "Email or UserName are required");
+
+  // find the user
+  const user = await User.findOne({ $or: [{ userName }, { email }] });
+  if (user) throw new ApiError(400, "UserName already Exist");
+
+  // checking password
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  if (!isPasswordValid) throw new ApiError(401, "Invalid User Credentail");
+
+  // access and refresh token
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
+
+  // loggedIn User
+  const loggedInUser = await user
+    .findById(user._id)
+    .select("-password -refreshToken");
+
+  //sending response
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookies("accessToken", accessToken, options)
+    .cookies("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(200,{user: loggedInUser, refreshToken}, "User Logged In SuccessFully")
+    );
+});
+
+export { registerUser, loginUser };
