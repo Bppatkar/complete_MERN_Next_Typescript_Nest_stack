@@ -1,0 +1,31 @@
+# Ignore node_modules and build output
+node_modules
+build
+
+# Ignore logs and database files
+logs
+*.log
+*.db
+
+# Ignore cache and temporary files
+*.cache
+*.tmp
+*.temp
+
+# Ignore user-specific configuration files
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Ignore IDE and editor configuration files
+.idea
+.vscode
+.editorconfig
+
+# Ignore git and svn files
+.git
+.svn
+
+/.vscode
