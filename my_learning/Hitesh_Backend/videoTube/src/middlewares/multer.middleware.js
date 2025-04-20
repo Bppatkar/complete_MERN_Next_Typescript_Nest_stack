@@ -1,22 +1,22 @@
 import multer from "multer";
 
-// creating temp folder inside public folder
-// middlewares/multer.middleware.js
-import fs from "fs";
-import path from "path";
+// // creating temp folder inside public folder
+// // middlewares/multer.middleware.js
+// import fs from "fs";
+// import path from "path";
 
-// Ensure temp directory exists (runs once when this file is imported)
-const tempDir = path.join(process.cwd(), "public", "temp");
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir, { recursive: true });
-}
-
+// // Ensure temp directory exists (runs once when this file is imported)
+// const tempDir = path.join(process.cwd(), "public", "temp");
+// if (!fs.existsSync(tempDir)) {
+//   fs.mkdirSync(tempDir, { recursive: true });
+// }
 
 // copying from npm multer [DiskStorage]
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/temp"); // changing destination
+    // cb(null, "./public/temp"); // changing destination
+    cb(null, "./public"); // changing destination
   },
 
   // what should be our file name when i store this inside my temp folder

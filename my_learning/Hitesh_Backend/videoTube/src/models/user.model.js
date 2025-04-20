@@ -82,7 +82,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// comparing password [by creating own method and adding in prototype]
+// comparing password [by creating own method and adding in prototype (we use it while logging in to check password is correct or not)]
 //! method
 
 userSchema.methods.isPasswordCorrect = async function (password) {
