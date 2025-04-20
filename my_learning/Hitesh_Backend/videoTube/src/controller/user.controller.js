@@ -305,4 +305,15 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, refreshAccessToken };
+//! Logout part
+// The most important part is we have something in the database that needs to be changed. Yep, that refresh true logout means that we need to just remove the refresh token. That's the most important part. Yes, we will remove the access token from user's cookie. Access token, refresh token from the cookie. That's the client side. The first thing you should always be worried about is the backend part of it.
+
+const logoutUser = asyncHandler(async (req, res) => {
+  try {
+  } catch (error) {
+    // console.log("Error generating access and refresh token: ", error);
+    throw new ApiError(500, "Something went wrong while logging out user");
+  }
+});
+
+export { registerUser, loginUser, refreshAccessToken, logoutUser };
