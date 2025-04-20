@@ -69,7 +69,7 @@ export const login = async (req, res) => {
     });
 
     res.cookie("token", token, {
-      httpOnly: true, // prevent javascript access
+      httpOnly: true, // prevent javascript access || this makes the cookies non-modifiable by the client side
       secure: true,
       sameSite: "strict",
       maxAge: new Date(Date.now() + 3600000), // 1 hour-hourly

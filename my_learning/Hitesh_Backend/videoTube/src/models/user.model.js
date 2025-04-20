@@ -127,6 +127,40 @@ userSchema.methods.generateRefreshToken = function () {
 
 export const User = mongoose.model("User", userSchema);
 
+// TODO: HOW ACCESS & REFRESH TOKENS WORK (SIMPLE EXPLANATION)
+
+//* 1. USER & SERVER
+// - User sends requests → Server handles data/resources.
+
+//* 2. TOKENS GENERATED (ON LOGIN)
+// - Server creates:
+//   • Access Token: Short-lived (e.g., 15 mins).
+//   • Refresh Token: Long-lived (e.g., 1 day or 1 Week or how long you want) → Saved in DATABASE.
+
+//* 3. TOKENS SENT TO USER
+// - Server sends both tokens to user’s device.
+
+//* 4. USING ACCESS TOKEN
+// - User sends access token with each request.
+// - If expired (e.g., after 15 mins), server returns "401 Error".
+
+// TODO: KEY FLOW - REFRESHING TOKENS
+//* 5. ON 401 ERROR:
+// - User sends refresh token to special "/refresh" route.
+// - Server:
+//   • Checks if refresh token matches database.
+//   • Issues NEW (access + refresh) tokens.
+//   • Updates database with new copy of refresh token.
+//   • Sends both new tokens to user.
+
+//* 6. LOGGING OUT:
+// - Server deletes refresh token from database.
+// - User can’t refresh tokens → Logged out when access token expires.
+
+// TODO: WHY THIS WORKS:
+// - Users stay logged in without constant passwords.
+// - Server can revoke access anytime (secure!).
+
 //! Cookies
 //? Cookies are small pieces of data stored in the user's browser by server
 //* They help website remember user information and preferences between page loads or visit

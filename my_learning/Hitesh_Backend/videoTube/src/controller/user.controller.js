@@ -6,6 +6,7 @@ import {
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken";
 
 //! method for generating token
 
@@ -164,16 +165,16 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ $or: [{ userName }, { email }] });
   if (!user) throw new ApiError(400, "Couldn't find the user");
 
-  // checking password
+  // checking password and compare that password
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) throw new ApiError(401, "Invalid User Credentail");
 
-  // access and refresh token
+  // if password is correct which is valid here then we will generate access and refresh token
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
   );
 
-  // So there are two strategies in front of us. Either take this existing user and add this refresh token and then create an object, or just fire a database query and grab the fresh object since this generate access token again go ahead and save new data in the database. So I would say yes, it is definitely an extra query, but it's a fail safe query, it  will help you to secure the system more.
+  // So there are two strategies in front of us. Either take this existing user and add this refresh token and then create an object, or just fire a database query and grab the fresh object since """"this generate access token again go ahead and save new data""""" in the database. So I would say yes, it is definitely an extra query, but it's a fail safe query, it  will help you to secure the system more.
 
   // loggedIn User by database query
   const loggedInUser = await user
@@ -182,24 +183,126 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!loggedInUser) throw new ApiError(400, "Couldn't find the user");
 
-  //sending response
+  //preparing option for sending response [it is just a simple js object]
   const options = {
     httpOnly: true, // this makes the cookies non-modifiable by the client side
     secure: process.env.NODE_ENV === "production", // false while you are testing
   };
 
   //! sending data
-  return res
-    .status(200)
-    .cookies("accessToken", accessToken, options)
-    .cookies("refreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        { user: loggedInUser, refreshToken },
-        "User Logged In SuccessFully"
+  return (
+    res
+      .status(200)
+      .cookies("accessToken", accessToken, options)
+      .cookies("refreshToken", refreshToken, options)
+      // refresh token usually is being set in the cookie only, not being sent to the user.But depends whether you're working on mobile devices or just on the web..Things change drastically in that case.
+      .json(
+        new ApiResponse(
+          200,
+          { user: loggedInUser, refreshToken },
+          "User Logged In SuccessFully"
+        )
       )
-    );
+    //So now once we have this 200, I would like to send an object and this object will have a user. And in the user we will have logged in user access token and refresh token. Just because maybe I'm assuming you are also designing a mobile app, *****in the mobile app you cannot set the cookies.****** That's by default how mobile apps works.
+  );
 });
 
-export { registerUser, loginUser };
+// TODO: HOW ACCESS & REFRESH TOKENS WORK (SIMPLE EXPLANATION)
+
+//* 1. USER & SERVER
+// - User sends requests → Server handles data/resources.
+
+//* 2. TOKENS GENERATED (ON LOGIN)
+// - Server creates:
+//   • Access Token: Short-lived (e.g., 15 mins).
+//   • Refresh Token: Long-lived (e.g., 1 day or 1 Week or how long you want) → Saved in DATABASE.
+
+//* 3. TOKENS SENT TO USER
+// - Server sends both tokens to user’s device.
+
+//* 4. USING ACCESS TOKEN
+// - User sends access token with each request.
+// - If expired (e.g., after 15 mins), server returns "401 Error".
+
+// TODO: KEY FLOW - REFRESHING TOKENS
+//* 5. ON 401 ERROR:
+// - User sends refresh token to special "/refresh" route.
+// - Server:
+//   • Checks if refresh token matches database.
+//   • Issues NEW (access + refresh) tokens.
+//   • Updates database with new copy of refresh token.
+//   • Sends both new tokens to user.
+
+//* 6. LOGGING OUT:
+// - Server deletes refresh token from database.
+// - User can’t refresh tokens → Logged out when access token expires.
+
+// TODO: WHY THIS WORKS:
+// - Users stay logged in without constant passwords.
+// - Server can revoke access anytime (secure!).
+// ___________________________________________________________________________________
+
+//! before logout , we earn how to generate refresh token
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+  // The step one of having this is first of all, go ahead and collect that incoming refresh token because somebody has already, we are assuming somebody already has hit the route of 401. That means things have expired.
+  const incomingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
+  if (!incomingRefreshToken)
+    throw new ApiError(400, "Refresh token is required");
+
+  // we get it via _id [we can also get it via email or username but in user.model we use _id in refresh Token]
+  // how to decode the token ---> simple just verify
+  try {
+    const decodedToken = jwt.verify(
+      incomingRefreshToken,
+      process.env.JWT_SECRET
+    );
+    // if token is decoded means we get _id in the decodedToken variable so we can use it to find the user in the database
+    const user = await User.findById(decodedToken?._id);
+    if (!user) throw new ApiError(404, "Invalid Refresh Token");
+
+    //  if we have a successful user, then we have a refresh token,I have taken this from the user, this has come to me and I've verified that hey, it is user and everything. But if you remember, there was one copy of this refresh token in my database. Also, I need to verify if the user is really logged in and has been not really long gone.
+
+    if (incomingRefreshToken !== user?.refreshToken)
+      throw new ApiError(401, "Invalid Refresh Token");
+
+    // The next step is to simply just generate a new token and send it to the user. That's it.
+
+    //* we can do like this but at the top we have function generateAccessAndRefreshToken() so we use it
+    /* const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1w",
+    });
+ */
+    const option = {
+      httpOnly: true, // this makes the cookies non-modifiable by the client side
+      secure: process.env.NODE_ENV === "production", // this makes the cookies non-modifiable by the client side
+    };
+
+    const { accessToken, refreshToken: newRefreshToken } =
+      await generateAccessAndRefreshToken(user._id);
+
+    return res
+      .status(200)
+      .cookies("accessToken", accessToken, option)
+      .cookies("refreshToken", newRefreshToken, option)
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken, refreshToken: newRefreshToken },
+          "Refresh token is successful"
+        )
+      );
+  } catch (error) {
+    // console.log("Error generating access and refresh token: ", error);
+    throw new ApiError(
+      500,
+      "Somwthing went wrong while generating access and refresh token"
+    );
+  }
+});
+
+export { registerUser, loginUser, refreshAccessToken };
