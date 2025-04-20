@@ -90,6 +90,9 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 };
 
 //! generating shortTerm Token [short lived]
+// firstly we sign the token then we send it to the user and then we store it in the database [refresh token]
+// and after that we verify the token [access token]
+// by the refresh token we can generate new access token
 //* using JWT
 
 userSchema.methods.generateAccessToken = function () {

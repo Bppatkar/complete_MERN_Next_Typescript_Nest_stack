@@ -162,7 +162,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // find the user
   const user = await User.findOne({ $or: [{ userName }, { email }] });
-  if (user) throw new ApiError(400, "UserName already Exist");
+  if (!user) throw new ApiError(400, "Couldn't find the user");
 
   // checking password
   const isPasswordValid = await user.isPasswordCorrect(password);
@@ -173,23 +173,32 @@ const loginUser = asyncHandler(async (req, res) => {
     user._id
   );
 
-  // loggedIn User
+  // So there are two strategies in front of us. Either take this existing user and add this refresh token and then create an object, or just fire a database query and grab the fresh object since this generate access token again go ahead and save new data in the database. So I would say yes, it is definitely an extra query, but it's a fail safe query, it  will help you to secure the system more.
+
+  // loggedIn User by database query
   const loggedInUser = await user
     .findById(user._id)
     .select("-password -refreshToken");
 
+  if (!loggedInUser) throw new ApiError(400, "Couldn't find the user");
+
   //sending response
   const options = {
-    httpOnly: true,
-    secure: true,
+    httpOnly: true, // this makes the cookies non-modifiable by the client side
+    secure: process.env.NODE_ENV === "production", // false while you are testing
   };
 
+  //! sending data
   return res
     .status(200)
     .cookies("accessToken", accessToken, options)
     .cookies("refreshToken", refreshToken, options)
     .json(
-      new ApiResponse(200,{user: loggedInUser, refreshToken}, "User Logged In SuccessFully")
+      new ApiResponse(
+        200,
+        { user: loggedInUser, refreshToken },
+        "User Logged In SuccessFully"
+      )
     );
 });
 
