@@ -310,8 +310,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   // findByIdAndUpdate because i dont want to remove the entire record i just want to update one field
+  console.log("req.user:", req.user);
+  const userId = req.user._id;
   await User.findByIdAndUpdate(
-    req.user._id,
+    userId,
     // The next step is to simply set the refresh token to undefined. and there are couple of ways to do it
     // 1. $set
     { $set: { refreshToken: undefined } },

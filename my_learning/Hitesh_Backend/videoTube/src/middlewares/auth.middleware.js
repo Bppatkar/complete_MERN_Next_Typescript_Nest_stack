@@ -4,6 +4,9 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 export const verifyJwt = asyncHandler(async (req, _, next) => {
+  console.log("Auth middleware called");
+  // console.log("Request headers:", req.headers);
+  // console.log("Request cookies:", req.cookies);
   // But I want to show you there is one more way of how usually this token comes up. It usually doesn't come in the body even if you're working with the mobile app.There is one more way how it comes up. Let me show you that.
   // go to postman and just click on the headers, sometimes some of the stuff comes up in the header as well.
   // Especially there is a special name given to that header where the access token can come up automatically.
@@ -19,6 +22,7 @@ export const verifyJwt = asyncHandler(async (req, _, next) => {
   // decode the token
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    // console.log("Decoded token:", decodedToken);
     // Once we have this decoded token, what's the next step? Grab the user. So I'm going to request a query from the database and get it back.
     const user = await User.findById(decodedToken._id).select(
       "-password -refreshToken"
