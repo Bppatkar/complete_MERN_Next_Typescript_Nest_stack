@@ -309,11 +309,51 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 // The most important part is we have something in the database that needs to be changed. Yep, that refresh true logout means that we need to just remove the refresh token. That's the most important part. Yes, we will remove the access token from user's cookie. Access token, refresh token from the cookie. That's the client side. The first thing you should always be worried about is the backend part of it.
 
 const logoutUser = asyncHandler(async (req, res) => {
-  try {
-  } catch (error) {
-    // console.log("Error generating access and refresh token: ", error);
-    throw new ApiError(500, "Something went wrong while logging out user");
-  }
+  // findByIdAndUpdate because i dont want to remove the entire record i just want to update one field
+  await User.findByIdAndUpdate(
+    req.user._id,
+    // The next step is to simply set the refresh token to undefined. and there are couple of ways to do it
+    // 1. $set
+    { $set: { refreshToken: undefined } },
+    // most of the times undefined work , sometime null and no harm in setting up as an empty string,.....
+    { new: true }
+    // now what we're going to do is this whole thing User.findByIdAndUpdate this has one more parameter that you can actually inject and that simply says that do you want me to return the previous record which is not being updated, or you want to return this fresh information so we can just pass on this new true and it will give me the fresh information.
+  );
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+  return (
+    res
+      .status(200)
+      .clearCookie("accessToken", options) // clearing the cookie by the method of clearCookie
+      // Remember, when you don't pass the option, it doesn't set it to anything, it just refresh this.That's how the clear cookie works.Set cookie is different.
+      .clearCookie("refreshToken", options)
+      .json(new ApiResponse(200, {}, "Logout is successful")) // {} means empty message that hey, there's no data with us.
+  );
 });
+
+/* //! other way to logout is by $unset
+ const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,{
+      $unset: {
+        refreshToken: 1  // this remove the field from document
+      },
+    },
+    { new: true }
+  );
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+  return (
+    res
+      .status(200)
+      .clearCookie("accessToken", options)
+      .clearCookie("refreshToken", options)
+      .json(new ApiResponse(200, {}, "Logout is successful"))
+  );
+}} */
 
 export { registerUser, loginUser, refreshAccessToken, logoutUser };
