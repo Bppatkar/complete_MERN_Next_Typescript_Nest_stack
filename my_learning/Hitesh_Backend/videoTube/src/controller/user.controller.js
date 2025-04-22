@@ -499,6 +499,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
+        // inside this addFields we can add our field and whatever the name we want to give to it we can give.
         subscribersCount: {
           $size: "$subscriber", //size operator,which is going to go ahead and use the subscriber. Now this makes sure in this case you use a dollar sign.The dollar sign is required when you have named something [we named above by as (subcriberedTo , subsciber, etc...)].
         },
@@ -571,6 +572,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
+      // inside this addFields we can add our field and whatever the name we want to give to it we can give any name.
         subscribersCount: {
           $size: "$subscribers",
         },
@@ -615,6 +617,8 @@ const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
     {
       $match: {
+        // _id: req.user._id,  //* lot of people does, this error in the aggregation pipeline, you cannot just go ahead and give userId like this.
+        //* So we can just go ahead and use Mongoose to design an object id just like this.
         _id: new mongoose.Types.ObjectId(req.user._id),
       },
     },
