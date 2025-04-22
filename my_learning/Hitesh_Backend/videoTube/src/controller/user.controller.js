@@ -458,9 +458,212 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Cover Image updated successfully"));
 });
 
-const getUserChannelProfile = asyncHandler(async (req, res) => {});
+//! these rest 2 controller need aggregation pipeline [it is just a filter data from database]
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  //  do you remeber we created ER-Diagram for this project
+  // So there are two types of subscription that we are storing. First of all, how many channels you have subscribed to and how many people have subscribed to your channel. And these are all accounts.
+  //* how we're going to plan it and design it as somebody visits a URL. So we need to grab some information from the URL [using req.params], not this time, from the body. And based on that URL, we will find out who is the user.
 
-const getWatchHistory = asyncHandler(async (req, res) => {});
+  const { userName } = req.params;
+  if (!userName.trim()) throw new ApiError(400, "User name is required");
+  // We just need a reference of this diagram and we can just go ahead and grab some information.
+  // now we are assuming that we got userName and then we can use it to inquire something from the database.
+  // now i want to use aggrigation pipeline [remember syntax This method has an array that you have to pass on and this array has multiple objects] and inside object we have $match and $project
+
+  //* const channel = await User.aggrigate([{this is pipeline1},{pipeline2},{3},{4},{etc...}]);
+
+  // These are your array and these are your object in which you have to put a filtered information. The first information that I would like to grab is there are many records of user. I would like to match a record which has this exact username that I have grabbed from request Param.
+  const channel = await User.aggrigate([
+    { $match: { userName: userName?.toLowerCase() } },
+    // Now, in the next pipeline, I would love to locate more of the information.  we're going to do a lookup. Lookup means I want to find more information. It's going to do a collection of that lookup.
+    // just open ER-diagram check it [where we connect anything from anyone (ref to this from this type: moongose.schema.Type.ObjectId) so we are using lookup for more detail]
+    {
+      $lookup: {
+        from: "subscriptions",
+        // So I'll just go ahead and say this is my subscription and this needs to match in the local field of id. The next field is foreign field. What is the foreign field that we are matching up? This is the important part. The foreign field that I'm trying to match is the channel, not the subscriber here. this is because we want to fetch the subscriber list of the channel.
+        localField: "_id",
+        foreignField: "channel",
+        as: "subscriber", // prefer to call them as subscribers.
+        //Listen this, If you collect all the channels which has your user id, that means you are collecting all of your subscriber base.
+      },
+    },
+    {
+      //Now I want to find who are all the channels that I have subscribed to.
+      // repetative same above code
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber", // this time foreignField is subscriber [look into diagram (subcription) after id u found subscriber]
+        as: "subscribedTo",
+      },
+    },
+    {
+      $addFields: {
+        subscribersCount: {
+          $size: "$subscriber", //size operator,which is going to go ahead and use the subscriber. Now this makes sure in this case you use a dollar sign.The dollar sign is required when you have named something [we named above by as (subcriberedTo , subsciber, etc...)].
+        },
+        channelSubscribedToCount: {
+          $size: "$subscribedTo",
+        },
+        isSubscribed: {
+          $Cond: {
+            //So what I'm looking forward is that this user?._id should be available inside one of the document which this subscribers will give me. Here {subscribersCount} we are counting it. But this thing is giving me a whole lot of collections, lots of documents and I want to find out do we have any such document in our lookup that satisfies this condition that the id of this user is present in such.
+            // So in the subscribers do we have a subscriber which has this id? That means I'm subscribed to my channel so I'm logged in.
+            $if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    // We're going to use this project and then we can just have to say mark 0 or 1
+    // 0 doesn't get projected in the front end or wherever who is making the request and rest of us can be projected.
+    {
+      $project: {
+        fullName: 1,
+        username: 1,
+        subscribersCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1,
+        email: 1,
+      },
+    },
+  ]);
+  if (!channel?.length) throw new ApiError(400, "Channel not found");
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully")
+    );
+});
+
+//! above Code without comment
+/* const getUserChannelProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  if (!username?.trim()) {
+    throw new ApiError(400, "username is missing");
+  }
+
+  const channel = await User.aggregate([
+    {
+      $match: {
+        username: username?.toLowerCase(),
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "channel",
+        as: "subscribers",
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber",
+        as: "subscribedTo",
+      },
+    },
+    {
+      $addFields: {
+        subscribersCount: {
+          $size: "$subscribers",
+        },
+        channelsSubscribedToCount: {
+          $size: "$subscribedTo",
+        },
+        isSubscribed: {
+          $cond: {
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        fullName: 1,
+        username: 1,
+        subscribersCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1,
+        email: 1,
+      },
+    },
+  ]);
+
+  if (!channel?.length) {
+    throw new ApiError(404, "channel does not exists");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully")
+    );
+}); */
+
+const getWatchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id),
+      },
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        user[0].watchHistory,
+        "Watch history fetched successfully"
+      )
+    );
+});
 
 export {
   registerUser,
