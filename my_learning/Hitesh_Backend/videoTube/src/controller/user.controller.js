@@ -499,7 +499,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
-        // inside this addFields we can add our field and whatever the name we want to give to it we can give.
+        // inside this addFields we can add our field and whatever the name we want to give to it we can.
         subscribersCount: {
           $size: "$subscriber", //size operator,which is going to go ahead and use the subscriber. Now this makes sure in this case you use a dollar sign.The dollar sign is required when you have named something [we named above by as (subcriberedTo , subsciber, etc...)].
         },
