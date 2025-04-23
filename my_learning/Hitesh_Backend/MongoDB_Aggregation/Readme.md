@@ -24,13 +24,12 @@ db.users.aggregate([
     },
   },
   {
-    $count: "activeUsers", // here we call it whatever we want to call
+    $count: "activeUsers", // here we call it whatever we want to call we call activeUser here
   },
 ]);
 ```
 
 ![image](https://github.com/user-attachments/assets/588058ce-1819-4fc2-bb3a-7c5576ed3d15)
-
 
 ## 2) What is the average age of all users?
 
@@ -82,7 +81,6 @@ db.users.aggregate([
 ```
 
 ![image](https://github.com/user-attachments/assets/4ba80fd7-ac10-4674-9b43-d54266b96cd8)
-
 
 ## 3) List the top 5 most common favorite fruits among the users..?
 
@@ -184,7 +182,7 @@ This countingByMe field is not available in my original database. But since I am
 }
 ```
 
-what if i do countingByMe 1 not -1
+what if i do countingByMe 1 not -1 [Negative one means highest value on the top.]
 just changed the order
 
 ```json
@@ -223,7 +221,7 @@ So I can provide one more pipeline here
     },
   },
   {
-    $limit: 5,
+    $limit: 2, // I only want to send you the two values of the top value.
   },
 ];
 ```
@@ -243,6 +241,5 @@ So I can provide one more pipeline here
 }
 
 ```
+
 ![image](https://github.com/user-attachments/assets/9e86162d-7956-405c-861c-8a77d15dbbff)
-
-
