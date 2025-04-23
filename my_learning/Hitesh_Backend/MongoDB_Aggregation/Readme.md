@@ -479,7 +479,7 @@ I want to use an operator known as count which counts all these values.
 
 $Project - Passes along the document with the requested field to the next stage in the pipeline. The specified field can be an existing field
 from an input or newly computed value.
-Like we want name field here so , whatever the fields you want. You just want to put a 1 after that.
+Like we want name field and age field here so , whatever the fields you want. You just want to put a 1 after that.
 
 ```js
 [
