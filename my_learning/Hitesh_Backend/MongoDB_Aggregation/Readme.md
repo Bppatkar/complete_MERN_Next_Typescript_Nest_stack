@@ -4,7 +4,11 @@ In mongodb database i have create one database called aggregate where there are 
 2. in authors collection there are 3 documents
 3. in books collection there are more than 20 documents
 
-// Here are some question which we perfrom aggregation in mongodb
+# Here are some question which we perfrom aggregation in mongodb
+
+NOTE": - Without grouping you cannot perform any operation to all the database users or all the database documents.
+
+---
 
 # Questions
 
