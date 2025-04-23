@@ -250,3 +250,27 @@ limit 2 [ I only want to send you the two values of the top value.]
 
 ![image](https://github.com/user-attachments/assets/c21510a2-6100-4cf3-88ed-e22cb0481ecc)
 
+## 4) Find the total number of males and females?
+
+```js
+[
+  {
+    $group: {
+      _id: "$gender",
+      totalMaleAndFemals: {
+        $sum: 1,
+      },
+    },
+  },
+]
+```
+```json
+{
+  "_id": "female",
+  "totalMaleAndFemals": 507
+}
+{
+  "_id": "male",
+  "totalMaleAndFemals": 493
+}
+```
