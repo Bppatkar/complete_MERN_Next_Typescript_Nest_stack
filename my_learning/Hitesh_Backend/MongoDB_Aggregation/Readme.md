@@ -395,9 +395,13 @@ The id of the user will remain same, but the only property that will change is t
 ```
 
 ![image](https://github.com/user-attachments/assets/441c49cf-1c17-448a-bd49-f8a6dd987436)
-____
+
+---
+
 ### Other ways to do it
-___
+
+---
+
 aggregation pipeline which known as add fields which adds a new field into the existing documents.
 
 $size just go ahead and use a size which actually tells you the size of an array.  
@@ -435,4 +439,14 @@ So now based on this, how can I actually calculate the average?
 }
 ```
 
-## 8) What is the average number of tags per user?
+## 8) How many users have 'enim' as one of thier tags?
+
+### Ans: -
+
+Objects are not really that much difficult to work on with because you can just access them with the dot notation. The arrays or the tags are little bit difficult to find out.
+
+So we need to learn a little bit more of the aggregation pipeline and some of that stages to work with this one because now it's not about grouping the data. I want to have some filtration as well. So how can I use filtration in the MongoDB aggregation?
+
+```js
+
+```
