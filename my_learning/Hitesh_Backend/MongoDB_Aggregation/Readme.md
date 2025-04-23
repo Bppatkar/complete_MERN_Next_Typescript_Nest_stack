@@ -1,8 +1,8 @@
-// in mongodb database i have create one database called aggregate where there are 3 collections, users, athors and books
+In mongodb database i have create one database called aggregate where there are 3 collections, users, athors and books
 
-// in users collection there are 3 documents
-// in authors collection there are 3 documents
-// in books collection there are more than 20 documents
+1. in users collection there are 3 documents
+2. in authors collection there are 3 documents
+3. in books collection there are more than 20 documents
 
 // Here are some question which we perfrom aggregation in mongodb
 
@@ -69,3 +69,34 @@ db.users.aggregate([
 "\_id": "female",
 "averageAgeCalculatorByMe": 29.81854043392505
 }
+
+## 3) List the top 5 most common favorite fruits among the users..?
+
+### Ans: -
+
+for finding the favorite fruits i need to group them based on how many unique values of this particular field can be [favoriteFruit]
+
+```js
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+    },
+  },
+];
+```
+
+// {
+"_id": "banana"
+}
+//{
+"_id": "apple"
+}
+//{
+"_id": "strawberry"
+}
+
+I have grouped them together, and now I want to count.
+```js
+
+```
