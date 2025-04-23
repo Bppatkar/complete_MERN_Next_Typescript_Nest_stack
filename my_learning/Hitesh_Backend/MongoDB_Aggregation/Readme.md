@@ -606,4 +606,5 @@ So the push operators appends a specified value to an array.
   },
 ]
 ```
+![image](https://github.com/user-attachments/assets/76948b1f-30fa-4740-a77a-38d328a1113c)
 
