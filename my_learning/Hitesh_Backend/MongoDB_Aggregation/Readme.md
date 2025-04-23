@@ -523,9 +523,61 @@ Like we want name field and age field here so , whatever the fields you want. Yo
 }
 ```
 
-## 11) How many users have a phone number starting with '+1(940)?
+## 11) who has registered the most recently?
 
-### Ans:- 
+- 1 [So negative 1 means the user who have registered in the very last will come at the very top.]
+
+### Ans:-
 
 ```js
+[
+  {
+    $sort: {
+      registered: -1,
+    },
+  },
+  { $limit: 3 },
+  {
+    $project: {
+      name: 1,
+      registered: 1,
+      favoriteFruit: 1,
+    },
+  },
+];
+```
+
+```json
+{
+  "favoriteFruit": "apple",
+  "_id": {
+    "$oid": "680881f16233b72c41bcdf3e"
+  },
+  "name": "Stephenson Griffith",
+  "registered": {
+    "$date": "2018-04-14T03:16:20.000Z"
+  }
+}
+___________________________________
+{
+  "_id": {
+    "$oid": "680881f16233b72c41bcde2f"
+  },
+  "name": "Sonja Galloway",
+  "registered": {
+    "$date": "2018-04-11T12:52:12.000Z"
+  },
+  "favoriteFruit": "strawberry"
+}
+___________________________________
+{
+  "_id": {
+    "$oid": "680881f16233b72c41bce050"
+  },
+  "name": "Mcpherson Christensen",
+  "registered": {
+    "$date": "2018-04-11T07:18:42.000Z"
+  },
+  "favoriteFruit": "strawberry"
+}
 ```
