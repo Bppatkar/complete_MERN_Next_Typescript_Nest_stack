@@ -581,5 +581,29 @@ ___________________________________
   "favoriteFruit": "strawberry"
 }
 ```
+
 ![image](https://github.com/user-attachments/assets/1e9a4cd6-aa75-4fe5-9a0e-2cef4b0ccdd8)
+
+## 12) Categorize users by their favorite fruit?
+
+### Ans: -
+
+categorization, grouping them is almost same.
+
+so ew have all of them are grouped based on favorite fruit. So we have bananas, apple and strawberries. So these are our categories of fruit now.
+But we don't know how many users are there in each one of them.
+
+$push - I can use another variable, not operator of the MongoDB where you can use actually dollar push. Again, "notice" **push is an accumulator**.
+So the push operators appends a specified value to an array.
+
+```js
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      users: { $push: "$name" },
+    },
+  },
+]
+```
 
