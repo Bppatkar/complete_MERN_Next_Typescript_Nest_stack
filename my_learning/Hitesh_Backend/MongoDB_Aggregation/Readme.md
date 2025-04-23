@@ -276,3 +276,17 @@ limit 2 [ I only want to send you the two values of the top value.]
 ```
 ![image](https://github.com/user-attachments/assets/584a1866-9467-421b-80cd-7800e989c33a)
 
+## 5) Which country has the highest number of registered users?
+
+### ans: - 
+```js
+[
+  {$group: {
+    _id: "$company.location.country",
+  }}
+]
+```
+
+
+But I want to count how many documents you subbed or you grouped based on France, based on USA. so the easiest way is to do the counting. But no, this is not counting, this is summing up,
+
