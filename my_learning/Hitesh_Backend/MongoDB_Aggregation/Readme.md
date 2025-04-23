@@ -393,5 +393,46 @@ The id of the user will remain same, but the only property that will change is t
   },
 ];
 ```
-![image](https://github.com/user-attachments/assets/441c49cf-1c17-448a-bd49-f8a6dd987436)
 
+![image](https://github.com/user-attachments/assets/441c49cf-1c17-448a-bd49-f8a6dd987436)
+____
+### Other ways to do it
+___
+aggregation pipeline which known as add fields which adds a new field into the existing documents.
+
+$size just go ahead and use a size which actually tells you the size of an array.  
+$size : "$$tags"
+But this is MongodB. That means there could be a chance that this tag might not be present in all the documents. then how to handle it.... see
+ $size: {$ifNull: ["$tags" ,[]]},
+So if null, then use the square brackets in this one. And then first of all, the first parameter is where should I look for the property which is in this case, tags. But what if I found this property as null? What should I do in that case? Treat it as an empty array. That's it.
+
+So now based on this, how can I actually calculate the average?
+
+```js
+[
+  {
+    $addFields: {
+      numberOfTags: {
+        $size: { $ifNull: ["$tags", []] },
+      },
+    },
+  },
+  {
+    $group: {
+      _id: "null",
+      averageOfNumberOfTags: {
+        $avg: "$numberOfTags",
+      },
+    },
+  },
+];
+```
+
+```json
+{
+  "_id": "null",
+  "averageOfNumberOfTags": 3.556
+}
+```
+
+## 8) What is the average number of tags per user?
