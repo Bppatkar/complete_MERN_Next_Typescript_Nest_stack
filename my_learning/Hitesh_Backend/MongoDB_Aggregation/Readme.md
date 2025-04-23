@@ -43,10 +43,11 @@ db.users.aggregate([
 ]);
 ```
 
-// {
-"\_id": null,
+```json {
+"_id": null,
 "averageAgeCalculatorByMe": 29.835
 }
+```
 
 ```js
 [
@@ -61,14 +62,15 @@ db.users.aggregate([
 ];
 ```
 
-// {
-"\_id": "male",
+```json {
+"_id": "male",
 "averageAgeCalculatorByMe": 29.851926977687626
 }
-// {
-"\_id": "female",
+ {
+"_id": "female",
 "averageAgeCalculatorByMe": 29.81854043392505
 }
+```
 
 ## 3) List the top 5 most common favorite fruits among the users..?
 
@@ -86,17 +88,18 @@ for finding the favorite fruits i need to group them based on how many unique va
 ];
 ```
 
-// {
+```json {
 "_id": "banana"
 }
-//{
+{
 "_id": "apple"
 }
-//{
+{
 "_id": "strawberry"
 }
-
+```
 I have grouped them together, and now I want to count.
+
 ```js
 
 ```
