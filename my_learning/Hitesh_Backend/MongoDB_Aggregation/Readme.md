@@ -473,7 +473,7 @@ Filters documents based on a specified query predicate. Matched documents are pa
 sum is to actually aggregate, accumulate all of that. But I just want to count all of them.
 I want to use an operator known as count which counts all these values.
 
-## 8) What are the names and age of users who are inactive and have 'velit' as a tag?
+## 9) What are the names and age of users who are inactive and have 'velit' as a tag?
 
 ### Ans: -
 
