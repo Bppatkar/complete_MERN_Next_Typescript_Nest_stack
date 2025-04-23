@@ -448,7 +448,52 @@ Objects are not really that much difficult to work on with because you can just 
 So we need to learn a little bit more of the aggregation pipeline and some of that stages to work with this one because now it's not about grouping the data. I want to have some filtration as well. So how can I use filtration in the MongoDB aggregation?
 ![image](https://github.com/user-attachments/assets/ffb8a51c-aabc-465f-9118-e735a0ee5dd4)
 
+$match
+Filters documents based on a specified query predicate. Matched documents are passed to the next pipeline stage.
 
 ```js
+[
+  {
+    $match: {
+      tags: "enim",
+    },
+  },
+  {
+    $count: "userWithEnimTags",
+  },
+];
+```
 
+```json
+{
+  "userWithEnimTags": 62
+}
+```
+
+sum is to actually aggregate, accumulate all of that. But I just want to count all of them.
+I want to use an operator known as count which counts all these values.
+
+## 8) What are the names and age of users who are inactive and have 'velit' as a tag?
+
+### Ans: -
+
+$Project - Passes along the document with the requested field to the next stage in the pipeline. The specified field can be an existing field
+from an input or newly computed value.
+Like we want name field here so , whatever the fields you want. You just want to put a 1 after that.
+
+```js
+[
+  {
+    $match: {
+      isActive: false,
+      tags: "velit",
+    },
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1,
+    },
+  },
+]
 ```
