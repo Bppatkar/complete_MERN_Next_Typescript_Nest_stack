@@ -34,6 +34,8 @@ db.users.aggregate([
 ## 2) What is the average age of all users?
 
 ### Ans: -
+![image](https://github.com/user-attachments/assets/300b5d92-ea42-41a1-b61c-9ba4b7547a7d)
+
 
 ```js
 db.users.aggregate([
