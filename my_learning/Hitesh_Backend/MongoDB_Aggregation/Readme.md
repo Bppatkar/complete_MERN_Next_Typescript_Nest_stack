@@ -446,6 +446,8 @@ So now based on this, how can I actually calculate the average?
 Objects are not really that much difficult to work on with because you can just access them with the dot notation. The arrays or the tags are little bit difficult to find out.
 
 So we need to learn a little bit more of the aggregation pipeline and some of that stages to work with this one because now it's not about grouping the data. I want to have some filtration as well. So how can I use filtration in the MongoDB aggregation?
+![image](https://github.com/user-attachments/assets/ffb8a51c-aabc-465f-9118-e735a0ee5dd4)
+
 
 ```js
 
