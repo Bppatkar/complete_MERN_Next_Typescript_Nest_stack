@@ -281,6 +281,8 @@ limit 2 [ I only want to send you the two values of the top value.]
 ## 5) Which country has the highest number of registered users?
 
 ### Ans: -
+![image](https://github.com/user-attachments/assets/dbc4f5e5-1b04-4c37-b7b6-a240b5508a31)
+
 
 ```js
 [
@@ -311,3 +313,5 @@ But I want to count how many documents you subbed or you grouped based on France
   },
 ];
 ```
+![image](https://github.com/user-attachments/assets/4f121fb8-caea-4cc7-9172-f1fd6c2d92cd)
+
