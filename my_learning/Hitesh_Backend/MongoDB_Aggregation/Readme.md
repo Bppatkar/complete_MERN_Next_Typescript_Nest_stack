@@ -342,6 +342,7 @@ if we want a top 3 or top 5 we use limit
 ## 6) List all the unique eyes colors present in the collection?
 
 ### Ans: -
+
 i am just couning diff eye color for fun purpose
 
 ```js
@@ -354,8 +355,41 @@ i am just couning diff eye color for fun purpose
       },
     },
   },
-]
-
+];
 ```
+
 ![image](https://github.com/user-attachments/assets/367df415-1c15-42cf-a476-37c1923fe2da)
 
+---
+
+# Dealing with Array
+
+## 7) What is the average number of tags per user?
+
+anytime you see an array and you want to kind of rip apart those array, spread them around, then you go with $unwind.
+So imagine that there is one user and in the array there are three elements. So what this unwind does, it creates three document for that user.
+The id of the user will remain same, but the only property that will change is the array value.
+
+### Ans: -
+
+```js
+[
+  { $unwind: "$tags" },
+  {
+    $group: {
+      _id: "$_id", // Because remember I told you, everything is duplicated. The only value that is _id is same in array value.
+      numberOfTags: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      averageNumberOfTags: {
+        $avg: "$numberOfTags",
+      },
+    },
+  },
+];
+```
