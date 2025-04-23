@@ -25,6 +25,9 @@ db.users.aggregate([
 ]);
 ```
 
+![image](https://github.com/user-attachments/assets/588058ce-1819-4fc2-bb3a-7c5576ed3d15)
+
+
 ## 2) What is the average age of all users?
 
 ### Ans: -
@@ -73,6 +76,9 @@ db.users.aggregate([
 "averageAgeCalculatorByMe": 29.81854043392505
 }
 ```
+
+![image](https://github.com/user-attachments/assets/4ba80fd7-ac10-4674-9b43-d54266b96cd8)
+
 
 ## 3) List the top 5 most common favorite fruits among the users..?
 
@@ -233,3 +239,6 @@ So I can provide one more pipeline here
 }
 
 ```
+![image](https://github.com/user-attachments/assets/9e86162d-7956-405c-861c-8a77d15dbbff)
+
+
