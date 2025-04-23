@@ -243,3 +243,8 @@ So I can provide one more pipeline here
 ```
 
 ![image](https://github.com/user-attachments/assets/9e86162d-7956-405c-861c-8a77d15dbbff)
+
+limit 2 [ I only want to send you the two values of the top value.]
+
+![image](https://github.com/user-attachments/assets/c21510a2-6100-4cf3-88ed-e22cb0481ecc)
+
