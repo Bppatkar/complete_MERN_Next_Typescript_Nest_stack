@@ -495,6 +495,37 @@ Like we want name field and age field here so , whatever the fields you want. Yo
       age: 1,
     },
   },
-]
+];
 ```
+
 ![image](https://github.com/user-attachments/assets/63464e0e-957c-4c34-829a-402cf5331045)
+
+## 10) How many users have a phone number starting with '+1(940)?
+
+### Ans: -
+
+```js
+[
+  {
+    $match: {
+      "company.phone": /^\+1 \(940\) /,
+    },
+  },
+  {
+    $count: "usersWithPhone",
+  },
+];
+```
+
+```json
+{
+  "usersWithPhone": 5
+}
+```
+
+## 11) How many users have a phone number starting with '+1(940)?
+
+### Ans:- 
+
+```js
+```
