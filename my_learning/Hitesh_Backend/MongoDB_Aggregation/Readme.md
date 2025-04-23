@@ -43,9 +43,10 @@ db.users.aggregate([
 ]);
 ```
 
-```json {
-"_id": null,
-"averageAgeCalculatorByMe": 29.835
+```json
+{
+  "_id": null,
+  "averageAgeCalculatorByMe": 29.835
 }
 ```
 
@@ -62,7 +63,8 @@ db.users.aggregate([
 ];
 ```
 
-```json {
+```json
+{
 "_id": "male",
 "averageAgeCalculatorByMe": 29.851926977687626
 }
@@ -88,7 +90,8 @@ for finding the favorite fruits i need to group them based on how many unique va
 ];
 ```
 
-```json {
+```json
+{
 "_id": "banana"
 }
 {
@@ -98,8 +101,135 @@ for finding the favorite fruits i need to group them based on how many unique va
 "_id": "strawberry"
 }
 ```
+
 I have grouped them together, and now I want to count.
 
 ```js
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      countingByMe: {
+        $sum: 1,
+      },
+    },
+  },
+];
+```
+
+we can actually use a $sum, and with this sum, we can provide a 1 here. This 1 simply says that the moment you found any user in the banana category, let's say just add 1 value. [or simply increase by 1]
+
+```json
+{
+  "_id": "banana",
+  "countingByMe": 339
+}
+{
+  "_id": "strawberry",
+  "countingByMe": 323
+}
+{
+  "_id": "apple",
+  "countingByMe": 338
+}
+```
+
+Now i have to use a Sorting because our question is to find the top 5, so we make another stage
+
+By the way, you can do sort just like this. $sort......
+But , You have to provide based on what field you want to do, sort , and here is another thing.
+
+This countingByMe field is not available in my original database. But since I am into the aggregation staging of pipeline now for this particular field or this particular pipeline, the countingByMe field does exist.
+
+```js
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      countingByMe: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $sort: {
+      countingByMe: -1,
+    },
+  },
+];
+```
+
+```json
+{
+  "_id": "banana",
+  "countingByMe": 339
+}
+{
+  "_id": "strawberry",
+  "countingByMe": 323
+}
+{
+  "_id": "apple",
+  "countingByMe": 338
+}
+```
+
+what if i do countingByMe 1 not -1
+just changed the order
+
+```json
+{
+  "_id": "strawberry",
+  "countingByMe": 323
+}
+{
+  "_id": "apple",
+  "countingByMe": 338
+}
+{
+  "_id": "banana",
+  "countingByMe": 339
+}
+
+```
+
+I want to find out top five, top three, top one.
+So I can provide one more pipeline here
+**\*\*** $limit **\*\*\***
+
+```js
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      countingByMe: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $sort: {
+      countingByMe: 1,
+    },
+  },
+  {
+    $limit: 5,
+  },
+];
+```
+
+```json
+{
+  "_id": "strawberry",
+  "countingByMe": 323
+}
+{
+  "_id": "apple",
+  "countingByMe": 338
+}
+{
+  "_id": "banana",
+  "countingByMe": 339
+}
 
 ```
