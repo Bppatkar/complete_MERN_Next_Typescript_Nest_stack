@@ -692,3 +692,4 @@ If you wish we can group them all together based on the company title
 ___
 
 ## $lookup (aggregation)
+![image](https://github.com/user-attachments/assets/1343d660-74ac-4e92-a143-1ffb4ce4da89)
