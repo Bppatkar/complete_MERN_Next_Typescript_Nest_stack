@@ -689,7 +689,126 @@ If you wish we can group them all together based on the company title
   },
 ];
 ```
-___
+
+---
 
 ## $lookup (aggregation)
+
 ![image](https://github.com/user-attachments/assets/1343d660-74ac-4e92-a143-1ffb4ce4da89)
+
+#### what is this lookup?
+
+Now this lookup has couple of fields that you have to always provide. The first one is from, from which collection I want to look up the data. Then the second is what is the local field in the current field where you are? foreign field is where that field exactly match, because this is the matching that goes on. And finally, what do you want to call the result .
+
+##### Lookup Aggregation in Simple Terms
+
+Imagine you're a teacher with two separate lists:
+
+Student List: Contains student IDs and their test scores
+
+Student Info List: Contains student IDs and their names
+
+You want to create a report that shows student names with their test scores, but the information is split across these two lists.Lookup aggregation is like having a helper who: Takes your main list (test scores) For each student ID, goes to the other list (student info) Finds the matching name
+Combines them into one complete record
+
+```js
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "student_info", // The other collection to look up
+      localField: "student_id", // Field in the main collection (scores)
+      foreignField: "student_id", // Field in the other collection (info)
+      as: "student_details", // Where to put the matched documents
+    },
+  },
+  {
+    $unwind: "$student_details", // Flatten the array (since lookup returns an array)
+  },
+  {
+    $project: {
+      // Shape the final output
+      _id: 0, // Exclude the default _id field
+      name: "$student_details.name",
+      score: "$score",
+      student_id: 1, // Include student_id (1 means include)
+    },
+  },
+]);
+```
+
+```json
+{
+  "student_id": "S1001",
+  "name": "Alice",
+  "score": 95
+}
+{
+  "student_id": "S1002",
+  "name": "Bob",
+  "score": 88
+}
+```
+
+In our case we have authors and books so
+
+```js
+db.books.aggregate([
+  {
+    $lookup: {
+      from: "authors", // The collection to look up
+      localField: "author_id", // Field in books collection
+      foreignField: "_id", // Field in authors collection
+      as: "author_details", // Where to store the matched author info
+    },
+  },
+  {
+    $unwind: "$author_details", // Convert the array to an object
+  },
+  {
+    $project: {
+      // Shape the final output
+      title: 1,
+      genre: 1,
+      author_name: "$author_details.name",
+      author_birth_year: "$author_details.birth_year",
+    },
+  },
+]);
+```
+
+What This Pipeline Does:
+
+1. $lookup:
+
+- Takes each book document
+- Finds the author in the "authors" collection where author_id (book) matches \_id (author)
+- Stores the matching author info in "author_details" array
+
+2. $unwind:
+
+- Converts the single-item "author_details" array into a direct object
+
+3. $project:
+
+- Creates the final output with:
+- Book title and genre
+- Author name (pulled from the looked-up data)
+- Author birth year (pulled from the looked-up data)
+
+##### Sample Output
+
+```json
+{
+  "title": "The Great Gatsby",
+  "genre": "Classic",
+  "author_name": "F. Scott Fitzgerald",
+  "author_birth_year": 1896
+},
+{
+  "title": "Nineteen Eighty-Four",
+  "genre": "Dystopian",
+  "author_name": "George Orwell",
+  "author_birth_year": 1903
+}
+// ... and so on for other books
+```
