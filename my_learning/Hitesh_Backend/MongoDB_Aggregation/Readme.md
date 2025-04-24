@@ -752,6 +752,110 @@ db.students.aggregate([
 In our case we have authors and books so
 
 ```js
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "authors_details",
+    },
+  },
+];
+```
+
+Output
+
+```json
+{
+  "authors_details": [
+    {
+      "_id": 100,
+      "name": "F. Scott Fitzgerald",
+      "birth_year": 1896
+    }
+  ],
+  "_id": 1,
+  "title": "The Great Gatsby",
+  "author_id": 100,
+  "genre": "Classic"
+}
+... same rest of 2 document
+```
+
+we use $addFields pipeline and add a new field calling as authors_details and then we use $first so it can go through into any array and bring out
+the first value,out of it.
+
+```js
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "authors_details",
+    },
+  },
+  {
+    $addFields: {
+      authors_details: {
+        $first: "$authors_details",
+      },
+    },
+  },
+];
+```
+
+Output
+
+```json
+{
+  "title": "The Great Gatsby",
+  "author_id": 100,
+  "genre": "Classic",
+  "authors_details": {
+    "_id": 100,
+    "name": "F. Scott Fitzgerald",
+    "birth_year": 1896
+  },
+  "_id": 1
+}
+... same rest of 2 document
+```
+
+---
+
+Let's just say I don't like this structure, the syntax of first, so we can use another elaborative option which is known as array element at.
+
+In this one you can specifically mention from the array which element at which position I want to bring that in.
+
+```js
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "authors_details",
+    },
+  },
+  {
+    $addFields: {
+      authors_details: {
+        $arrayElemAt: ["$authors_details", 0],
+      },
+    },
+  },
+];
+```
+
+### Does the same job as we have seen, but you will find that this array element is being used quite a lot in the production because it makes code much more readable, understandable. But fundamentally there is no difference when you use something as first or when you use array element at.
+
+---
+
+Simple other way to get data
+
+```js
 db.books.aggregate([
   {
     $lookup: {
