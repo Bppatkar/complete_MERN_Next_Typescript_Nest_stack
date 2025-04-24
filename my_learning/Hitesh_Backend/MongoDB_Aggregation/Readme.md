@@ -604,7 +604,91 @@ So the push operators appends a specified value to an array.
       users: { $push: "$name" },
     },
   },
-]
+];
 ```
+
 ![image](https://github.com/user-attachments/assets/76948b1f-30fa-4740-a77a-38d328a1113c)
 
+## 13) How many users have 'ad' as the second tag in their list of tags?
+
+### Ans: - for second tag we use index method like 0 or 1 and etc...
+
+```js
+[
+  {
+    $match: {
+      "tags.1": "ad",
+    },
+  },
+  {
+    $count: "usersHaveTagAtSecondPlace",
+  },
+];
+```
+
+```json
+{
+  "usersHaveTagAtSecondPla": 12
+}
+```
+
+## 14) Find users who have both 'enim' and 'id' as thier tags?
+
+### Ans:- $all - all operator selects the document where the value of field is an array that contains all the specified elements.
+
+```js
+[
+  {
+    $match: {
+      tags: { $all: ["enim", "id"] },
+    },
+  },
+];
+```
+
+we got 5 document in pipeline output
+
+## 15) List all companies located in the USA with their corresponding user count?
+
+### Ans:-
+
+```js
+[
+  {
+    $match: {
+      "company.location.country": "USA",
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      countUser: {
+        $sum: 1,
+      },
+    },
+  },
+];
+```
+
+If you wish we can group them all together based on the company title
+
+```js
+[
+  {
+    $match: {
+      "company.location.country": "USA",
+    },
+  },
+  {
+    $group: {
+      _id: "$company.title", // just making little change here
+      countUser: {
+        $sum: 1,
+      },
+    },
+  },
+];
+```
+___
+
+## $lookup (aggregation)
