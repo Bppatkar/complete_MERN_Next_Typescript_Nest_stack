@@ -53,6 +53,125 @@
     - we can reuse components by using props and props are passed to components as an object and we can access props in components using this.props in class based components and props in function based Components
 ```
 
+```text
+If there is a constructor() function in your component, this function will be called when the component gets initiated.
+
+The constructor function is where you initiate the component's properties.
+
+In React, component properties should be kept in an object called state.
+```
+
+```js
+class Car extends React.Component {
+  constructor() {
+    super();
+    this.state = { color: "red" };
+  }
+  render() {
+    return <h2>I am a {this.state.color} Car!</h2>;
+  }
+}
+```
+
+```text
+Props : Another way of handling component properties is by using props.
+```
+
+```js
+//Use an attribute to pass a color to the Car component, and use it in the render() function:
+class Car extends React.Component {
+  render() {
+    return <h2>I am a {this.props.color} Car!</h2>;
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Car color="red" />);
+```
+
+```js
+// If your component has a constructor function, the props should always be passed to the constructor and also to the React.Component via the super() method.
+class Car extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return <h2>I am a {this.props.model}!</h2>;
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Car model="Mustang" />);
+```
+
+```text
+Using the state Object:-Refer to the state object anywhere in the component by using the this.state.propertyname syntax:
+```
+
+```js
+class Car extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      brand: "Ford",
+      model: "Mustang",
+      color: "red",
+      year: 1964,
+    };
+  }
+  render() {
+    return (
+      <div>
+        <h1>My {this.state.brand}</h1>
+        <p>
+          It is a {this.state.color}
+          {this.state.model}
+          from {this.state.year}.
+        </p>
+      </div>
+    );
+  }
+}
+```
+
+```text
+Changing the state Object:-To change a value in the state object, use the this.setState() method.
+
+When a value in the state object changes, the component will re-render, meaning that the output will change according to the new value(s).
+```
+
+```js
+class Car extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      brand: "Ford",
+      model: "Mustang",
+      color: "red",
+      year: 1964,
+    };
+  }
+  changeColor = () => {
+    this.setState({ color: "blue" });
+  };
+  render() {
+    return (
+      <div>
+        <h1>My {this.state.brand}</h1>
+        <p>
+          It is a {this.state.color}
+          {this.state.model}
+          from {this.state.year}.
+        </p>
+        <button type="button" onClick={this.changeColor}>
+          Change color
+        </button>
+      </div>
+    );
+  }
+}
+```
+
 ## Lec 3 [Component Composition/Decomposition]
 
 ```text
@@ -93,8 +212,35 @@ const App = () => {
 export default App
 ```
 
-## Lec 4
+## Lec 4 [State]
 
+It is a built in object that is used to contain data or information about the component. It is used to store the current state of the component and to update the state of the component.
+We can mutate the state by using the setState() method. The setState() method is used to update the state of the component. [it simply means state is mutable in react]
+
+Counter.jsx
+
+```js
+// we are using a hook here called useState to create a state variable called count and a function called setCount
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  const handleIncrement = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  const handleDecrement = () => {
+    if (count > 0) setCount((prevCount) => prevCount - 1);
+  };
+
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button onClick={handleIncrement}>+</button>
+      <button onClick={handleDecrement}>-</button>
+    </div>
+  );
+};
 ```
 
-```
+## Lec 5 [Props]
