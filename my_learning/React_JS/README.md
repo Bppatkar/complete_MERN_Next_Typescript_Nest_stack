@@ -244,3 +244,134 @@ const Counter = () => {
 ```
 
 ## Lec 5 [Props]
+
+We use props to pass data from a parent component to a child component. Props are read-only and cannot be modified.
+By using Props we can build reusable and dynamic component
+
+```js
+const Props = (props) => {
+  return <div>{props.name}</div>;
+};
+
+const App = () => {
+  return (
+    <div>
+      <Props name="Bhanu" />
+    </div>
+  );
+};
+```
+
+## Lec 6 [Conditional Rendering]
+
+Conditional rendering is a technique in React that allows you to render different components based on certain conditions.
+
+```js
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  return <div>{loggedIn ? <Profile /> : <Login />}</div>;
+};
+```
+
+## Lec 7 [React Event]
+
+```text
+Event handling in React is a way to respond to user interactions with the component. It allows you to handle events such as clicks, key presses, mouse moves, and more.
+and in react events are called handlers and they are used to handle events and update the state of the component based on the event. and they written in camelCase like onClick, onSubmit, etc.
+```
+
+```js
+const Profile = () => {
+  const handleClick = () => {
+    console.log("Button clicked");
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>Click Me</button>
+    </div>
+  );
+};
+```
+
+If you want to pass a parameter to the event handler, so u have to use an callback function, so itreturns the handler with the parameter as an argument.
+
+```js
+const Profile = () => {
+  const handleClick = (event) => {
+    console.log("Button clicked", " ", event);
+  };
+  return (
+    <div>
+      <button onClick={() => handleClick("hello")}>Click Me</button>
+    </div>
+  );
+};
+```
+
+## Lec 8 [Controlled Components]
+
+Controlled Components: -
+Controlled components are form elements (like input, textarea, or select) that are managed by React state. This means that the value of the form element is set and updated through React state, making React the "single source of truth" for the form data.
+
+when to use this Controlled component - when u want to do any proccessing or validation or any type of calculation on the value of the form element and want to update the state of the component based on the value of the form element
+
+```js
+function ControlledComponent() {
+  const [value, setValue] = useState("");
+
+  const handleChange = (event) => {
+    setValue(event.target.value.toUpperCase());
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert("A name was submitted: " + value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>ControlledComponent</h1>
+      <label>
+        Name:
+        <input
+          placeholder="Enter Name"
+          type="text"
+          value={value}
+          onChange={handleChange}
+        />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default ControlledComponent;
+```
+
+## Lec 9 [Uncontrolled Components]
+
+Uncontrolled Components : -
+Uncontrolled components in React manage their own state internally rather than relying on React state. This approach is useful for simple forms where you don't need to manipulate the input data through React state updates.
+[in simple words when user fill all inputs in form then we got control over the from means, we dont have control on each and every key press or any event]
+
+when to use this Uncontrolled component - when u dont want to do any proccessing or validation or any type of calculation
+
+```js
+import React, { useRef } from "react";
+
+function UncontrolledInput() {
+  const inputRef = useRef(null);
+
+  const handleSubmit = () => {
+    alert("Input Value: " + inputRef.current.value);
+  };
+
+  return (
+    <>
+      <h1>UncontrolledInput</h1>
+      <input type="text" ref={inputRef} placeholder= "Enter your name"/>
+      <button onClick={handleSubmit}>Submit</button>
+    </>
+  );
+}
+```

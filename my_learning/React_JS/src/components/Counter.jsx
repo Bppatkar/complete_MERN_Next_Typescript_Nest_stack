@@ -14,8 +14,19 @@ const Counter = () => {
   return (
     <div>
       <h1>{count}</h1>
-      <button onClick={handleIncrement}>+</button>
-      <button onClick={handleDecrement}>-</button>
+      <button
+        className="bg-blue-500 text-white font-bold py-2 px-2 rounded gap-0.5"
+        onClick={handleIncrement}
+      >
+        +
+      </button>
+     
+      <button
+        className="bg-blue-500 text-white font-bold py-2 px-2 rounded"
+        onClick={handleDecrement}
+      >
+        -
+      </button>
     </div>
   );
 };
