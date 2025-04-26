@@ -39,7 +39,7 @@
 
 ## Lec 2 [React Components]
 
-````text
+```text
     -  Components are the building blocks of React apps. They are reusable pieces of UI that can be composed to create complex user interfaces.
     -  Components are functions that take props (properties) as input and return JSX (or other UI elements) as output.
     -  Components start with a capital letter and are written in PascalCase.
@@ -52,8 +52,6 @@
 
     - we can reuse components by using props and props are passed to components as an object and we can access props in components using this.props in class based components and props in function based Components
 ```
-
-
 
 ## Lec 3 [Component Composition/Decomposition]
 
@@ -95,7 +93,8 @@ const App = () => {
 export default App
 ```
 
-
 ## Lec 4
 
-````
+```
+
+```
