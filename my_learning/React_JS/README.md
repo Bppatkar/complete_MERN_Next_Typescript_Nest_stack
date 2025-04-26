@@ -58,14 +58,16 @@
 ## Lec 3 [Component Composition/Decomposition]
 
 ```text
-   - Component Composition is a technique in React where a component is composed of smaller components. This allows for a more modular and reusable codebase.
+   - In Component Composition we work on Open/Closed Principle (OCP) by combining small, reusable components to form larger, more complex components.
+
    - In Component Decomposition, we work on Single Responsibility Principle (SRP) by breaking down a complex component into smaller, more manageable components, means that each component is responsible for a specific task or piece of functionality.
 
    ### In simple words
       - Component Composition: Breaking down a complex component into smaller, more manageable components.
       - Component Decomposition: Building a complex component from smaller, more manageable components.
 ```
-```JSX
+
+```JS
 
 const Profile =()=>{
   return <div>Profile</div>
@@ -95,4 +97,5 @@ export default App
 
 
 ## Lec 4
+
 ````
