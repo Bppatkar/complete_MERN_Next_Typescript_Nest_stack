@@ -11,6 +11,7 @@ import ReusableComponent from "./components/ReusableComponent.jsx";
 import UsingEffect from "./hooks/usingEffect.jsx";
 import FetchingAPI from "./hooks/FetchAPI.jsx";
 import UsingRefHook from "./hooks/UsingRefHook.jsx";
+import UsingMemo from "./hooks/UsingMemo.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -20,16 +21,16 @@ function App() {
         Bhanu Pratap
       </h1>
       <Profile />
-      <br />
+      <hr align="left" width="100%;" />
 
       {/* <Profile /> */}
       <Counter />
-      <br />
+      <hr align="left" width="100%;" />
       <Props name="Bhanu" />
-      <br />
+      <hr align="left" width="100%;" />
 
       {isUserLoggedIn ? <Props name="Conditional Rendering" /> : <Login />}
-      <br />
+      <hr align="left" width="100%;" />
 
       <button
         className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
@@ -37,23 +38,26 @@ function App() {
       >
         Chage Component
       </button>
-      <br />
+      <hr align="left" width="100%;" />
 
       <ControlledComponent />
-      <br />
+      <hr align="left" width="100%;" />
       <UnControlledComponent />
-      <br />
+      <hr align="left" width="100%;" />
       <ReusableComponent name={"Save"} color={"green"} />
       <ReusableComponent name={"Cancle"} color={"yellow"} />
       <ReusableComponent name={"Delete"} color={"red"} />
 
       <UsingEffect />
-      <br />
+      <hr align="left" width="100%;" />
 
       <FetchingAPI />
-      <br />
+      <hr align="left" width="100%;" />
 
       <UsingRefHook />
+      <hr align="left" width="100%;" />
+
+      <UsingMemo />
     </div>
   );
 }

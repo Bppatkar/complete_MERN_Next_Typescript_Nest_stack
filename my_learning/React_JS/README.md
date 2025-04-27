@@ -469,26 +469,168 @@ const UsingRefHook = () => {
 
 ## Lec 13 [useMemo hook]
 
-The `useMemo` hook in React is used to optimize performance by memoizing the result of a calculation. It returns a memoized value and only recomputes the value when one of its dependencies has changed.
+The `useMemo` hook in React is used to optimize performance by memoizing the `result of a calculation`. It `returns a memoized value` and `only recomputes the value` when one of its dependencies has changed.
+
+- `useMemo` is a valuable tool in the React , which is designed to `optimize performance by memoizing the result` of a calculation or expensive computation.
+
+`when to use useMemo hook` - when u have expensive calculation or expensive computations or data transformations within a functional component that are being unnecessarily recomputed on every render
+[because we know , in functional component whenever state and props are getting changed it create re-render of component and that is not good for performance of our webpage , so we use useMemo hook to prevent that unnecessary re-render]
+
+`Benifit of useMemo hoook`
+
+- Avoiding unnecessary re-renders /recalculations
+- optimize rendering performance
+- enhancing user experience
+- efficiently managing derived data
 
 ```js
-function ExpensiveCalculationComponent({ num }) {
-  const [multiplier, setMultiplier] = useState(1);
+const UsingMemo = () => {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const calculation = expensiveCalc(count);
 
-  const result = useMemo(() => {
-    console.log("Calculating...");
-    return num * multiplier;
-  }, [num, multiplier]);
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+
+  const addTodo = () => {
+    setTodos((t) => [...t, "new todo"]);
+  };
 
   return (
-    <div>
-      <p>Result: {result}</p>
-      <button onClick={() => setMultiplier(multiplier + 1)}>
-        Increase Multiplier
-      </button>
+    <div className="bg-black text-white">
+      <div className="p-6 bg-black text-white rounded-lg shadow-lg max-w-md mx-auto ">
+        <h1 className="text-2xl font-bold text-center mb-6">Using Memo Hook</h1>
+        <h4>Open console log</h4>
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-4">Todos:</h2>
+          {todos.length > 0 ? (
+            todos.map((todo, index) => (
+              <div key={index} className="text-gray-300 mb-2">
+                {todo}
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No todos added yet.</p>
+          )}
+          <button
+            onClick={addTodo}
+            className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition-colors duration-300 mt-4"
+          >
+            Add Todo
+          </button>
+        </div>
+
+        <div className="text-center">
+          <p className="text-lg mb-4">
+            Count: <span className="font-bold">{count}</span>
+          </p>
+          <button
+            onClick={increment}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            Increment
+          </button>
+        </div>
+        <hr className="my-6 border-gray-600" />
+        <div>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Performing Expensive Calculation
+          </h2>
+          <p className="text-lg text-center text-green-400">{calculation}</p>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+// very expensive calculation
+const expensiveCalc = (num) => {
+  console.log("Performing Expensive Calculation....");
+  for (let i = 0; i < 1000000000; i++) {
+    num += 1;
+  }
+  return num;
+};
+```
+
+In that code there is a problem that is whenever we are calling addTodo function it is re-rendering the component, or that addTodo function is not connected by the count variable or state, and that is not good for performance of our webpage , so we use useMemo hook to prevent that unnecessary re-render
+
+useMemo(()=>{},[]) => useMemo returns a memoized value and only recomputes the value when one of its dependencies has changed.
+
+so we use tha dependencies array for count variable like when that count variable get any change then it will re-render the component not on todo or every time
+
+only adding one line - `useMemo(() => expensiveCalc(count), [count]);`
+
+```js
+const UsingMemo = () => {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const calculation = useMemo(() => expensiveCalc(count), [count]);
+
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+
+  const addTodo = () => {
+    setTodos((t) => [...t, "new todo"]);
+  };
+
+  return (
+    <div className="bg-black text-white">
+      <div className="p-6 bg-black text-white rounded-lg shadow-lg max-w-md mx-auto ">
+        <h1 className="text-2xl font-bold text-center mb-6">Using Memo Hook</h1>
+        <h4>Open console log</h4>
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-4">Todos:</h2>
+          {todos.length > 0 ? (
+            todos.map((todo, index) => (
+              <div key={index} className="text-gray-300 mb-2">
+                {todo}
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No todos added yet.</p>
+          )}
+          <button
+            onClick={addTodo}
+            className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition-colors duration-300 mt-4"
+          >
+            Add Todo
+          </button>
+        </div>
+
+        <div className="text-center">
+          <p className="text-lg mb-4">
+            Count: <span className="font-bold">{count}</span>
+          </p>
+          <button
+            onClick={increment}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            Increment
+          </button>
+        </div>
+        <hr className="my-6 border-gray-600" />
+        <div>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Performing Expensive Calculation
+          </h2>
+          <p className="text-lg text-center text-green-400">{calculation}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// very expensive calculation
+const expensiveCalc = (num) => {
+  console.log("Performing Expensive Calculation....");
+  for (let i = 0; i < 1000000000; i++) {
+    num += 1;
+  }
+  return num;
+};
 ```
 
 ## Lec 14 [useCallback hook]
