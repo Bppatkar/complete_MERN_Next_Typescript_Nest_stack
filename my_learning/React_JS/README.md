@@ -369,9 +369,295 @@ function UncontrolledInput() {
   return (
     <>
       <h1>UncontrolledInput</h1>
-      <input type="text" ref={inputRef} placeholder= "Enter your name"/>
+      <input type="text" ref={inputRef} placeholder="Enter your name" />
       <button onClick={handleSubmit}>Submit</button>
     </>
   );
+}
+```
+
+## Lec 10 [Hooks] (useEffect)
+
+useEffect is a hook in React that allows you to perform side effects in your component, such as fetching data from an API, updating the document title [means DOM manipulation], or subscribing or taking services to a WebSocket connection.
+
+```js
+const UsingEffect = () => {
+  const [count, setCount] = useState(0);
+
+  // useEffect(() => {
+  //   console.log("useEffect run");
+  //   document.title = `You clicked ${count} times`;
+  // }, [count]); // Only re-run the effect if count changes
+
+  useEffect(() => {
+    console.log("useEffect run");
+    document.title = `You clicked ${count} times`;
+  }, []); // only run onces when webpage load
+
+  // useEffect(() => {
+  //   console.log("useEffect run");
+  //   document.title = `You clicked ${count} times`;
+  // }); // run on every render
+
+  return (
+    <div>
+      <p>
+        You clicked <span className="text-red-500">{count}</span> times
+      </p>
+      <button
+        className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+        onClick={() => setCount(count + 1)}
+      >
+        Click me
+      </button>
+    </div>
+  );
+};
+```
+
+## Lec 11 [Fetching API using useEffect]
+
+```js
+const [products, setProducts] = useState([]);
+const fetchProduct = async () => {
+  try {
+    const url = "https://fakestoreapi.com/products/";
+    const response = await fetch(url);
+    const data = await response.json();
+    setProducts(data);
+  } catch (error) {
+    console.warn(error.message);
+  }
+};
+
+useEffect(() => {
+  fetchProduct();
+}, []);
+```
+
+## Lec 12 [useRef hook]
+
+When you want to play with DOM and and manipulate the DOM the u can use uesRef
+
+useRef is a hook in React that allows you to create a mutable reference to a value in a component. It returns an object with a current property, which can be used to access the value of the reference.
+
+```js
+const UsingRefHook = () => {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    // inputRef.current.focus();
+    inputRef.current.select();
+  }, []);
+
+  return (
+    <div className="border-2 border-red-500 p-6 rounded-lg bg-gray-50 shadow-lg max-w-md mx-auto mt-10">
+      <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+        useRef Hook
+      </h1>
+      <input
+        type="text"
+        value={"Bhanu Pratap"}
+        ref={inputRef}
+        className="w-full p-3 text-red-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Type something..."
+      />
+    </div>
+  );
+};
+```
+
+## Lec 13 [useMemo hook]
+
+The `useMemo` hook in React is used to optimize performance by memoizing the result of a calculation. It returns a memoized value and only recomputes the value when one of its dependencies has changed.
+
+```js
+function ExpensiveCalculationComponent({ num }) {
+  const [multiplier, setMultiplier] = useState(1);
+
+  const result = useMemo(() => {
+    console.log("Calculating...");
+    return num * multiplier;
+  }, [num, multiplier]);
+
+  return (
+    <div>
+      <p>Result: {result}</p>
+      <button onClick={() => setMultiplier(multiplier + 1)}>
+        Increase Multiplier
+      </button>
+    </div>
+  );
+}
+```
+
+## Lec 14 [useCallback hook]
+
+The `useCallback` hook returns a memoized callback function. It helps to prevent unnecessary re-creations of functions when components re-render, especially useful when passing callbacks to child components that rely on referential equality.
+
+```js
+function ButtonComponent({ onClick }) {
+  return <button onClick={onClick}>Click Me</button>;
+}
+
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <ButtonComponent onClick={handleClick} />
+    </div>
+  );
+}
+```
+
+## Lec 15 [useReducer hook]
+
+const [state, dispatch] = useReducer(reducer, initialArg, init?)
+
+The `useReducer` hook is used for managing complex state logic in React components. It works similar to `useState`, but is more suitable for state that involves multiple sub-values or when the next state depends on the previous one.
+
+```js
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+    </div>
+  );
+}
+```
+
+One More example
+
+```js
+import { useReducer } from "react";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "incremented_age": {
+      return {
+        name: state.name,
+        age: state.age + 1,
+      };
+    }
+    case "changed_name": {
+      return {
+        name: action.nextName,
+        age: state.age,
+      };
+    }
+  }
+  throw Error("Unknown action: " + action.type);
+}
+
+const initialState = { name: "Taylor", age: 42 };
+
+export default function Form() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  function handleButtonClick() {
+    dispatch({ type: "incremented_age" });
+  }
+
+  function handleInputChange(e) {
+    dispatch({
+      type: "changed_name",
+      nextName: e.target.value,
+    });
+  }
+
+  return (
+    <>
+      <input value={state.name} onChange={handleInputChange} />
+      <button onClick={handleButtonClick}>Increment age</button>
+      <p>
+        Hello, {state.name}. You are {state.age}.
+      </p>
+    </>
+  );
+}
+```
+
+```text
+State is read-only. Don’t modify any objects or arrays in state:
+```
+
+```js
+function reducer(state, action) {
+  switch (action.type) {
+    case 'incremented_age': {
+      // 🚩 Don't mutate an object in state like this:
+      state.age = state.age + 1;
+      return state;
+    }
+```
+
+```text
+Instead, always return new objects from your reducer:
+```
+
+```js
+function reducer(state, action) {
+  switch (action.type) {
+    case 'incremented_age': {
+      // ✅ Instead, return a new object
+      return {
+        ...state,
+        age: state.age + 1
+      };
+    }
+```
+
+## Lec 16 [Custom Hook]
+
+Custom hooks are a way to extract and reuse stateful logic in React. They allow you to share logic between components without duplicating code, leading to more readable and maintainable codebases.
+
+```js
+import { useState, useEffect } from "react";
+
+function useFetchData(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+      setLoading(false);
+    }
+    fetchData();
+  }, [url]);
+
+  return { data, loading };
+}
+
+function DataComponent({ url }) {
+  const { data, loading } = useFetchData(url);
+
+  if (loading) return <p>Loading...</p>;
+  return <div>Data: {JSON.stringify(data)}</div>;
 }
 ```

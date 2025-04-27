@@ -8,7 +8,7 @@ const ReusableComponent = ({ name, color }) => {
   };
 
   return (
-    <div>
+    <div className="inline-block items-center gap-2 w-1/6 ml-14 mt-3 mb-3">
       <button
         className={`${colorClass[color]} text-white font-bold py-2 px-4 rounded`}
       >
