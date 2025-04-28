@@ -44,7 +44,7 @@
     -  Components are functions that take props (properties) as input and return JSX (or other UI elements) as output.
     -  Components start with a capital letter and are written in PascalCase.
 
-    ### There are two types of components in React:
+ There are two types of components in React:
 
     - Function-based components: These are simple functions that return JSX.
     - Class-based components: These are classes that extend React.Component and use the render() method to return JSX.
@@ -390,6 +390,8 @@ function UncontrolledInput() {
 6.  [Best Practices](#best-practices)
 7.  [Complete Examples](#complete-examples)
 
+## Basic Syntax <a name="basic-syntax"></a>
+
 The basic syntax of `useEffect` is:
 
 ```jsx
@@ -401,7 +403,7 @@ useEffect(() => {
 }, [dependencies]);
 ```
 
-### Dependency Array
+### Dependency Array <a name="dependency-array"></a>
 
 The behavior changes based on what you pass to the dependency array:
 
@@ -429,7 +431,7 @@ useEffect(() => {
 }, [count]);
 ```
 
-### Lifecycle Comparison
+### Lifecycle Comparison <a name="lifecycle-comparison"></a>
 
 Class Component Lifecycle
 
@@ -475,7 +477,7 @@ function FunctionalLifecycle() {
 }
 ```
 
-### Cleanup Function
+### Cleanup Function <a name="cleanup-function"></a>
 
 The cleanup function runs:
 
@@ -494,7 +496,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Common Use Cases
+### Common Use Cases <a name="common-use-cases"></a>
 
 1. Data Fetching
 
@@ -534,7 +536,7 @@ useEffect(() => {
 }, [count]); // Update title when count changes
 ```
 
-### Best Practices
+### Best Practices <a name="best-practices"></a>
 
 1. Declare all dependencies - Include all variables used inside the effect in the dependency array
 2. Split concerns - Use multiple useEffect hooks for unrelated logic
@@ -542,7 +544,7 @@ useEffect(() => {
 4. Optimize performance - Only include necessary dependencies to avoid unnecessary re-runs
 5. Handle async carefully - Either use an async function inside the effect or use .then() syntax
 
-### Complete Examples
+### Complete Examples <a name="complete-examples"></a>
 
 Counter With Document Title Update
 
@@ -613,8 +615,6 @@ function UserProfile({ userId }) {
 ### Conclusion
 
 `useEffect` is a powerful hook that handles side effects in React functional components. By understanding its dependency array and cleanup mechanism, you can effectively manage component lifecycle events, data fetching, subscriptions, and more.
-
-
 
 ## Lec 11 [Fetching API using useEffect]
 
