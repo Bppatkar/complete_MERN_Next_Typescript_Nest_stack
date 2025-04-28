@@ -13,6 +13,8 @@ import FetchingAPI from "./hooks/FetchAPI.jsx";
 import UsingRefHook from "./hooks/UsingRefHook.jsx";
 import UsingMemo from "./hooks/UsingMemo.jsx";
 import UsingCallback from "./hooks/UsingCallback.jsx";
+import UsingReducer from "./hooks/UsingReducer.jsx";
+import DataComponent from "./hooks/custom_hook/DataComponent.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -62,6 +64,12 @@ function App() {
       <hr align="left" width="100%;" />
 
       <UsingCallback />
+      <hr align="left" width="100%;" />
+
+      <UsingReducer />
+      <hr align="left" width="100%;" />
+
+      <DataComponent url="https://jsonplaceholder.typicode.com/users" />
     </div>
   );
 }

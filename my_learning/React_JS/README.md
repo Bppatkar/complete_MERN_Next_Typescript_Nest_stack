@@ -704,143 +704,148 @@ The `useReducer` hook in React is used for managing complex state logic. It is a
 - Simplifies state management for complex logic.
 - Makes state transitions predictable.
 - Encourages separation of concerns by moving logic to a reducer function.
+- Useful for managing multiple related state variables.
 
 ```js
-const initialState = { count: 0 };
+const initialState = { count: 0, todos: [] };
 
 function reducer(state, action) {
   switch (action.type) {
     case "increment":
-      return { count: state.count + 1 };
+      return { ...state, count: state.count + 1 };
     case "decrement":
-      return { count: state.count - 1 };
+      return { ...state, count: state.count - 1 };
+    case "add_todo":
+      return {
+        ...state,
+        todos: [...state.todos, `New Todo ${state.todos.length + 1}`],
+      };
     default:
-      return state;
+      throw new Error(`Unknown action:  + ${action.type}`);
   }
 }
 
-function Counter() {
+const UsingReducer = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   return (
-    <div>
-      <p>Count: {state.count}</p>
-      <button onClick={() => dispatch({ type: "increment" })}>+</button>
-      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+    <div className="p-6 bg-gray-800 text-white rounded-lg shadow-lg max-w-md mx-auto mt-10">
+      <h1 className="text-2xl font-bold text-center mb-6">
+        Using Reducer Hook
+      </h1>
+
+      {/* Todos Section */}
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold mb-4">Todos:</h2>
+        {state.todos.length > 0 ? (
+          state.todos.map((todo, index) => (
+            <div key={index} className="text-gray-300 mb-2">
+              {todo}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No todos added yet.</p>
+        )}
+        <button
+          onClick={() => dispatch({ type: "add_todo" })}
+          className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition-colors duration-300 mt-4"
+        >
+          Add Todo
+        </button>
+      </div>
+
+      <hr className="my-6 border-gray-600" />
+
+      {/* Count Section */}
+      <div className="text-center">
+        <p className="text-lg mb-4">
+          Count: <span className="font-bold">{state.count}</span>
+        </p>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={() => dispatch({ type: "increment" })}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => dispatch({ type: "decrement" })}
+            className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
+          >
+            Decrement
+          </button>
+        </div>
+      </div>
     </div>
   );
-}
+};
 ```
 
-One More example
-
-```js
-import { useReducer } from "react";
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "incremented_age": {
-      return {
-        name: state.name,
-        age: state.age + 1,
-      };
-    }
-    case "changed_name": {
-      return {
-        name: action.nextName,
-        age: state.age,
-      };
-    }
-  }
-  throw Error("Unknown action: " + action.type);
-}
-
-const initialState = { name: "Taylor", age: 42 };
-
-export default function Form() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  function handleButtonClick() {
-    dispatch({ type: "incremented_age" });
-  }
-
-  function handleInputChange(e) {
-    dispatch({
-      type: "changed_name",
-      nextName: e.target.value,
-    });
-  }
-
-  return (
-    <>
-      <input value={state.name} onChange={handleInputChange} />
-      <button onClick={handleButtonClick}>Increment age</button>
-      <p>
-        Hello, {state.name}. You are {state.age}.
-      </p>
-    </>
-  );
-}
-```
-
-```text
+```text [IMP]
 State is read-only. Don’t modify any objects or arrays in state:
-```
-
-```js
-function reducer(state, action) {
-  switch (action.type) {
-    case 'incremented_age': {
-      // 🚩 Don't mutate an object in state like this:
-      state.age = state.age + 1;
-      return state;
-    }
-```
-
-```text
 Instead, always return new objects from your reducer:
 ```
 
-```js
-function reducer(state, action) {
-  switch (action.type) {
-    case 'incremented_age': {
-      // ✅ Instead, return a new object
-      return {
-        ...state,
-        age: state.age + 1
-      };
-    }
+```text
+### Where to Make Changes:
+
+1. **Initial State**:
+
+   - Define the `initialState` object to include all the state variables you want to manage (e.g., `count` and `todos`).
+
+2. **Reducer Function**:
+
+   - Create a `reducer` function that defines how the state transitions based on the `action.type`.
+
+3. **Dispatching Actions**:
+
+   - Use the `dispatch` function to trigger state transitions by passing an action object (e.g., `{ type: "increment" }`).
+
+4. **UI Updates**:
+   - Update the UI to reflect the current state (`state.count` and `state.todos`).
+
+---
+
+### Changes in Code:
+
+- **Todos Section**:
+
+  - Added a button to dispatch the `add_todo` action.
+  - Displayed the list of todos from `state.todos`.
+
+- **Count Section**:
+  - Added buttons to dispatch the `increment` and `decrement` actions.
+  - Displayed the current count from `state.count`.
+
+---
+
+### Summary:
+
+The `useReducer` hook is a powerful tool for managing complex state logic in React. It simplifies state transitions, makes them predictable, and encourages clean code by separating logic into a reducer function. This example demonstrates how to manage both `count` and `todos` using `useReducer`.
+
 ```
 
 ## Lec 16 [Custom Hook]
 
 Custom hooks are a way to extract and reuse stateful logic in React. They allow you to share logic between components without duplicating code, leading to more readable and maintainable codebases.
 
+Key Points:
+
+- Why Custom Hooks?
+
+* To avoid duplicating logic across multiple components.
+* To encapsulate reusable logic in a single place.
+  -To make components cleaner and more focused on UI.
+
+- Naming Convention:
+
+* It is a React convention that custom hooks must start with the word use (e.g., useFetchData, useAuth).
+* The name should follow camelCase.
+
+How to Create a Custom Hook:
+
+-A custom hook is simply a JavaScript function that uses React hooks (like useState, useEffect, etc.).
+-It can return values, objects, or functions to be used in components.
+
 ```js
-import { useState, useEffect } from "react";
 
-function useFetchData(url) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(url);
-      const result = await response.json();
-      setData(result);
-      setLoading(false);
-    }
-    fetchData();
-  }, [url]);
-
-  return { data, loading };
-}
-
-function DataComponent({ url }) {
-  const { data, loading } = useFetchData(url);
-
-  if (loading) return <p>Loading...</p>;
-  return <div>Data: {JSON.stringify(data)}</div>;
-}
 ```
