@@ -8,7 +8,7 @@ import Props from "./components/Props.jsx";
 import ControlledComponent from "./components/ControlledComponent.jsx";
 import UnControlledComponent from "./components/UnControlledComponent.jsx";
 import ReusableComponent from "./components/ReusableComponent.jsx";
-import UsingEffect from "./hooks/usingEffect.jsx";
+import UsingEffect from "./hooks/UsingEffect.jsx"; // ✅ corrected filename casing
 import FetchingAPI from "./hooks/FetchAPI.jsx";
 import UsingRefHook from "./hooks/UsingRefHook.jsx";
 import UsingMemo from "./hooks/UsingMemo.jsx";
@@ -19,70 +19,111 @@ import FunctionalLifeCycle from "./hooks/FunctionalLifeCycle.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
   return (
-    <div className="bg-black text-white h-screen">
-      <h1 className="text-3xl font-bold underline text-blue-600 text-center">
+    <div className="bg-black text-white min-h-screen p-6">
+      <h1 className="text-3xl font-bold underline text-blue-600 text-center mb-8">
         Bhanu Pratap
       </h1>
-      <hr className="border-t border-blue-500 my-4" />
 
-      <Profile />
-      <hr className="border-t border-green-500 my-4" />
+      {/* All sections inside one grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      <Counter />
-      <hr className="border-t border-yellow-500 my-4" />
-      
-      <Props name="Bhanu" />
-      <hr className="border-t border-purple-500 my-4" />
+        {/* Profile Section */}
+        <CardWrapper>
+          <Profile />
+        </CardWrapper>
 
-      {isUserLoggedIn ? <Props name="Conditional Rendering" /> : <Login />}
-      <hr className="border-t border-pink-500 my-4" />
+        {/* Counter Section */}
+        <CardWrapper>
+          <Counter />
+        </CardWrapper>
 
-      <button
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded text-center flex items-center justify-center mx-auto"
-        onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
-      >
-        Change Component
-      </button>
-      <hr className="border-t border-red-500 my-4" />
+        {/* Props Section */}
+        <CardWrapper>
+          <Props name="Bhanu" />
+        </CardWrapper>
 
-      <ControlledComponent />
-      <hr className="border-t border-indigo-500 my-4" />
-      
-      <UnControlledComponent />
-      <hr className="border-t border-teal-500 my-4" />
+        {/* Conditional Rendering Section */}
+        <CardWrapper>
+          {isUserLoggedIn ? <Props name="Conditional" /> : <Login />}
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded mt-4 w-full"
+            onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
+          >
+            Toggle Component
+          </button>
+        </CardWrapper>
 
-      <div className="flex gap-2 p-4">
-        <ReusableComponent name={"Save"} color={"green"} />
-        <ReusableComponent name={"Cancle"} color={"yellow"} />
-        <ReusableComponent name={"Delete"} color={"red"} />
+        {/* Controlled Form */}
+        <CardWrapper>
+          <ControlledComponent />
+        </CardWrapper>
+
+        {/* UnControlled Form */}
+        <CardWrapper>
+          <UnControlledComponent />
+        </CardWrapper>
+
+        {/* Reusable Buttons */}
+        <CardWrapper>
+          <div className="flex flex-wrap gap-3">
+            <ReusableComponent name={"Save"} color={"green"} />
+            <ReusableComponent name={"Cancel"} color={"yellow"} />
+            <ReusableComponent name={"Delete"} color={"red"} />
+          </div>
+        </CardWrapper>
+
+        {/* useEffect Example */}
+        <CardWrapper>
+          <UsingEffect />
+        </CardWrapper>
+
+        {/* Fetching API */}
+        <CardWrapper>
+          <FetchingAPI />
+        </CardWrapper>
+
+        {/* useRef Example */}
+        <CardWrapper>
+          <UsingRefHook />
+        </CardWrapper>
+
+        {/* useMemo Example */}
+        <CardWrapper>
+          <UsingMemo />
+        </CardWrapper>
+
+        {/* useCallback Example */}
+        <CardWrapper>
+          <UsingCallback />
+        </CardWrapper>
+
+        {/* useReducer Example */}
+        <CardWrapper>
+          <UsingReducer />
+        </CardWrapper>
+
+        {/* Custom Hook Example */}
+        <CardWrapper>
+          <DataComponent url="https://jsonplaceholder.typicode.com/users" />
+        </CardWrapper>
+
+        {/* Functional Lifecycle Example */}
+        <CardWrapper>
+          <FunctionalLifeCycle />
+        </CardWrapper>
+
       </div>
-      <hr className="border-t border-orange-500 my-4" />
+    </div>
+  );
+}
 
-      {/* Rest of your components with colored hr lines */}
-      <UsingEffect />
-      <hr className="border-t border-amber-500 " />
-
-      <FetchingAPI />
-      <hr className="border-t border-lime-500 " />
-
-      <UsingRefHook />
-      <hr className="border-t border-emerald-500 " />
-
-      <UsingMemo />
-      <hr className="border-t border-rose-500 " />
-
-      <UsingCallback />
-      <hr className="border-t border-violet-500 " />
-
-      <UsingReducer />
-      <hr className="border-t border-fuchsia-500 " />
-
-      <DataComponent url="https://jsonplaceholder.typicode.com/users" />
-      <hr className="border-t border-sky-500 " />
-
-      <FunctionalLifeCycle />
-      <hr className="border-t border-cyan-500 " />
+// Small reusable CardWrapper component
+function CardWrapper({ children }) {
+  return (
+    <div className="bg-gray-800 p-6 rounded-lg min-h-[250px] flex flex-col justify-between hover:scale-105 transition-transform duration-300">
+      {children}
     </div>
   );
 }
