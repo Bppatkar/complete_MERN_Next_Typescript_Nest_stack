@@ -212,7 +212,7 @@ const App = () => {
 export default App
 ```
 
-## Lec 4 [State]
+## Lec 4 [State ]
 
 It is a built in object that is used to contain data or information about the component. It is used to store the current state of the component and to update the state of the component.
 We can mutate the state by using the setState() method. The setState() method is used to update the state of the component. [it simply means state is mutable in react]
@@ -243,7 +243,7 @@ const Counter = () => {
 };
 ```
 
-## Lec 5 [Props]
+## Lec 5 [Prop ]
 
 We use props to pass data from a parent component to a child component. Props are read-only and cannot be modified.
 By using Props we can build reusable and dynamic component
@@ -378,42 +378,243 @@ function UncontrolledInput() {
 
 ## Lec 10 [Hooks] (useEffect)
 
-useEffect is a hook in React that allows you to perform side effects in your component, such as fetching data from an API, updating the document title [means DOM manipulation], or subscribing or taking services to a WebSocket connection.
+`useEffect` is one of the most important React Hooks that allows you to perform side effects in functional components. It combines the functionality of multiple class component lifecycle methods into a single API.
+
+## Table of Contents
+
+1.  [Basic Syntax](#basic-syntax)
+2.  [Dependency Array](#dependency-array)
+3.  [Lifecycle Comparison](#lifecycle-comparison)
+4.  [Cleanup Function](#cleanup-function)
+5.  [Common Use Cases](#common-use-cases)
+6.  [Best Practices](#best-practices)
+7.  [Complete Examples](#complete-examples)
+
+The basic syntax of `useEffect` is:
+
+```jsx
+useEffect(() => {
+  // Side effect code here
+  return () => {
+    // Cleanup code here (optional)
+  };
+}, [dependencies]);
+```
+
+### Dependency Array
+
+The behavior changes based on what you pass to the dependency array:
+
+1. Run on every render (no array)
 
 ```js
-const UsingEffect = () => {
+useEffect(() => {
+  console.log("Runs after EVERY render");
+});
+```
+
+2. Run only once on mount (empty array)
+
+```js
+useEffect(() => {
+  console.log("Runs ONLY on first render");
+}, []);
+```
+
+3. Run when dependencies change
+
+```js
+useEffect(() => {
+  console.log("Runs when count changes");
+}, [count]);
+```
+
+### Lifecycle Comparison
+
+Class Component Lifecycle
+
+```js
+class LifecycleDemo extends React.Component {
+  componentDidMount() {
+    console.log("Component did mount");
+  }
+
+  componentDidUpdate() {
+    console.log("Component did update");
+  }
+
+  componentWillUnmount() {
+    console.log("Component will unmount");
+  }
+
+  render() {
+    console.log("Component render");
+    return <div>Class Component</div>;
+  }
+}
+```
+
+Functional Component Equivalent
+
+```js
+function FunctionalLifecycle() {
+  console.log("Component render");
+
+  // componentDidMount + componentWillUnmount
+  useEffect(() => {
+    console.log("Component did mount");
+    return () => console.log("Component will unmount");
+  }, []);
+
+  // componentDidUpdate
+  useEffect(() => {
+    console.log("Component did update");
+  });
+
+  return <div>Functional Component</div>;
+}
+```
+
+### Cleanup Function
+
+The cleanup function runs:
+
+- Before the component unmounts
+- Before re-running the effect (if dependencies change)
+
+```js
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log("Timer tick");
+  }, 1000);
+
+  return () => {
+    clearInterval(timer); // Cleanup the timer
+  };
+}, []);
+```
+
+### Common Use Cases
+
+1. Data Fetching
+
+```js
+useEffect(() => {
+  const fetchData = async () => {
+    const response = await fetch("/api/data");
+    const data = await response.json();
+    setData(data);
+  };
+
+  fetchData();
+}, []); // Empty array = run once on mount
+```
+
+2. Event Listeners
+
+```js
+useEffect(() => {
+  const handleResize = () => {
+    setWindowSize(window.innerWidth);
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
+```
+
+3. DOM Manipulation
+
+```js
+useEffect(() => {
+  document.title = `Count: ${count}`;
+}, [count]); // Update title when count changes
+```
+
+### Best Practices
+
+1. Declare all dependencies - Include all variables used inside the effect in the dependency array
+2. Split concerns - Use multiple useEffect hooks for unrelated logic
+3. Clean up resources - Always return cleanup functions for subscriptions, timers, etc.
+4. Optimize performance - Only include necessary dependencies to avoid unnecessary re-runs
+5. Handle async carefully - Either use an async function inside the effect or use .then() syntax
+
+### Complete Examples
+
+Counter With Document Title Update
+
+```js
+import { useState, useEffect } from "react";
+
+function Counter() {
   const [count, setCount] = useState(0);
 
-  // useEffect(() => {
-  //   console.log("useEffect run");
-  //   document.title = `You clicked ${count} times`;
-  // }, [count]); // Only re-run the effect if count changes
-
   useEffect(() => {
-    console.log("useEffect run");
-    document.title = `You clicked ${count} times`;
-  }, []); // only run onces when webpage load
+    console.log("Effect ran - count changed");
+    document.title = `Count: ${count}`;
 
-  // useEffect(() => {
-  //   console.log("useEffect run");
-  //   document.title = `You clicked ${count} times`;
-  // }); // run on every render
+    return () => {
+      console.log("Cleanup for count change");
+    };
+  }, [count]);
 
   return (
     <div>
-      <p>
-        You clicked <span className="text-red-500">{count}</span> times
-      </p>
-      <button
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setCount(count + 1)}
-      >
-        Click me
-      </button>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount((c) => c + 1)}>Increment</button>
     </div>
   );
-};
+}
 ```
+
+API Data Fetching Example
+
+```js
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+
+    return () => {
+      // Cancel any ongoing requests if component unmounts
+    };
+  }, [userId]); // Re-run when userId changes
+
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <div>No user found</div>;
+
+  return (
+    <div>
+      <h2>{user.name}</h2>
+      <p>Email: {user.email}</p>
+    </div>
+  );
+}
+```
+
+### Conclusion
+
+`useEffect` is a powerful hook that handles side effects in React functional components. By understanding its dependency array and cleanup mechanism, you can effectively manage component lifecycle events, data fetching, subscriptions, and more.
+
+
 
 ## Lec 11 [Fetching API using useEffect]
 
