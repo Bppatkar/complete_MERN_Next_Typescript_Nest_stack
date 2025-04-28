@@ -1,7 +1,6 @@
 ![image](https://github.com/user-attachments/assets/c463154f-63cc-4e5a-827c-76254ff97faf)
 
 
-
 # Topic we are going to cover here is React JS.
 
     - Virtual DOM
@@ -1201,5 +1200,34 @@ How to Create a Custom Hook:
 -It can return values, objects, or functions to be used in components.
 
 ```js
+import { useEffect, useState } from "react";
 
+const UseDataFetchByMe = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+};
+
+export default UseDataFetchByMe;
 ```

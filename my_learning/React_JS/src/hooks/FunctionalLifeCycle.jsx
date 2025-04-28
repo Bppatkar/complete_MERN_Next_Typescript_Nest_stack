@@ -21,7 +21,11 @@ function FunctionalLifecycle() {
     };
   }); // No dependency array
 
-  return <div className="bg-black text-white text-center font-bold text-2xl mb-2">Functional Component</div>;
+  return (
+    <div className="bg-black text-white text-center font-bold text-2xl mb-2">
+      Functional LifeCycle
+    </div>
+  );
 }
 
 export default FunctionalLifecycle;
