@@ -521,6 +521,57 @@ function FunctionalLifecycle() {
 }
 ```
 
+```text
+However, this approach has some important caveats:
+
+1. Mount vs Update Detection: The same effect runs for both mount and updates
+2. Unmount Detection: The cleanup runs both before updates AND on unmount
+3. Performance: Runs on every render (like componentDidUpdate)
+
+If you need to distinguish between mount/update/unmount in a single useEffect, you can use a ref:
+```
+
+```js
+import { useEffect, useRef } from "react";
+
+function FunctionalLifecycle() {
+  console.log("Component render");
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      console.log("Component did update");
+    } else {
+      console.log("Component did mount");
+      isMounted.current = true;
+    }
+
+    return () => {
+      if (isMounted.current) {
+        console.log("Component will update (cleanup)");
+      } else {
+        console.log("Component will unmount");
+      }
+    };
+  }); // No dependency array
+
+  return <div>Functional Component</div>;
+}
+```
+
+```text
+Key points about this combined approach:
+
+  - The effect runs after every render (mount and updates)
+  - The cleanup runs before the next effect (updates) or on unmount
+  - We use a ref to track whether it's the first mount
+  - You lose some of the optimization benefits of separate effects
+
+The React team generally recommends using multiple useEffect calls for separate concerns, but this pattern can be useful in some cases where you need tightly coupled lifecycle logic.
+
+For most cases, it's clearer to use separate useEffect hooks as shown in your original example.
+```
+
 ### Complete Lifecycle Flow <a name="lifecycle-flow"></a>
 
 #### Mounting Phase (Initial Render)
