@@ -385,10 +385,11 @@ function UncontrolledInput() {
 1.  [Basic Syntax](#basic-syntax)
 2.  [Dependency Array](#dependency-array)
 3.  [Lifecycle Comparison](#lifecycle-comparison)
-4.  [Cleanup Function](#cleanup-function)
-5.  [Common Use Cases](#common-use-cases)
-6.  [Best Practices](#best-practices)
-7.  [Complete Examples](#complete-examples)
+4.  [Complete Lifecycle Flow](#lifecycle-flow)
+5.  [Cleanup Function](#cleanup-function)
+6.  [Common Use Cases](#common-use-cases)
+7.  [Best Practices](#best-practices)
+8.  [Complete Examples](#complete-examples)
 
 ## Basic Syntax <a name="basic-syntax"></a>
 
@@ -439,14 +440,22 @@ Class Component Lifecycle
 class LifecycleDemo extends React.Component {
   componentDidMount() {
     console.log("Component did mount");
+    // Output when component mounts:
+    // "Component render"
+    // "Component did mount"
   }
 
   componentDidUpdate() {
     console.log("Component did update");
+    // Output when component updates:
+    // "Component render"
+    // "Component did update"
   }
 
   componentWillUnmount() {
     console.log("Component will unmount");
+    // Output when component unmounts:
+    // "Component will unmount"
   }
 
   render() {
@@ -461,21 +470,86 @@ Functional Component Equivalent
 ```js
 function FunctionalLifecycle() {
   console.log("Component render");
+  // Initial render output:
+  // "Component render"
+  // "Component did mount" (from useEffect)
 
   // componentDidMount + componentWillUnmount
   useEffect(() => {
     console.log("Component did mount");
-    return () => console.log("Component will unmount");
+    // This runs after initial render
+
+    return () => {
+      console.log("Component will unmount");
+      // This runs when component unmounts
+    };
   }, []);
 
   // componentDidUpdate
   useEffect(() => {
     console.log("Component did update");
+    // Output on updates:
+    // "Component render"
+    // "Component did update"
   });
 
   return <div>Functional Component</div>;
 }
 ```
+
+### Complete Lifecycle Flow <a name="lifecycle-flow"></a>
+
+#### Mounting Phase (Initial Render)
+
+1. Class Component
+
+```text
+"Component render"
+"Component did mount"
+```
+
+2. Functional Component
+
+```text
+"Component render"
+"Component did mount"
+```
+
+#### Updating Phase (State/Props Chane)
+
+1. Class Component
+
+```text
+"Component render"
+"Component did update"
+```
+
+2. Functional Component
+
+```text
+"Component render"
+"Component did update"
+```
+
+#### Unmounting Phase
+
+1. Class Component
+
+```text
+"Component will unmount"
+```
+
+2. Functional Component
+
+```text
+"Component will unmount" (from useEffect cleanup)
+```
+
+##### Key Differences:
+
+- Functional components log the render phase from the function body
+- Class components separate render() from lifecycle methods
+- Both approaches provide equivalent functionality but with different syntax
 
 ### Cleanup Function <a name="cleanup-function"></a>
 
