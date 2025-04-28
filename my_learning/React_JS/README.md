@@ -497,6 +497,30 @@ function FunctionalLifecycle() {
 }
 ```
 
+```js
+import { useEffect } from "react";
+
+function FunctionalLifecycle() {
+  console.log("Component render");
+
+  // Combined lifecycle useEffect
+  useEffect(() => {
+    // This block runs for both mount and updates
+    console.log("Component did mount/update");
+
+    // Cleanup function - runs before next effect and on unmount
+    return () => {
+      console.log("Cleanup (runs before update or on unmount)");
+
+      // You can check if this is unmount vs update cleanup
+      // using a ref or other method if needed
+    };
+  }); // No dependency array means it runs on every render
+
+  return <div>Functional Component</div>;
+}
+```
+
 ### Complete Lifecycle Flow <a name="lifecycle-flow"></a>
 
 #### Mounting Phase (Initial Render)
