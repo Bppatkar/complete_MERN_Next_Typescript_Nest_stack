@@ -26,7 +26,7 @@ const UsingReducer = () => {
         <h1 className="text-2xl font-bold text-center mb-6">
           Using Reducer Hook
         </h1>
-
+        <h5>"it will not re render when count change"</h5>
         {/* Todos Section */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-4">Todos:</h2>

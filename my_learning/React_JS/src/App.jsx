@@ -18,14 +18,15 @@ import DataComponent from "./hooks/custom_hook/DataComponent.jsx";
 import FunctionalLifeCycle from "./hooks/FunctionalLifeCycle.jsx";
 import ThemeChanger from "./components/ThemeChanger.jsx";
 import HigherOrder from "./components/HigherOrder.jsx";
+import Pages from "./Pages/Pages.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   return (
     <div className="bg-black text-white min-h-screen p-6">
-      <h1 className="text-3xl font-bold underline text-blue-600 text-center mb-8">
-        Bhanu Pratap
+      <h1 className="text-3xl font-bold underline text-amber-600 text-center mb-8">
+        Complete React_js By Bhanu Pratap [All IMP Topics/Chapter Covered]
       </h1>
 
       {/* All sections inside one grid */}
@@ -120,8 +121,14 @@ function App() {
           <ThemeChanger />
         </CardWrapper>
 
+        {/* Higher Order Component */}
         <CardWrapper>
           <HigherOrder />
+        </CardWrapper>
+
+        {/* React Router DOM */}
+        <CardWrapper>
+          <Pages />
         </CardWrapper>
       </div>
     </div>

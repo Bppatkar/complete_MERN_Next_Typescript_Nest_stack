@@ -1273,5 +1273,32 @@ export default UseLocalStorage;
 
 HOC function takes React Component as an argument and returns with some enhancements.
 
-```js
+```text
+watch code written inside HigherOrder.jsx file
 ```
+
+## Lec 19 [ Virtual DOM ]
+
+### What is DOM?
+
+The Document Object Model (DOM) is a programming interface for web documents. It represents the page so that programs can change the document structure, style, and content. The DOM represents the document as nodes and objects, allowing programming languages to interact with the page.
+
+### What Makes DOM Manipulation Slow?
+
+DOM manipulation can be slow because it often involves re-rendering parts of the web page, which can be resource-intensive. Each change to the DOM can cause the browser to re-calculate styles, layout, and repaint, leading to performance bottlenecks, especially with large and complex documents.
+
+### What is Virtual DOM?
+
+The Virtual DOM is a concept where a virtual representation of the UI is kept in memory and synced with the real DOM by a library such as ReactDOM in React. This process is called reconciliation. The Virtual DOM allows React to batch updates and perform efficient diff computations to minimize direct DOM manipulations, enhancing performance.
+
+### How Does Reconciliation Happen?
+
+Reconciliation is the process by which React updates the DOM with the minimum number of changes. When the state of an object changes, React creates a new Virtual DOM tree, compares it with the previous one, and computes the most efficient way to update the real DOM. This diffing algorithm helps in optimizing the update process, making it faster and more efficient.
+
+## Lec 20 [ React Router DOM ]
+
+- npm i react-router-dom
+
+React Router DOM is not part of the core React library. It is a separate library that provides routing capabilities for React applications.
+so for that we need to install it. and i am creating pages folder inside src folder
+and i am wrapping my Page.jsx file with <BrowserRouter> tag and i am creating my routes inside pages folder
