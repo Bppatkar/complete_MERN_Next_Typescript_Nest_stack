@@ -1,6 +1,5 @@
 ![image](https://github.com/user-attachments/assets/c463154f-63cc-4e5a-827c-76254ff97faf)
 
-
 # Topic we are going to cover here is React JS.
 
     - Virtual DOM
@@ -1230,4 +1229,49 @@ const UseDataFetchByMe = (url) => {
 };
 
 export default UseDataFetchByMe;
+```
+
+## Lec 17 [Custom Hook] (useLocalStorage)
+
+```js
+import { useState } from "react";
+
+const UseLocalStorage = (key, defaultValue) => {
+  const [localStorageValue, setLocalStorageValue] = useState(() => {
+    try {
+      const val = localStorage.getItem(key);
+      if (val) {
+        return JSON.parse(val);
+      } else {
+        localStorage.setItem(key, JSON.stringify(defaultValue));
+        return defaultValue;
+      }
+    } catch (error) {
+      localStorage.setItem(key, JSON.stringify(defaultValue));
+      return defaultValue;
+    }
+  });
+
+  const setLocalStorage = (valueOrFunc) => {
+    let newValue;
+    if (typeof valueOrFunc === "function") {
+      newValue = valueOrFunc(localStorageValue);
+    } else {
+      newValue = valueOrFunc;
+    }
+    localStorage.setItem(key, JSON.stringify(newValue));
+    // now mainting the state from value
+    setLocalStorageValue(newValue);
+  };
+  return [localStorageValue, setLocalStorage];
+};
+
+export default UseLocalStorage;
+```
+
+## Lec 18 [ HOC ] (Higher Order Component)
+
+HOC function takes React Component as an argument and returns with some enhancements.
+
+```js
 ```

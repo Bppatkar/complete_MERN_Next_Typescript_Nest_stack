@@ -16,6 +16,8 @@ import UsingCallback from "./hooks/UsingCallback.jsx";
 import UsingReducer from "./hooks/UsingReducer.jsx";
 import DataComponent from "./hooks/custom_hook/DataComponent.jsx";
 import FunctionalLifeCycle from "./hooks/FunctionalLifeCycle.jsx";
+import ThemeChanger from "./components/ThemeChanger.jsx";
+import HigherOrder from "./components/HigherOrder.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -28,7 +30,6 @@ function App() {
 
       {/* All sections inside one grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
         {/* Profile Section */}
         <CardWrapper>
           <Profile />
@@ -114,6 +115,14 @@ function App() {
           <FunctionalLifeCycle />
         </CardWrapper>
 
+        {/* Custom Hook Example 2 */}
+        <CardWrapper>
+          <ThemeChanger />
+        </CardWrapper>
+
+        <CardWrapper>
+          <HigherOrder />
+        </CardWrapper>
       </div>
     </div>
   );
@@ -122,7 +131,7 @@ function App() {
 // Small reusable CardWrapper component
 function CardWrapper({ children }) {
   return (
-    <div className="bg-gray-800 p-6 rounded-lg min-h-[250px] flex flex-col justify-between hover:scale-105 transition-transform duration-300">
+    <div className="bg-gray-800 p-6 rounded-lg  flex flex-col justify-between hover:scale-105 transition-transform duration-300">
       {children}
     </div>
   );
