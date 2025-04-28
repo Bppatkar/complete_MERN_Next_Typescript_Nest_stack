@@ -12,7 +12,7 @@ const Counter = () => {
   };
 
   return (
-    <div>
+    <div className=" text-center mt-1.5">
       <h1>{count}</h1>
       <button
         className="bg-blue-500 text-white font-bold py-2 px-2 rounded gap-0.5"

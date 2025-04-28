@@ -10,7 +10,7 @@ const UsingRefHook = () => {
 
   return (
     <div className=" bg-black text-white ">
-      <div className="border-2 border-red-500 p-6 rounded-lg shadow-lg max-w-md mx-auto m-1 ">
+      <div className="border-2 border-red-500 p-6 rounded-lg shadow-lg max-w-md mx-auto ">
         <h1 className="text-2xl font-bold text-gray-300 mb-4 text-center">
           useRef Hook
         </h1>

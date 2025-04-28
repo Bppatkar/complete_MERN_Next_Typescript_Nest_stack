@@ -13,15 +13,13 @@ const UsingEffect = () => {
     document.title = `You clicked ${count} times`;
   }, []); // only run onces when webpage load
 
-
   // useEffect(() => {
   //   console.log("useEffect run");
   //   document.title = `You clicked ${count} times`;
   // }); // run on every render
 
-
   return (
-    <div>
+    <div className=" text-center mt-1.5 w-3xs mx-auto">
       <p>
         You clicked <span className="text-red-500">{count}</span> times
       </p>

@@ -15,6 +15,7 @@ function ControlledComponent() {
   };
 
   return (
+    <div className=" text-center mt-1.5 w-3xs mx-auto">
     <div className="ml-3 mt-3 bg-slate-200 px-2 py-2 rounded text-red-500">
       <h1>ControlledComponent</h1>
       <form>
@@ -27,6 +28,7 @@ function ControlledComponent() {
         />
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </form>
+    </div>
     </div>
   );
 }

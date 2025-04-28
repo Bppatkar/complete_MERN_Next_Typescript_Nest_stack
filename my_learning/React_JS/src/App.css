@@ -2,7 +2,7 @@
 
 /* Container Styling */
 .data-container {
-  @apply bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-1;
+  @apply bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-lg mx-auto ;
 }
 
 /* Title Styling */

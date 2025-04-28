@@ -10,6 +10,7 @@ function UncontrolledComponent() {
   };
 
   return (
+    <div className=" text-center mt-1.5 w-3xs mx-auto">
     <div className="ml-3 mt-3 mb-3 bg-slate-200 px-2 py-2 rounded text-red-500">
       <h1>UnControlledComponent</h1>
       <input
@@ -24,6 +25,7 @@ function UncontrolledComponent() {
       >
         Select Text
       </button>
+    </div>
     </div>
   );
 }

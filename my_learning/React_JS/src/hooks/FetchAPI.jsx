@@ -25,7 +25,7 @@ const FetchAPI = () => {
 
   return (
     <div className="p-6 md:p-12 min-h-[300px] bg-black text-white">
-      <h1 className="text-4xl font-extrabold text-center text-gray-300-800 mb-10">
+      <h1 className="text-4xl font-extrabold text-center text-gray-300-800 mb-6">
         Product Viewer
       </h1>
       {product ? (

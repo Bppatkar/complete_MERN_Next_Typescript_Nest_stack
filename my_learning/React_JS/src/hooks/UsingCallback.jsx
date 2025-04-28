@@ -18,7 +18,7 @@ const UsingCallback = () => {
 
   return (
     <div className="bg-black text-white">
-      <div className="p-6  text-white rounded-lg shadow-lg max-w-md mx-auto mt-1">
+      <div className="p-6  text-white rounded-lg shadow-lg max-w-md mx-auto ">
         <h1 className="text-2xl font-bold text-center mb-6">
           Using Callback Hook
         </h1>

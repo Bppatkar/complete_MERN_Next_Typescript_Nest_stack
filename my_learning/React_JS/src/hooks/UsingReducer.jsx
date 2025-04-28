@@ -22,7 +22,7 @@ const UsingReducer = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <div className="bg-black text-white">
-      <div className="p-6 rounded-lg shadow-lg max-w-md mx-auto mt-1">
+      <div className="p-6 rounded-lg shadow-lg max-w-md mx-auto">
         <h1 className="text-2xl font-bold text-center mb-6">
           Using Reducer Hook
         </h1>

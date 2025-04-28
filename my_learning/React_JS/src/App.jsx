@@ -15,61 +15,74 @@ import UsingMemo from "./hooks/UsingMemo.jsx";
 import UsingCallback from "./hooks/UsingCallback.jsx";
 import UsingReducer from "./hooks/UsingReducer.jsx";
 import DataComponent from "./hooks/custom_hook/DataComponent.jsx";
+import FunctionalLifeCycle from "./hooks/FunctionalLifeCycle.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   return (
     <div className="bg-black text-white h-screen">
-      <h1 className="text-3xl font-bold underline text-blue-600">
+      <h1 className="text-3xl font-bold underline text-blue-600 text-center">
         Bhanu Pratap
       </h1>
-      <Profile />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-blue-500 my-4" />
 
-      {/* <Profile /> */}
+      <Profile />
+      <hr className="border-t border-green-500 my-4" />
+
       <Counter />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-yellow-500 my-4" />
+      
       <Props name="Bhanu" />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-purple-500 my-4" />
 
       {isUserLoggedIn ? <Props name="Conditional Rendering" /> : <Login />}
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-pink-500 my-4" />
 
       <button
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 text-white font-bold py-2 px-4 rounded text-center flex items-center justify-center mx-auto"
         onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
       >
-        Chage Component
+        Change Component
       </button>
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-red-500 my-4" />
 
       <ControlledComponent />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-indigo-500 my-4" />
+      
       <UnControlledComponent />
-      <hr align="left" width="100%;" />
-      <ReusableComponent name={"Save"} color={"green"} />
-      <ReusableComponent name={"Cancle"} color={"yellow"} />
-      <ReusableComponent name={"Delete"} color={"red"} />
+      <hr className="border-t border-teal-500 my-4" />
 
+      <div className="flex gap-2 p-4">
+        <ReusableComponent name={"Save"} color={"green"} />
+        <ReusableComponent name={"Cancle"} color={"yellow"} />
+        <ReusableComponent name={"Delete"} color={"red"} />
+      </div>
+      <hr className="border-t border-orange-500 my-4" />
+
+      {/* Rest of your components with colored hr lines */}
       <UsingEffect />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-amber-500 " />
 
       <FetchingAPI />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-lime-500 " />
 
       <UsingRefHook />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-emerald-500 " />
 
       <UsingMemo />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-rose-500 " />
 
       <UsingCallback />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-violet-500 " />
 
       <UsingReducer />
-      <hr align="left" width="100%;" />
+      <hr className="border-t border-fuchsia-500 " />
 
       <DataComponent url="https://jsonplaceholder.typicode.com/users" />
+      <hr className="border-t border-sky-500 " />
+
+      <FunctionalLifeCycle />
+      <hr className="border-t border-cyan-500 " />
     </div>
   );
 }
