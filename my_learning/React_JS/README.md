@@ -1,4 +1,5 @@
-![image](https://github.com/user-attachments/assets/b3f21894-d143-41cd-ad40-e83687eba017)
+![image](https://github.com/user-attachments/assets/c463154f-63cc-4e5a-827c-76254ff97faf)
+
 
 
 # Topic we are going to cover here is React JS.
