@@ -12,6 +12,7 @@ import UsingEffect from "./hooks/usingEffect.jsx";
 import FetchingAPI from "./hooks/FetchAPI.jsx";
 import UsingRefHook from "./hooks/UsingRefHook.jsx";
 import UsingMemo from "./hooks/UsingMemo.jsx";
+import UsingCallback from "./hooks/UsingCallback.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -58,6 +59,9 @@ function App() {
       <hr align="left" width="100%;" />
 
       <UsingMemo />
+      <hr align="left" width="100%;" />
+
+      <UsingCallback />
     </div>
   );
 }

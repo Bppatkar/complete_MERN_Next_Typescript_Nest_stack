@@ -635,34 +635,137 @@ const expensiveCalc = (num) => {
 
 ## Lec 14 [useCallback hook]
 
-The `useCallback` hook returns a memoized callback function. It helps to prevent unnecessary re-creations of functions when components re-render, especially useful when passing callbacks to child components that rely on referential equality.
+when learning useCallback hook one thing keep in mind premetive and non-premetive value
+for instance
 
 ```js
-function ButtonComponent({ onClick }) {
-  return <button onClick={onClick}>Click Me</button>;
+//premitive
+const a = 10;
+const b = 20;
+
+console.log(a === b);
+
+const str1 = "abc";
+const str2 = "abc";
+console.log(str1 === str2);
+```
+
+```js
+function sumFunc(){
+  return (a+b) => a+b;
 }
 
-function ParentComponent() {
-  const [count, setCount] = useState(0);
+// non-premiive/Reference
+const func1 = sumFunc();
+const func2 = sumFunc();
 
-  const handleClick = useCallback(() => {
-    setCount((prevCount) => prevCount + 1);
-  }, []);
+console.log(func1(2,2));
+console.log(func2(2,2));
+console.log(func1 === func2);
+```
+
+The `useCallback` hook in React is used to optimize performance by memoizing `callback functions`. It ensures that the same function instance is returned unless its dependencies change. This is particularly useful when passing callbacks to child components that rely on referential equality.
+
+`When to use useCallback`:
+
+- When you have a `function that is being passed as a prop to child components`.
+- When the c`hild components rely on` referential equality to `avoid unnecessary re-renders`.
+
+`Benefits of useCallback:`
+
+- Prevents unnecessary re-creation of functions.
+- Optimizes rendering performance.
+- Ensures referential equality for callback functions.
+
+```js
+const UsingCallback = () => {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+
+  const addTodo = () => {
+    setTodos((t) => [...t, "new todo"]);
+  };
 
   return (
-    <div>
-      <p>Count: {count}</p>
-      <ButtonComponent onClick={handleClick} />
+    <div className="p-6 bg-gray-800 text-white rounded-lg shadow-lg max-w-md mx-auto mt-10">
+      <h1 className="text-2xl font-bold text-center mb-6">
+        Using Callback Hook
+      </h1>
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold mb-4">Todos:</h2>
+        <Todo todos={todos} addTodo={addTodo} />
+      </div>
+      <hr className="my-6 border-gray-600" />
+      <div className="text-center">
+        <p className="text-lg mb-4">
+          Count: <span className="font-bold">{count}</span>
+        </p>
+        <button
+          onClick={increment}
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+        >
+          Increment
+        </button>
+      </div>
     </div>
   );
-}
+};
+```
+
+```js
+import { memo } from "react";
+
+const Todos = ({ addtodo, todos }) => {
+  console.log("child render");
+  return (
+    <>
+      <h2>Todo</h2>
+      {todos.map((todo, index) => {
+        return <p key={index}>{todo}</p>;
+      })}
+      <button onClick={addtodo}>Add</button>
+    </>
+  );
+};
+
+export default memo(Todos);
+```
+
+---
+
+## changes
+
+### we use useMemo when we want to memoize a value, and useCallback when we want to memoize a function based on the dependencies array
+
+---
+
+```js
+const addTodo = useCallback(() => {
+  setTodos((t) => [...t, "new todo"]);
+}, [todos]);
 ```
 
 ## Lec 15 [useReducer hook]
 
 const [state, dispatch] = useReducer(reducer, initialArg, init?)
 
-The `useReducer` hook is used for managing complex state logic in React components. It works similar to `useState`, but is more suitable for state that involves multiple sub-values or when the next state depends on the previous one.
+The `useReducer` hook in React is used for managing complex state logic. It is an alternative to useState and is particularly useful when the state depends on the previous state or involves multiple sub-values.
+
+`When to use useReducer:`
+
+- When you have complex state logic.
+- When the next state depends on the previous state.
+- When you want to centralize state management in a reducer function.
+
+  `Benefits of useReducer:`
+
+- Simplifies state management for complex logic.
+- Makes state transitions predictable.
+- Encourages separation of concerns by moving logic to a reducer function.
 
 ```js
 const initialState = { count: 0 };

@@ -18,6 +18,7 @@ const UsingMemo = () => {
       <div className="p-6 bg-black text-white rounded-lg shadow-lg max-w-md mx-auto ">
         <h1 className="text-2xl font-bold text-center mb-6">Using Memo Hook</h1>
         <h4>Open console log</h4>
+        <h5>"it will not re render when count change"</h5>
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-4">Todos:</h2>
           {todos.length > 0 ? (
