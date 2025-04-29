@@ -21,6 +21,7 @@ import HigherOrder from "./components/HigherOrder.jsx";
 import Pages from "./Pages/Pages.jsx";
 import Starting from "./context_api/Starting.jsx";
 import ReduxLearn from "./react_redux/ReduxLearn.jsx";
+import RtkLearning from "./redux_toolkit/RtkLearning.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -143,6 +144,11 @@ function App() {
         {/* React Redux */}
         <CardWrapper title="React_Redux">
           <ReduxLearn />
+        </CardWrapper>
+
+        {/* React Redux Toolkit */}
+        <CardWrapper title="React_Redux_Toolkit">
+          <RtkLearning />
         </CardWrapper>
       </div>
     </div>
