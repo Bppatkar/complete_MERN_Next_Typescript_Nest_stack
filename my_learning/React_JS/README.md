@@ -1302,3 +1302,8 @@ Reconciliation is the process by which React updates the DOM with the minimum nu
 React Router DOM is not part of the core React library. It is a separate library that provides routing capabilities for React applications.
 so for that we need to install it. and i am creating pages folder inside src folder
 and i am wrapping my Page.jsx file with <BrowserRouter> tag and i am creating my routes inside pages folder
+
+## Lec 21 [ Context API ]
+
+Solving Prop Drilling Problem
+
