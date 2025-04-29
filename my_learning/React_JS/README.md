@@ -1333,3 +1333,69 @@ The Context API is a feature in React that allows you to share state across the 
 - **Debugging Difficulty**: It can `become challenging to track the flow of data and debug issues if the context is used extensively` in large applications.
 
 Overall, Context API is a powerful tool to manage global state and avoid prop drilling, but it should be used judiciously to avoid potential pitfalls.
+
+#### Steps to use Context API
+
+1. **Create a Context:**
+
+   First, create a new file for your context, e.g., `MyContext.js`.
+
+   ```jsx
+   import { createContext, useState } from "react";
+
+   const MyContext = createContext();
+
+   export const MyProvider = ({ children }) => {
+     const [state, setState] = useState("Hello, World!");
+
+     return (
+       <MyContext.Provider value={{ state, setState }}>
+         {children}
+       </MyContext.Provider>
+     );
+   };
+
+   export default MyContext;
+   ```
+
+2. **Wrap Your Application:**
+
+   Use the provider component to wrap your application in `index.js` or the main entry file.
+
+   ```jsx
+   import React from "react";
+   import ReactDOM from "react-dom";
+   import App from "./App";
+   import { MyProvider } from "./MyContext";
+
+   ReactDOM.render(
+     <MyProvider>
+       <App />
+     </MyProvider>,
+     document.getElementById("root")
+   );
+   ```
+
+3. **Consume the Context:**
+
+   Use the context in any component using the `useContext` hook.
+
+   ```jsx
+   import React, { useContext } from "react";
+   import MyContext from "./MyContext";
+
+   const MyComponent = () => {
+     const { state, setState } = useContext(MyContext);
+
+     return (
+       <div>
+         <p>{state}</p>
+         <button onClick={() => setState("New State!")}>Change State</button>
+       </div>
+     );
+   };
+
+   export default MyComponent;
+   ```
+
+With these steps, you can easily manage and share state across your React application using the Context API. This approach helps avoid prop drilling and makes your state management more efficient.

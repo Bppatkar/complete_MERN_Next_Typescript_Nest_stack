@@ -1,14 +1,14 @@
 import { useState } from "react";
 import "./App.css";
 import Profile from "./components/Profile.jsx";
-import Login from "./components/Login.jsx";
 // import Profile from "./components/ClassBased.jsx";
+import Login from "./components/Login.jsx";
 import Counter from "./components/Counter.jsx";
 import Props from "./components/Props.jsx";
 import ControlledComponent from "./components/ControlledComponent.jsx";
 import UnControlledComponent from "./components/UnControlledComponent.jsx";
 import ReusableComponent from "./components/ReusableComponent.jsx";
-import UsingEffect from "./hooks/UsingEffect.jsx"; // ✅ corrected filename casing
+import UsingEffect from "./hooks/UsingEffect.jsx";
 import FetchingAPI from "./hooks/FetchAPI.jsx";
 import UsingRefHook from "./hooks/UsingRefHook.jsx";
 import UsingMemo from "./hooks/UsingMemo.jsx";
@@ -19,38 +19,41 @@ import FunctionalLifeCycle from "./hooks/FunctionalLifeCycle.jsx";
 import ThemeChanger from "./components/ThemeChanger.jsx";
 import HigherOrder from "./components/HigherOrder.jsx";
 import Pages from "./Pages/Pages.jsx";
+import Starting from "./context_api/Starting.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   return (
-    <div className="bg-black text-white min-h-screen p-6">
-      <h1 className="text-3xl font-bold underline text-amber-600 text-center mb-8">
-        Complete React_js By Bhanu Pratap [All IMP Topics/Chapter Covered]
+    <div className="bg-gray-900 text-gray-100 min-h-screen p-6">
+      <h1 className="text-3xl font-bold text-center mb-8 text-amber-400">
+        Complete React.js By Bhanu Pratap
+        <span className="block text-sm font-normal text-gray-400 mt-2">
+          All Important Topics/Covered
+        </span>
       </h1>
 
-      {/* All sections inside one grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Profile Section */}
-        <CardWrapper>
+        <CardWrapper title="Profile Component">
           <Profile />
         </CardWrapper>
 
         {/* Counter Section */}
-        <CardWrapper>
+        <CardWrapper title="Counter Component">
           <Counter />
         </CardWrapper>
 
         {/* Props Section */}
-        <CardWrapper>
+        <CardWrapper title="Props Example">
           <Props name="Bhanu" />
         </CardWrapper>
 
         {/* Conditional Rendering Section */}
-        <CardWrapper>
+        <CardWrapper title="Conditional Rendering">
           {isUserLoggedIn ? <Props name="Conditional" /> : <Login />}
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded mt-4 w-full"
+            className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded transition-colors"
             onClick={() => setIsUserLoggedIn(!isUserLoggedIn)}
           >
             Toggle Component
@@ -58,18 +61,18 @@ function App() {
         </CardWrapper>
 
         {/* Controlled Form */}
-        <CardWrapper>
+        <CardWrapper title="Controlled Component">
           <ControlledComponent />
         </CardWrapper>
 
         {/* UnControlled Form */}
-        <CardWrapper>
+        <CardWrapper title="Uncontrolled Component">
           <UnControlledComponent />
         </CardWrapper>
 
         {/* Reusable Buttons */}
-        <CardWrapper>
-          <div className="flex flex-wrap gap-3">
+        <CardWrapper title="Reusable Components">
+          <div className="flex flex-wrap gap-3 justify-center">
             <ReusableComponent name={"Save"} color={"green"} />
             <ReusableComponent name={"Cancel"} color={"yellow"} />
             <ReusableComponent name={"Delete"} color={"red"} />
@@ -77,69 +80,76 @@ function App() {
         </CardWrapper>
 
         {/* useEffect Example */}
-        <CardWrapper>
+        <CardWrapper title="useEffect Hook">
           <UsingEffect />
         </CardWrapper>
 
         {/* Fetching API */}
-        <CardWrapper>
+        <CardWrapper title="API Fetching">
           <FetchingAPI />
         </CardWrapper>
 
         {/* useRef Example */}
-        <CardWrapper>
+        <CardWrapper title="useRef Hook">
           <UsingRefHook />
         </CardWrapper>
 
         {/* useMemo Example */}
-        <CardWrapper>
+        <CardWrapper title="useMemo Hook">
           <UsingMemo />
         </CardWrapper>
 
         {/* useCallback Example */}
-        <CardWrapper>
+        <CardWrapper title="useCallback Hook">
           <UsingCallback />
         </CardWrapper>
 
         {/* useReducer Example */}
-        <CardWrapper>
+        <CardWrapper title="useReducer Hook">
           <UsingReducer />
         </CardWrapper>
 
         {/* Custom Hook Example */}
-        <CardWrapper>
+        <CardWrapper title="Custom Hook">
           <DataComponent url="https://jsonplaceholder.typicode.com/users" />
         </CardWrapper>
 
         {/* Functional Lifecycle Example */}
-        <CardWrapper>
+        <CardWrapper title="Functional Lifecycle">
           <FunctionalLifeCycle />
         </CardWrapper>
 
-        {/* Custom Hook Example 2 */}
-        <CardWrapper>
+        {/* Theme Changer */}
+        <CardWrapper title="Theme Changer">
           <ThemeChanger />
         </CardWrapper>
 
         {/* Higher Order Component */}
-        <CardWrapper>
+        <CardWrapper title="Higher Order Component">
           <HigherOrder />
         </CardWrapper>
 
         {/* React Router DOM */}
-        <CardWrapper>
+        <CardWrapper title="React Router">
           <Pages />
+        </CardWrapper>
+
+        {/* Context API */}
+        <CardWrapper title="Context API">
+          <Starting />
         </CardWrapper>
       </div>
     </div>
   );
 }
 
-// Small reusable CardWrapper component
-function CardWrapper({ children }) {
+function CardWrapper({ children, title }) {
   return (
-    <div className="bg-gray-800 p-6 rounded-lg  flex flex-col justify-between hover:scale-105 transition-transform duration-300">
-      {children}
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-700">
+      {title && (
+        <h3 className="text-lg font-semibold mb-4 text-orange-500">{title}</h3>
+      )}
+      <div className="flex-1">{children}</div>
     </div>
   );
 }
