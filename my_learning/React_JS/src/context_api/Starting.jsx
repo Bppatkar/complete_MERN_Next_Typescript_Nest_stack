@@ -1,7 +1,3 @@
-// import React from "react";
-// import ParentComponent from "./ParentComponent.jsx";
-// import { CounterProvider } from "./CounterContext.jsx";
-
 // const Starting = () => {
 //   return (
 //     <div className="space-y-4">
@@ -10,6 +6,7 @@
 //     </div>
 //   );
 // };
+
 import React from "react";
 import ParentComponent from "./ParentComponent.jsx";
 import { CounterProvider } from "./CounterContext.jsx";

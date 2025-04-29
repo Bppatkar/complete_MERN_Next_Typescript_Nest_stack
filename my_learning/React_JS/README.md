@@ -1399,3 +1399,181 @@ Overall, Context API is a powerful tool to manage global state and avoid prop dr
    ```
 
 With these steps, you can easily manage and share state across your React application using the Context API. This approach helps avoid prop drilling and makes your state management more efficient.
+
+## Lec 22 [ React Redux (State Management Library) ]
+
+State simply means data, so in frontend how we efficiently manage that data so that User experience is good and performance is good.
+
+### What is React Redux?
+
+React Redux is a predictable state management library for JavaScript applications. It helps you write applications that behave consistently, run in different environments (client, server, and native), and are easy to test. At its core, Redux manages your application's state in a single immutable store, making it easier to understand how and why the state changes over time. React Redux provides bindings to seamlessly integrate Redux with your React components.
+
+### Why Use React Redux?
+
+- **Predictable State Management**: Redux enforces a strict unidirectional data flow, making it easier to understand how state changes occur and debug issues.
+- **Centralized Store**: A single source of truth (the store) makes it easier to manage the application's state and share it across components without prop drilling.
+- **Improved Debugging**: Redux DevTools allows you to track every action dispatched, the resulting state changes, and even time-travel through your application's history.
+- **Scalability**: Redux's structured approach makes it easier to manage state in large and complex applications.
+- **Testability**: The separation of concerns (actions, reducers, store) makes it easier to write unit tests for different parts of your state management logic.
+- **Middleware for Side Effects**: Redux middleware (like Redux Thunk or Redux Saga) provides a clean way to handle asynchronous operations (API calls, etc.) and other side effects.
+
+### How Does React Redux Work?
+
+React Redux follows a unidirectional data flow:
+
+1.  **View (Component) Dispatches an Action**: When a user interacts with a component or when certain events occur, the component dispatches an action. An action is a plain JavaScript object describing what happened.
+2.  **Action is Received by Reducer**: The action is sent to the reducer. A reducer is a pure function that takes the current state and an action as arguments and returns a new state. It's important to note that reducers should not modify the existing state; instead, they should return a new state object.
+3.  **Store is Updated**: The root reducer (or combined reducers) determines how the state should change based on the action type. The store then updates its state with the new state returned by the reducer.
+4.  **Components are Notified**: React Redux connects your React components to the Redux store. When the store's state changes, all connected components are notified and re-render if their props have changed.
+
+### Key Concepts
+
+- **Store**: The single source of truth that holds the entire application state. You can only modify the state by dispatching actions to the store.
+- **Actions**: Plain JavaScript objects that describe an event that has occurred in the application. They typically have a `type` property that indicates the type of action being performed and may include other data (payload).
+- **Reducers**: Pure functions that specify how the application's state changes in response to an action. They take the previous state and an action as arguments and return a new state. For complex applications, you might have multiple reducers that handle different parts of the state, which are then combined into a single root reducer.
+- **Dispatch**: A function provided by the Redux store that is used to send actions to the store. Calling `dispatch(action)` is the only way to trigger a state change.
+- **Selectors**: Functions that know how to extract specific pieces of data from the Redux store's state. They are often used with `mapStateToProps` to efficiently select the data a component needs.
+- **Middleware**: Functions that sit between the dispatching of an action and the moment it reaches the reducer. Middleware can be used for logging, asynchronous operations, crash reporting, and more.
+
+### Steps to use React Redux
+
+1.  **Install Redux and React Redux:**
+
+    First, install the necessary packages in your React project:
+
+    ```bash
+    npm install redux react-redux
+    # or
+    yarn add redux react-redux
+    ```
+
+2.  **Create Actions:**
+
+    Define action types as constants and create action creator functions in a file (e.g., `actions.js`).
+
+    ```javascript
+    // actions.js
+    export const INCREMENT = "INCREMENT";
+    export const DECREMENT = "DECREMENT";
+
+    export const increment = () => {
+      return {
+        type: INCREMENT,
+      };
+    };
+
+    export const decrement = () => {
+      return {
+        type: DECREMENT,
+      };
+    };
+    ```
+
+3.  **Create Reducers:**
+
+    Create reducer functions that handle the state updates based on the actions in a file (e.g., `reducers.js`).
+
+    ```javascript
+    // reducers.js
+    import { INCREMENT, DECREMENT } from "./actions";
+
+    const initialState = {
+      count: 0,
+    };
+
+    function counterReducer(state = initialState, action) {
+      switch (action.type) {
+        case INCREMENT:
+          return {
+            ...state,
+            count: state.count + 1,
+          };
+        case DECREMENT:
+          return {
+            ...state,
+            count: state.count - 1,
+          };
+        default:
+          return state;
+      }
+    }
+
+    export default counterReducer;
+    ```
+
+4.  **Create the Store:**
+
+    Create the Redux store using the `createStore` function from Redux and your root reducer (e.g., `store.js`). If you have multiple reducers, you'll need to combine them using `combineReducers`.
+
+    ```javascript
+    // store.js
+    import { createStore } from "redux";
+    import counterReducer from "./reducers";
+
+    const store = createStore(counterReducer);
+
+    export default store;
+    ```
+
+5.  **Provide the Store to Your Application:**
+
+    Use the `<Provider>` component from `react-redux` to make the Redux store available to all connected components in your application. Wrap your root component in `index.js` or your main entry file.
+
+    ```jsx
+    // index.js
+    import React from "react";
+    import ReactDOM from "react-dom";
+    import App from "./App";
+    import { Provider } from "react-redux";
+    import store from "./store";
+
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      document.getElementById("root")
+    );
+    ```
+
+6.  **Connect Components to the Store:**
+
+    Use the `connect` higher-order component from `react-redux` to connect your React components to the Redux store. `connect` takes two optional arguments: `mapStateToProps` (to map state to component props) and `mapDispatchToProps` (to map action creators to component props).
+
+    ```jsx
+    // MyComponent.js
+    import React from "react";
+    import { connect } from "react-redux";
+    import { increment, decrement } from "./actions";
+
+    const MyComponent = ({ count, increment, decrement }) => {
+      return (
+        <div>
+          <p>Count: {count}</p>
+          <button onClick={increment}>Increment</button>
+          <button onClick={decrement}>Decrement</button>
+        </div>
+      );
+    };
+
+    const mapStateToProps = (state) => {
+      return {
+        count: state.count,
+      };
+    };
+
+    const mapDispatchToProps = (dispatch) => {
+      return {
+        increment: () => dispatch(increment()),
+        decrement: () => dispatch(decrement()),
+      };
+    };
+
+    export default connect(mapStateToProps, mapDispatchToProps)(MyComponent);
+    ```
+
+In this example:
+
+- `mapStateToProps` receives the entire Redux store state and returns an object containing the parts of the state that the component needs (in this case, `count`). These are then passed as props to the `MyComponent`.
+- `mapDispatchToProps` receives the `dispatch` function and returns an object containing functions that dispatch actions when called (in this case, `increment` and `decrement`). These are also passed as props to the `MyComponent`.
+
+By following these steps, you can integrate React Redux into your application to manage state in a predictable and organized way, solving the prop drilling problem and providing a robust foundation for complex state management.

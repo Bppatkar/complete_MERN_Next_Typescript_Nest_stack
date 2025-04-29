@@ -1,7 +1,3 @@
-// import React, { useState } from "react";
-// import ChildComponentOne from "./ChildComponentOne.jsx";
-// import ChildComponentTwo from "./ChildComponentTwo.jsx";
-
 // const ParentComponent = () => {
 //   const [count, setCount] = useState(1);
 
