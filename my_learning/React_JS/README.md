@@ -1307,3 +1307,7 @@ and i am wrapping my Page.jsx file with <BrowserRouter> tag and i am creating my
 
 Solving Prop Drilling Problem
 
+![image](https://github.com/user-attachments/assets/2b3025a5-b024-4a4b-8fd5-d54283cf641d)
+![image](https://github.com/user-attachments/assets/ee3daf23-0ed0-43ba-9069-81c57c17e337)
+
+
