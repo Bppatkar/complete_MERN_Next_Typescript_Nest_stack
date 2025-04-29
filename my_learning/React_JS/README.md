@@ -1310,4 +1310,26 @@ Solving Prop Drilling Problem
 ![image](https://github.com/user-attachments/assets/2b3025a5-b024-4a4b-8fd5-d54283cf641d)
 ![image](https://github.com/user-attachments/assets/ee3daf23-0ed0-43ba-9069-81c57c17e337)
 
+### Context API
 
+The Context API is a feature in React that allows you to share state across the entire app (or part of it) without having to pass props down manually at every level. It provides a way to pass data through the component tree without having to pass props down manually at every level.
+
+#### Why Use Context API?
+
+- **Prop Drilling Solution**: It solves the problem of prop drilling, where you need to pass data through many layers of components, even if only a few components need the data.
+- **Global State Management**: It allows for better management of global state, making it easier to share data between components without prop drilling.
+- **Performance Optimization**: By using context, you can avoid passing unnecessary props to components that don't need them, which can improve performance.
+
+#### Benefits
+
+- **Simplifies State Management**: Makes it easier to manage and share global state across an app.
+- **Cleaner Code**: Reduces the need for passing props through multiple layers, leading to cleaner and more maintainable code.
+- **Flexibility**: Allows for dynamic updates and easy access to shared data wherever needed.
+
+#### Potential Problems
+
+- **Overuse**: Using context too frequently for local state management can lead to over-engineering and complexity.
+- **Performance Concerns**: `Context updates can cause re-renders of all components that consume the context`, affecting performance if not used carefully.
+- **Debugging Difficulty**: It can `become challenging to track the flow of data and debug issues if the context is used extensively` in large applications.
+
+Overall, Context API is a powerful tool to manage global state and avoid prop drilling, but it should be used judiciously to avoid potential pitfalls.
