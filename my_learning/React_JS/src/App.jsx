@@ -20,6 +20,7 @@ import ThemeChanger from "./components/ThemeChanger.jsx";
 import HigherOrder from "./components/HigherOrder.jsx";
 import Pages from "./Pages/Pages.jsx";
 import Starting from "./context_api/Starting.jsx";
+import ReduxLearn from "./react_redux/ReduxLearn.jsx";
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -137,6 +138,11 @@ function App() {
         {/* Context API */}
         <CardWrapper title="Context API">
           <Starting />
+        </CardWrapper>
+
+        {/* React Redux */}
+        <CardWrapper title="React_Redux">
+          <ReduxLearn />
         </CardWrapper>
       </div>
     </div>

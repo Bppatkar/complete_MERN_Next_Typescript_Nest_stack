@@ -1578,6 +1578,7 @@ In this example:
 
 By following these steps, you can integrate React Redux into your application to manage state in a predictable and organized way, solving the prop drilling problem and providing a robust foundation for complex state management.
 
+
 ## Lec 23 [React Redux Toolkit]
 
 State simply means data, so in frontend how we efficiently manage that data so that User experience is good and performance is good.
