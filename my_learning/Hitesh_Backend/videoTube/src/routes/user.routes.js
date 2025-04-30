@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  loginUser,
   registerUser,
   logoutUser,
   refreshAccessToken,
@@ -27,6 +28,9 @@ router.route("/register").post(
   ]),
   registerUser
 );
+
+router.route("/login").post(loginUser);
+
 router.route("/refresh-token").post(refreshAccessToken);
 
 // secured route
@@ -34,7 +38,7 @@ router.route("/logout").get(verifyJwt, logoutUser);
 router.route("/change-password").post(verifyJwt, changedCurrentPassword);
 
 router.route("/current-user").get(verifyJwt, getCurrentUser);
-router.route("/c/:username").get(verifyJwt, getUserChannelProfile);
+router.route("/c/:userName").get(verifyJwt, getUserChannelProfile);
 
 router.route("/update-account").patch(verifyJwt, updateAccountDetails);
 

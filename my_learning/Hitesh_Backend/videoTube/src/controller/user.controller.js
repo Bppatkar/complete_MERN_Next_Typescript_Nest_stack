@@ -27,7 +27,7 @@ const generateAccessAndRefreshToken = async userId => {
     await user.save({ validateBeforeSave: false }); // we cant save it directly because it will throw error so we use validateBeforeSave: false
     return { accessToken, refreshToken };
   } catch (error) {
-    // console.log("Error generating access and refresh token: ", error);
+    console.log("Error generating access and refresh token: ", error);
     throw new ApiError(
       500,
       "Somwthing went wrong while generating access and refresh token"
@@ -177,9 +177,9 @@ const loginUser = asyncHandler(async (req, res) => {
   // So there are two strategies in front of us. Either take this existing user and add this refresh token and then create an object, or just fire a database query and grab the fresh object since """"this generate access token again go ahead and save new data""""" in the database. So I would say yes, it is definitely an extra query, but it's a fail safe query, it  will help you to secure the system more.
 
   // loggedIn User by database query
-  const loggedInUser = await user
-    .findById(user._id)
-    .select("-password -refreshToken");
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   if (!loggedInUser) throw new ApiError(400, "Couldn't find the user");
 
@@ -193,8 +193,8 @@ const loginUser = asyncHandler(async (req, res) => {
   return (
     res
       .status(200)
-      .cookies("accessToken", accessToken, options)
-      .cookies("refreshToken", refreshToken, options)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
       // refresh token usually is being set in the cookie only, not being sent to the user.But depends whether you're working on mobile devices or just on the web..Things change drastically in that case.
       .json(
         new ApiResponse(
@@ -247,7 +247,8 @@ const loginUser = asyncHandler(async (req, res) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   // The step one of having this is first of all, go ahead and collect that incoming refresh token because somebody has already, we are assuming somebody already has hit the route of 401. That means things have expired.
   const incomingRefreshToken =
-    req.cookies.refreshToken || req.body.refreshToken;
+    req.cookies?.refreshToken || req.body?.refreshToken;
+  // console.log("COOKIE coming from req.cookies", req.cookies);
   if (!incomingRefreshToken)
     throw new ApiError(400, "Refresh token is required");
 
@@ -256,7 +257,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   try {
     const decodedToken = jwt.verify(
       incomingRefreshToken,
-      process.env.JWT_SECRET
+      process.env.REFRESH_TOKEN_SECRET
     );
     // if token is decoded means we get _id in the decodedToken variable so we can use it to find the user in the database
     const user = await User.findById(decodedToken?._id);
@@ -287,8 +288,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .cookies("accessToken", accessToken, option)
-      .cookies("refreshToken", newRefreshToken, option)
+      .cookie("accessToken", accessToken, option)
+      .cookie("refreshToken", newRefreshToken, option)
       .json(
         new ApiResponse(
           200,
@@ -473,8 +474,8 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
   //* const channel = await User.aggrigate([{this is pipeline1},{pipeline2},{3},{4},{etc...}]);
 
   // These are your array and these are your object in which you have to put a filtered information. The first information that I would like to grab is there are many records of user. I would like to match a record which has this exact username that I have grabbed from request Param.
-  const channel = await User.aggrigate([
-    { $match: { userName: userName?.toLowerCase() } },
+  const channel = await User.aggregate([
+    { $match: { userName: userName.toLowerCase() } },
     // Now, in the next pipeline, I would love to locate more of the information.  we're going to do a lookup. Lookup means I want to find more information. It's going to do a collection of that lookup.
     // just open ER-diagram check it [where we connect anything from anyone (ref to this from this type: moongose.schema.Type.ObjectId) so we are using lookup for more detail]
     {
@@ -483,7 +484,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         // So I'll just go ahead and say this is my subscription and this needs to match in the local field of id. The next field is foreign field. What is the foreign field that we are matching up? This is the important part. The foreign field that I'm trying to match is the channel, not the subscriber here. this is because we want to fetch the subscriber list of the channel.
         localField: "_id",
         foreignField: "channel",
-        as: "subscriber", // prefer to call them as subscribers.
+        as: "subscribers", // prefer to call them as subscribers.
         //Listen this, If you collect all the channels which has your user id, that means you are collecting all of your subscriber base.
       },
     },
@@ -501,16 +502,16 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       $addFields: {
         // inside this addFields we can add our field and whatever the name we want to give to it we can.
         subscribersCount: {
-          $size: "$subscriber", //size operator,which is going to go ahead and use the subscriber. Now this makes sure in this case you use a dollar sign.The dollar sign is required when you have named something [we named above by as (subcriberedTo , subsciber, etc...)].
+          $size: "$subscribers", //size operator,which is going to go ahead and use the subscriber. Now this makes sure in this case you use a dollar sign.The dollar sign is required when you have named something [we named above by as (subcriberedTo , subsciber, etc...)].
         },
-        channelSubscribedToCount: {
+        channelsSubscribedToCount: {
           $size: "$subscribedTo",
         },
         isSubscribed: {
-          $Cond: {
+          $cond: {
             //So what I'm looking forward is that this user?._id should be available inside one of the document which this subscribers will give me. Here {subscribersCount} we are counting it. But this thing is giving me a whole lot of collections, lots of documents and I want to find out do we have any such document in our lookup that satisfies this condition that the id of this user is present in such.
             // So in the subscribers do we have a subscriber which has this id? That means I'm subscribed to my channel so I'm logged in.
-            $if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
           },
@@ -541,12 +542,9 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 });
 
 //! above Code without comment
-/* const getUserChannelProfile = asyncHandler(async (req, res) => {
+/*  const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
-
-  if (!username?.trim()) {
-    throw new ApiError(400, "username is missing");
-  }
+  if (!username?.trim()) throw new ApiError(404, "Username not found");
 
   const channel = await User.aggregate([
     {
@@ -554,6 +552,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         username: username?.toLowerCase(),
       },
     },
+    // Subscriber: from Subscription model
     {
       $lookup: {
         from: "subscriptions",
@@ -562,6 +561,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         as: "subscribers",
       },
     },
+    // Channels Subscribed to - Channel: from Subscription model
     {
       $lookup: {
         from: "subscriptions",
@@ -572,11 +572,10 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
-      // inside this addFields we can add our field and whatever the name we want to give to it we can give any name.
         subscribersCount: {
           $size: "$subscribers",
         },
-        channelsSubscribedToCount: {
+        subscribedToCount: {
           $size: "$subscribedTo",
         },
         isSubscribed: {
@@ -592,19 +591,18 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       $project: {
         fullName: 1,
         username: 1,
-        subscribersCount: 1,
-        channelsSubscribedToCount: 1,
-        isSubscribed: 1,
         avatar: 1,
         coverImage: 1,
         email: 1,
+        subscribersCount: 1,
+        subscribedToCount: 1,
+        isSubscribed: 1,
       },
     },
   ]);
 
-  if (!channel?.length) {
-    throw new ApiError(404, "channel does not exists");
-  }
+  // console.log("CHANNEL", channel);
+  if (!channel?.length) throw new ApiError(404, "Channel does not exist");
 
   return res
     .status(200)
