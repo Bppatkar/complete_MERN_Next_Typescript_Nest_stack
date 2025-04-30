@@ -7,6 +7,7 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 //! method for generating token
 
@@ -248,7 +249,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   // The step one of having this is first of all, go ahead and collect that incoming refresh token because somebody has already, we are assuming somebody already has hit the route of 401. That means things have expired.
   const incomingRefreshToken =
     req.cookies?.refreshToken || req.body?.refreshToken;
-  // console.log("COOKIE coming from req.cookies", req.cookies);
+  // console.log("Incoming Refresh Token:", incomingRefreshToken);
   if (!incomingRefreshToken)
     throw new ApiError(400, "Refresh token is required");
 
@@ -259,9 +260,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       incomingRefreshToken,
       process.env.REFRESH_TOKEN_SECRET
     );
+
+    // console.log("Decoded Token:", decodedToken);
     // if token is decoded means we get _id in the decodedToken variable so we can use it to find the user in the database
     const user = await User.findById(decodedToken?._id);
+    // console.log("Found User:", user);
     if (!user) throw new ApiError(404, "Invalid Refresh Token");
+    // console.log("User's Refresh Token from DB:", user.refreshToken);
 
     //  if we have a successful user, then we have a refresh token,I have taken this from the user, this has come to me and I've verified that hey, it is user and everything. But if you remember, there was one copy of this refresh token in my database. Also, I need to verify if the user is really logged in and has been not really long gone.
 
@@ -285,6 +290,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);
+
+    // console.log("New Access Token:", accessToken);
+    // console.log("New Refresh Token:", newRefreshToken);
 
     return res
       .status(200)

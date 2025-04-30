@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 export const verifyJwt = asyncHandler(async (req, _, next) => {
-  console.log("Auth middleware called");
+  console.log("jwt verification...Auth middleware called");
   // console.log("Request headers:", req.headers);
   // console.log("Request cookies:", req.cookies);
   // But I want to show you there is one more way of how usually this token comes up. It usually doesn't come in the body even if you're working with the mobile app.There is one more way how it comes up. Let me show you that.
