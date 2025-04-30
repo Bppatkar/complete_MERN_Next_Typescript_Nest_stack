@@ -66,18 +66,19 @@ npm install
 MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 ACCESS_TOKEN_SECRET=your_access_token_secret
-ACCESS_TOKEN_EXPIRY=1d
+ACCESS_TOKEN_EXPIRY= your_access_token_expiry
 REFRESH_TOKEN_SECRET=your_refresh_token_secret
-REFRESH_TOKEN_EXPIRY=7d
-
+REFRESH_TOKEN_EXPIRY= your refresh_token_expiry
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
 ```
 
 4. Run the backend:
 
 ```bash
+cd server
 npm run dev
 ```
 
@@ -87,24 +88,9 @@ npm run dev
 cd client
 npm run dev
 ```
-
-## Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## Contact
 
 For questions or feedback:
 
 - Email: [bhanupratappatkar777@gmail.com](mailto:bhanupratappatkar777@gmail.com)
 - GitHub: [Bppatkar](https://github.com/Bppatkar)
-
-```
-
-```
