@@ -2,7 +2,7 @@
 
 ## [Modal](https://app.eraser.io/workspace/VItKkuh1QNeX9UpBQ7SF?origin=share)
 
-![idea-to-database](idea-to-database.png)
+![idea-to-database](./public/idea-to-database.png)
 
 Welcome to Videotube! This is a YouTube-like platform where users can upload, view, and share videos. The project is built with a React frontend and a backend powered by Node.js and Express (MERN).
 
