@@ -1,6 +1,8 @@
 # Videotube
 
-[![Database Schema](https://app.eraser.io/workspace/VItKkuh1QNeX9UpBQ7NF?origin=share)](./public/idea-to-database.png)
+## [Modal](https://app.eraser.io/workspace/VItKkuh1QNeX9UpBQ7SF?origin=share)
+
+![idea-to-database](./public/idea-to-database.png)
 
 Welcome to Videotube! This is a YouTube-like platform where users can upload, view, and share videos. The project is built with a React frontend and a backend powered by Node.js and Express (MERN).
 
@@ -52,7 +54,6 @@ git clone https://github.com/Bppatkar/complete_MERN_stack/tree/main/my_learning/
 cd videoTube
 ```
 
-
 2. Install dependencies:
 
 ```bash
@@ -103,5 +104,7 @@ For questions or feedback:
 
 - Email: [bhanupratappatkar777@gmail.com](mailto:bhanupratappatkar777@gmail.com)
 - GitHub: [Bppatkar](https://github.com/Bppatkar)
+
+```
 
 ```
