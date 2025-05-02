@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Navbar from "./components/Navbar.jsx";
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "./store/authSlice";
-import axiosInstance from "./services/axiosInstance";
+import { login, logout } from "./store/authSlice.jsx";
+import axiosInstance from "./services/axiosInstance.jsx";
 
 function App() {
   const dispatch = useDispatch();
