@@ -15,13 +15,17 @@ function App() {
   useEffect(() => {
     axiosInstance
       .get("/users/current-user")
-      .then((userData) => {
-        if (userData) {
-          dispatch(login(userData?.data?.data));
+      .then((res) => {
+        console.log("Full API Response:", res);
+      
+        const user = res?.data?.user || res?.data?.data || res?.data;
+        if (user) {
+          dispatch(login(user));
         } else {
           dispatch(logout());
         }
       })
+      
       .catch((error) => {
         console.log(error);
       })
