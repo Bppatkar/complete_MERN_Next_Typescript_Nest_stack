@@ -19,7 +19,7 @@ import {
 } from "./pages";
 import AuthLayout from "./components/AuthLayout.jsx";
 import { Provider } from "react-redux";
-import store from "./store/store.js";
+import store from "./store/store.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ChannelPage from "./components/ChannelPage.jsx";

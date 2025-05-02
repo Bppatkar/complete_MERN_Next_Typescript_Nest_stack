@@ -1,8 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 
-// https://vite.dev/config/
+const baseUrl = String(process.env.VITE_API_BASE_URL_DEV);
+
 export default defineConfig({
-  plugins: [tailwindcss(), react()],
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/api": baseUrl || "http://localhost:3000",
+    },
+    changeOrigin: true,
+    secure: false,
+  },
 });
