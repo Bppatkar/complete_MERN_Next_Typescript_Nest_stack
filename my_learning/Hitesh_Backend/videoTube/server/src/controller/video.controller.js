@@ -135,11 +135,11 @@ const publishVideo = asyncHandler(async (req, res) => {
     description: description || "",
     thumbnail: {
       url: thumbnail.url,
-      publicId: thumbnail.public_id, // Note: Must match your schema field name
+      publicId: thumbnail.public_id, 
     },
     videoFile: {
       url: videoFile.url,
-      publicId: videoFile.public_id, // Note: Must match your schema field name
+      publicId: videoFile.public_id,
     },
     duration: videoFile.duration || 0,
     isPublished: true,
