@@ -108,51 +108,62 @@ const publishVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
 
   if (!title) {
-    throw new ApiError(400, "All fields are required");
+    throw new ApiError(400, "Title is required");
   }
 
-  const videoFileLocalPath = req.files?.videoFile[0]?.path;
-  const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
+  const videoFileLocalPath = req.files?.videoFile?.[0]?.path;
+  const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
 
-  if (!videoFileLocalPath) throw new ApiError(400, "Video File is required");
+  if (!videoFileLocalPath) throw new ApiError(400, "Video file is required");
   if (!thumbnailLocalPath) throw new ApiError(400, "Thumbnail is required");
 
+  // Upload files to Cloudinary
   const videoFile = await uploadOnCloudinary(videoFileLocalPath);
-  if (!videoFile) throw new ApiError(400, "Cloudinary: Video File is required");
-
   const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-  if (!thumbnail) throw new ApiError(400, "Cloudinary: Thumbnail is required");
 
+  if (!videoFile?.url || !videoFile?.public_id) {
+    throw new ApiError(400, "Failed to upload video file to Cloudinary");
+  }
+
+  if (!thumbnail?.url || !thumbnail?.public_id) {
+    throw new ApiError(400, "Failed to upload thumbnail to Cloudinary");
+  }
+
+  // Create video document
   const video = await Video.create({
     title: title || "",
     description: description || "",
     thumbnail: {
       url: thumbnail.url,
-      publicId: thumbnail.public_id,
+      publicId: thumbnail.public_id, // Note: Must match your schema field name
     },
     videoFile: {
       url: videoFile.url,
-      publicId: videoFile.public_id,
+      publicId: videoFile.public_id, // Note: Must match your schema field name
     },
-    duration: videoFile?.duration,
+    duration: videoFile.duration || 0,
     isPublished: true,
-    owner: new mongoose.Types.ObjectId(req.user?._id),
+    owner: req.user?._id,
   });
 
+  // Clean up local files
   await deleteFromCloudinary(videoFileLocalPath);
   await deleteFromCloudinary(thumbnailLocalPath);
 
-  if (!video) throw new ApiError(500, "Error while uploading video");
+  if (!video) {
+    throw new ApiError(500, "Failed to create video document");
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, video, "Video uploaded Successfully"));
+    .json(new ApiResponse(200, video, "Video uploaded successfully"));
 });
 
 const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 
-  if (!videoId || !isValidObjectId(videoId)) throw new ApiError(404, "Video not found");
+  if (!videoId || !isValidObjectId(videoId))
+    throw new ApiError(404, "Video not found");
 
   const video = await Video.aggregate([
     {
@@ -352,7 +363,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
       "deleteVideo :: You do not have permission to perform this action"
     );
   }
-  
+
   const deletedVideo = await Video.findByIdAndDelete(videoId);
   const delVideoFile = await deleteFromCloudinary(video?.videoFile?.publicId);
   const delThumbnail = await deleteFromCloudinary(video?.thumbnail?.publicId);
@@ -415,4 +426,3 @@ export {
   togglePublishStatus,
   getAllRecommendedVideos,
 };
-
