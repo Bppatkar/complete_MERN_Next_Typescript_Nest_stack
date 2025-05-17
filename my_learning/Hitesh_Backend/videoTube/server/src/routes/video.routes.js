@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   deleteVideo,
   getAllRecommendedVideos,
+  getAllVideos,
   getVideoById,
   publishVideo,
   togglePublishStatus,
@@ -13,6 +14,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.route("/recommendation/:videoId").get(getAllRecommendedVideos);
+router.route("/allVideos").get(getAllVideos);
 
 router.use(verifyJwt); // It applies every route in this file
 router.route("/upload-video").post(
@@ -35,3 +37,4 @@ router.route("/delete/:videoId").delete(deleteVideo);
 router.route("/toggle/:videoId").patch(togglePublishStatus);
 
 export default router;
+
