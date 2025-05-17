@@ -319,7 +319,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   // findByIdAndUpdate because i dont want to remove the entire record i just want to update one field
-  console.log("req.user:", req.user);
+  // console.log("req.user:", req.user);
+  console.log("logoutUser called");
   const userId = req.user._id;
   await User.findByIdAndUpdate(
     userId,
