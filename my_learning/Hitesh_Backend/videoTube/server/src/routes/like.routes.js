@@ -10,7 +10,7 @@ import {
 } from "../controller/like.controller.js";
 
 const router = Router();
-router.use(verifyJwt); // Apply verifyJWT middleware to all routes in this file
+router.use(verifyJwt);
 
 router.route("/toggle/v/:videoId").post(toggleVideoLike);
 router.route("/toggle/c/:commentId").post(toggleCommentLike);
