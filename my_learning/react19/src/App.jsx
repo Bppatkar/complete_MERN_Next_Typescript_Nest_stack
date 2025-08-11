@@ -1,20 +1,36 @@
 import { useContext, useState } from 'react';
 import { DataContext } from './context/Context';
 import State from './State';
+import Clock from './Clock';
 
-// function App() {
-  // const data = useContext(DataContext);
-  // return (
-  //   <>
-  //     <h1>Hello React 19</h1>
-  //     <h2>Bank Balance :- {data}</h2>
-  //     <State />
-  //   </>
-  // );
-// }
+function App() {
+  const data = useContext(DataContext);
+  const [color, setColor] = useState(null);
+  return (
+    <>
+      <h1>Hello React 19</h1>
+      <h2>Bank Balance :- {data}</h2>
+      {/* <State /> */}
+      <br />
+      <select
+        name="color"
+        id="color"
+        defaultValue={'red'}
+        onChange={(e) => setColor(e.target.value)}
+      >
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+        <option value="purple">Purple</option>
+      </select>
+      <Clock color={color} />
+    </>
+  );
+}
 
 // For basic styling
-
+/* 
 const products = [
   { id: 1, name: 'Laptop', description: 'Powerful laptop', price: 1200 },
   { id: 2, name: 'Mouse', description: 'Wireless gaming mouse', price: 50 },
@@ -109,6 +125,5 @@ function App() {
       )}
     </div>
   );
-}
+} */
 export default App;
-
