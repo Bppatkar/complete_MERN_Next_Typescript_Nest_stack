@@ -4,9 +4,13 @@ const Clock = ({color}) => {
   const [time, setTime] = useState(null);
 
   useEffect(() => {
-    setInterval(() => {
+    let intervalId = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   });
 
   return (

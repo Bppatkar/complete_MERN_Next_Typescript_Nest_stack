@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { DataContext } from './context/Context';
 import State from './State';
 import Clock from './Clock';
+import FormStatus from './useFormStatus/FormStatus';
 
 function App() {
   const data = useContext(DataContext);
@@ -12,7 +13,7 @@ function App() {
       <h2>Bank Balance :- {data}</h2>
       {/* <State /> */}
       <br />
-      <select
+      {/* <select
         name="color"
         id="color"
         defaultValue={'red'}
@@ -23,8 +24,9 @@ function App() {
         <option value="green">Green</option>
         <option value="yellow">Yellow</option>
         <option value="purple">Purple</option>
-      </select>
-      <Clock color={color} />
+      </select> */}
+      {/* <Clock color={color} /> */}
+      <FormStatus />
     </>
   );
 }
