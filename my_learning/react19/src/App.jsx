@@ -4,6 +4,7 @@ import State from './State';
 import Clock from './Clock';
 import FormStatus from './hooks/useFormStatus/FormStatus';
 import UseTransitionHook from './hooks/UseTransitionHook';
+import UseActionStateHook from './hooks/useActionStateHook';
 
 function App() {
   const data = useContext(DataContext);
@@ -28,7 +29,8 @@ function App() {
       </select> */}
       {/* <Clock color={color} /> */}
       {/* <FormStatus /> */}
-      <UseTransitionHook />
+      {/* <UseTransitionHook /> */}
+      <UseActionStateHook />
     </>
   );
 }

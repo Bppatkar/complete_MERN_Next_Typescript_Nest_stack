@@ -12,10 +12,16 @@ const UseTransitionHook = () => {
   return (
     <>
       <h4>useTransition </h4>
-      <button disabled={pending} onClick={handleButton}>{pending ? 'Submitting...' : 'Submit'}</button>
+      <button disabled={pending} onClick={handleButton}>
+        {pending ? 'Submitting...' : 'Submit'}
+      </button>
     </>
   );
 };
 
 export default UseTransitionHook;
 
+// if we want to use useFormStatus hooks then we need a form
+// if we want same functionality without form then we can use useTransition hooks
+
+// useTransition is a new feature in React 19
