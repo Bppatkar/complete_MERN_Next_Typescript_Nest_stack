@@ -2,7 +2,8 @@ import { useContext, useState } from 'react';
 import { DataContext } from './context/Context';
 import State from './State';
 import Clock from './Clock';
-import FormStatus from './useFormStatus/FormStatus';
+import FormStatus from './hooks/useFormStatus/FormStatus';
+import UseTransitionHook from './hooks/UseTransitionHook';
 
 function App() {
   const data = useContext(DataContext);
@@ -26,7 +27,8 @@ function App() {
         <option value="purple">Purple</option>
       </select> */}
       {/* <Clock color={color} /> */}
-      <FormStatus />
+      {/* <FormStatus /> */}
+      <UseTransitionHook />
     </>
   );
 }
