@@ -1,0 +1,28 @@
+{
+  "UserData": [
+    {
+      "id": 1,
+      "name": "Hitesh",
+      "age": 20,
+      "gender": "male"
+    },
+    {
+      "id": 2,
+      "name": "Rohit",
+      "age": 20,
+      "gender": "male"
+    },
+    {
+      "id": 3,
+      "name": "Rahul",
+      "age": 20,
+      "gender": "male"
+    },
+    {
+      "id": 4,
+      "name": "Aman",
+      "age": 20,
+      "gender": "male"
+    }
+  ]
+}

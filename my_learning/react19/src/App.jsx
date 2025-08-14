@@ -5,14 +5,17 @@ import Clock from './Clock';
 import FormStatus from './hooks/useFormStatus/FormStatus';
 import UseTransitionHook from './hooks/UseTransitionHook';
 import UseActionStateHook from './hooks/useActionStateHook';
+import UsersList from './UsersList';
+import EditUser from './EditUser';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
-  const data = useContext(DataContext);
-  const [color, setColor] = useState(null);
+  // const data = useContext(DataContext);
+  // const [color, setColor] = useState(null);
   return (
     <>
       <h1>Hello React 19</h1>
-      <h2>Bank Balance :- {data}</h2>
+      {/* <h2>Bank Balance :- {data}</h2> */}
       {/* <State /> */}
       <br />
       {/* <select
@@ -30,7 +33,14 @@ function App() {
       {/* <Clock color={color} /> */}
       {/* <FormStatus /> */}
       {/* <UseTransitionHook /> */}
-      <UseActionStateHook />
+      {/* <UseActionStateHook /> */}
+
+      {/* <Routes>
+        <Route path="/" element={<UsersList />} />
+        <Route path="/edit/:id" element={<EditUser />} />
+      </Routes> */}
+
+      
     </>
   );
 }
