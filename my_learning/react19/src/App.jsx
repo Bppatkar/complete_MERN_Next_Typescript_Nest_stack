@@ -8,6 +8,7 @@ import UseActionStateHook from './hooks/useActionStateHook';
 import UsersList from './UsersList';
 import EditUser from './EditUser';
 import { Routes, Route } from 'react-router-dom';
+import UsingUse from './UsingUse';
 
 function App() {
   // const data = useContext(DataContext);
@@ -39,13 +40,11 @@ function App() {
         <Route path="/" element={<UsersList />} />
         <Route path="/edit/:id" element={<EditUser />} />
       </Routes> */}
-
-      
+      <UsingUse />
     </>
   );
 }
 
-// For basic styling
 /* 
 const products = [
   { id: 1, name: 'Laptop', description: 'Powerful laptop', price: 1200 },
