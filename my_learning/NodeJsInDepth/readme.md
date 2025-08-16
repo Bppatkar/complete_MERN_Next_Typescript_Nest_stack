@@ -4,7 +4,7 @@
 
 ### part 1
 
-- [Node.js Fundamentals & Module System] (1.%20Node-Tutorial)
+- Node.js Fundamentals & Module System
 - NPM & Package Management
 - Core Modules (Path, File System, HTTP)
 - Asynchronous Programming & Event-Driven Architecture
