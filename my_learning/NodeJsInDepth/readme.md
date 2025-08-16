@@ -33,7 +33,7 @@
 - VPS Hosting
 - Social Media App Microservices Overview
 - API Gateway Service
-- Identity Service
+- Identity Service [argon2 - password hashing]
 - Post Service
 - Search Service
 - Message Queue Service
@@ -42,3 +42,23 @@
 ---
 
 ### part 3
+
+- Node.js Concepts
+- PostgreSQL
+- Prisma
+- Nest JS
+- Bun
+- Hono
+- Prometheus
+- Grafana
+
+* Prometheus and Grafana are two distinct yet complementary open-source tools frequently used together for system and application monitoring.
+
+---
+
+### part 4
+
+- MicroServices with Nest JS
+- AWS S3
+- RabbitMQ
+- Kubernetes Deployment
