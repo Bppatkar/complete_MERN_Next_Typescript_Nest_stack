@@ -1,6 +1,4 @@
 import _ from "lodash";
-
-
 const names = ["Bhanu", "Pratap", "Patkar"];
 // console.log(_.shuffle(names));
 
