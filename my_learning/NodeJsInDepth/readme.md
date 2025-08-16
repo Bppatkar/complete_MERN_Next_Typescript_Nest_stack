@@ -4,7 +4,7 @@
 
 ### part 1
 
-- Node.js Fundamentals & Module System (https://github.com/Bppatkar/complete_MERN_stack/tree/main/my_learning/NodeJsInDepth/1.%20Node-Tutorial)
+- [Node.js Fundamentals & Module System] (https://github.com/Bppatkar/complete_MERN_stack/tree/main/my_learning/NodeJsInDepth/1.%20Node-Tutorial)
 - NPM & Package Management
 - Core Modules (Path, File System, HTTP)
 - Asynchronous Programming & Event-Driven Architecture
