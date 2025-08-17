@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const BookSchema = new mongoose.Schema(
   {
     title: {
-      type: 'String',
-      require: [true, 'Book Title is required'],
+      type: String,
+      required: [true, 'Book Title is required'],
       trim: true,
       maxLength: [100, 'Book title can not be more than 100 characters'],
     },
@@ -24,3 +24,4 @@ const BookSchema = new mongoose.Schema(
 );
 
 const Book = mongoose.model('Book', BookSchema);
+export default Book;

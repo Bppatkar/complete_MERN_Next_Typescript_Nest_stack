@@ -5,7 +5,7 @@ import {
   getAllBooks,
   getSingleBookById,
   updateBook,
-} from '../controllers/book-controller';
+} from '../controllers/book-controller.js';
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import Book from '../models/book';
+import Book from '../models/book.js';
 
 const getAllBooks = async (req, res) => {
   try {
@@ -126,7 +126,7 @@ const deleteBook = async (req, res) => {
   }
 };
 
-export default {
+export  {
   getAllBooks,
   getSingleBookById,
   addNewBook,
