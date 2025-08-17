@@ -1,5 +1,5 @@
 <%- include('components/header.ejs') %>
-<h1>Welcome to homepage</h1>
+<h1>Welcome to the <%= title %></h1>
 <label>List of products</label>
 
 <ul>
@@ -7,3 +7,5 @@
   <li><%= product.title %></li>
   <% }) %>
 </ul>
+
+<%- include('components/footer.ejs') %>

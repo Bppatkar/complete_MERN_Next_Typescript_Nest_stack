@@ -30,7 +30,7 @@ const products = [
 ];
 
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Home', products: products });
+  res.render('home', { title: 'Home Page', products: products });
 });
 
 app.get('/about', (req, res) => {
