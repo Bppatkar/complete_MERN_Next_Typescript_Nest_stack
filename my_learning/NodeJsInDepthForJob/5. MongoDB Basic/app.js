@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const MONGOURI =
-  'mongodb+srv://bhanupratappatkar777:passcheck5543@cluster0.gdb1rus.mongodb.net/';
+  // 'mongodb+srv://bhanupratappatkar777:passchec//////k5543///@cluster0.gdb1rus.mongodb.net/';
 
-mongoose
-  .connect(MONGOURI)
-  .then(() => console.log('DataBase Connect SuccessFully 🚀'))
-  .catch((error) => console.error('Connection error:', error.message));
+  mongoose
+    .connect(MONGOURI)
+    .then(() => console.log('DataBase Connect SuccessFully 🚀'))
+    .catch((error) => console.error('Connection error:', error.message));
 
 const userSchema = new mongoose.Schema(
   {
