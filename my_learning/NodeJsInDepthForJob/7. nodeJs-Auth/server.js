@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
 import connectDB from './database/db.js';
@@ -9,6 +11,11 @@ import uploadImageRoutes from './routes/image-routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // database connection
 connectDB();

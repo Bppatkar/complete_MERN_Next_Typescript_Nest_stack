@@ -16,7 +16,7 @@ router.post(
   '/upload',
   authMiddleware,
   adminMiddleware,
-  uploadMiddleware.single('image'),
+  uploadMiddleware.single('file'),
   uploadImageController
 );
 

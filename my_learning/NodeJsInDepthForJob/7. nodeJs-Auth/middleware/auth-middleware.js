@@ -4,6 +4,13 @@ const authMiddleware = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   // console.log(authHeader);
 
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Access denied. No token provided. Please login to continue',
+    });
+  }
+
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {

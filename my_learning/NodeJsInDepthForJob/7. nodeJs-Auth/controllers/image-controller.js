@@ -8,7 +8,7 @@ import fs from 'fs';
 const uploadImageController = async (req, res) => {
   try {
     // checking if file is missing in req object
-    if (!req.files) {
+    if (!req.file) {
       return res.status(400).json({
         success: false,
         message: 'File is required. Please upload an image',
@@ -26,7 +26,7 @@ const uploadImageController = async (req, res) => {
     const newlyUploadedImage = await Image.create({
       url: cloudinaryResponse.secure_url,
       publicId: cloudinaryResponse.public_id,
-      uploadedBy: req.user.userId,
+      uploadedBy: req.userInfo.userId,
     });
 
     // Return response
@@ -117,7 +117,7 @@ const deleteImageController = async (req, res) => {
     await deleteFromCloudinary(image.publicId);
 
     // Delete from database
-    await Image.findByIdAndDelete(imageId);
+    await Image.findByIdAndDelete(getCurrentIdOfImageToBeDeleted);
 
     return res.json({
       success: true,

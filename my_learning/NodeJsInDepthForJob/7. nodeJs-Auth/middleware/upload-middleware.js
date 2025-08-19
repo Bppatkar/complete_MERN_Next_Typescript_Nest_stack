@@ -1,22 +1,31 @@
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __fileName = fileURLToPath(import.meta.url);
 const __dirName = path.dirname(__fileName);
 // console.log(__fileName);
-// console.log(__dirName);
+
+const uploadDir = path.join(__dirName, '../public');
+
+// Ensure the upload directory exists
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log('✅ Created missing upload folder:', uploadDir);
+}
 
 // set our multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public');
+    cb(null, uploadDir);
   },
 
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = path.basename(file.originalname, ext);
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    // cb(null, file.fieldname + "-" + uniqueSuffix);
-    cb(null, file.originalname + '-' + uniqueSuffix);
+    cb(null, `${name}-${uniqueSuffix}${ext}`);
   },
 });
 

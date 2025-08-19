@@ -1,6 +1,8 @@
 // Require the cloudinary library
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Return "https" URLs by setting secure: true
 cloudinary.config({
