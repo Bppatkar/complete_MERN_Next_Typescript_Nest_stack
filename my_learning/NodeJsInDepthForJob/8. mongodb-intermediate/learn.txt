@@ -1,0 +1,7 @@
+what we learn here
+4 things
+
+1. Understanding the aggregation pipeline [MIMP]
+2. Using Common aggregation operators [MIMP]
+3. Understanding document refrences
+4. Populating referenced documents
