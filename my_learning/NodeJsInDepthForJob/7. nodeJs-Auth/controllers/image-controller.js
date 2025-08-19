@@ -54,36 +54,28 @@ const uploadImageController = async (req, res) => {
 };
 const fetchImageController = async (req, res) => {
   try {
-    const {
-      page = 1,
-      limit = 10,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-    } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 2;
     const skip = (page - 1) * limit;
-    const sortDirection = sortOrder === 'asc' ? 1 : -1;
 
-    // Get total count
+    const sortBy = req.query.sortBy || 'createdAt';
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
     const totalImages = await Image.countDocuments();
     const totalPages = Math.ceil(totalImages / limit);
 
-    // Fetch paginated results
-    const images = await Image.find()
-      .sort({ [sortBy]: sortDirection })
-      .skip(skip)
-      .limit(parseInt(limit))
-      .select('-__v'); // Exclude version key
+    const sortObj = {};
+    sortObj[sortBy] = sortOrder;
+    const images = await Image.find().sort(sortObj).skip(skip).limit(limit);
 
-    return res.status(200).json({
-      success: true,
-      pagination: {
-        currentPage: parseInt(page),
-        totalPages,
-        totalImages,
-        imagesPerPage: parseInt(limit),
-      },
-      data: images,
-    });
+    if (images) {
+      res.status(200).json({
+        success: true,
+        currentPage: page,
+        totalPages: totalPages,
+        totalImages: totalImages,
+        data: images,
+      });
+    }
   } catch (error) {
     console.error('Fetch error:', error);
     return res.status(500).json({

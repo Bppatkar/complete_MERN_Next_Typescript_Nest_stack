@@ -12,8 +12,8 @@ cloudinary.config({
   secure: true,
 });
 
-// Log the configuration
-console.log(cloudinary.config());
+// // Log the configuration
+// console.log(cloudinary.config());
 
 const fileUplodeOnCloudinary = async (filePath) => {
   try {
