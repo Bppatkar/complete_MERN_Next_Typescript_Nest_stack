@@ -12,13 +12,18 @@ var userInfo = "my name is ".concat(userName, " and my age is ").concat(userAge)
 console.log(userInfo);
 // method 2
 var num = 100;
-var boolData = true;
 // let data:string =  num; // Type 'number' is not assignable to type 'string'
 var data = num.toString();
-var bboData = boolData.toString();
 var data1 = ' ' + num;
-var bboData1 = ' ' + bboData;
 // apply boolean data type
+var boolData = true;
+var bboData = boolData.toString();
+var bboData1 = ' ' + bboData;
 // possible boolean values
-// inference and declaration issues
+//? only true and false will possible
+// inference/idea/anuman and declaration issues
+//? just hover on variable name and get a type
+var info1 = 'bhanu';
+var info2 = 20;
 // run with html file
+//? create html file connect js file and see output in browser console

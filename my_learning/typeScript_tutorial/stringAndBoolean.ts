@@ -16,18 +16,23 @@ console.log(userInfo);
 
 // method 2
 let num: number = 100;
-let boolData: boolean = true;
 // let data:string =  num; // Type 'number' is not assignable to type 'string'
 let data: string = num.toString();
-let bboData: string = boolData.toString();
 
 let data1: string = ' ' + num;
-let bboData1: string = ' ' + bboData;
 
 // apply boolean data type
+let boolData: boolean = true;
+let bboData: string = boolData.toString();
+let bboData1: string = ' ' + bboData;
 
 // possible boolean values
+//? only true and false will possible
 
-// inference and declaration issues
+// inference/idea/anuman and declaration issues
+//? just hover on variable name and get a type
+let info1 = 'bhanu';
+let info2 = 20;
 
 // run with html file
+//? create html file connect js file and see output in browser console
