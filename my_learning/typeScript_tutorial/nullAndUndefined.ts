@@ -1,9 +1,10 @@
 // what is null data type
-
-// how to use it
+let data: null = null;
+let data1: undefined = undefined;
 
 // what is undefined data type
+//? which is not defined yet
 
-// how to use understand
+// how to use undefined
+let userName: undefined | string = 'bhanu';
 
-// possible values

@@ -10,7 +10,7 @@ A comprehensive TypeScript course covering everything from basic concepts to adv
 - Number Data Type
 - String and Boolean Data Types
 - Null and Undefined Data Types
-- TypeScript Config File
+- TypeScript Config File [npx tsc --init, npx tsc 'all js file at once']
 - BigInt Data Type
 - Symbol Data Type
 - Using TypeScript with Input Field Data
