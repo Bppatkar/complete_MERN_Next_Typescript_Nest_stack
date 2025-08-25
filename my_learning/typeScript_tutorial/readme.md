@@ -45,3 +45,5 @@ A comprehensive TypeScript course covering everything from basic concepts to adv
 - Typed Promise in TypeScript
 - API Calls in TypeScript
 - Best Practices in TypeScript
+<img width="567" height="223" alt="image" src="https://github.com/user-attachments/assets/0e77644f-5030-4d0e-a768-da5747254bb3" />
+
