@@ -1,71 +1,212 @@
 // what is Utility Types?
 //? In Typescript, Utility Types are built-in types means pre define types that help transform or manipulate other types in a convenient way
 
+// ==================== UTILITY TYPES IN TYPESCRIPT ====================
+
+//? Utility Types are built-in types that help transform or manipulate other types
+
+// ---------------------------------------------------------------------
+// 1. PARTIAL - Makes all properties optional
+// ---------------------------------------------------------------------
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+
+// All properties become optional
+let partialUser: Partial<User> = {
+  name: 'John', // age and email are optional
+};
+
+// ---------------------------------------------------------------------
+// 2. REQUIRED - Makes all properties required (even optional ones)
+// ---------------------------------------------------------------------
+interface OptionalUser {
+  name: string;
+  age?: number;
+  email?: string;
+}
+
+// All properties become required
+let requiredUser: Required<OptionalUser> = {
+  name: 'John',
+  age: 25, // now required
+  email: 'john@email.com', // now required
+};
+
+// ---------------------------------------------------------------------
+// 3. READONLY - Makes all properties read-only (cannot be modified)
+// ---------------------------------------------------------------------
+interface EditableUser {
+  name: string;
+  age: number;
+}
+
+let readonlyUser: Readonly<EditableUser> = {
+  name: 'John',
+  age: 25,
+};
+
+// readonlyUser.name = "Mike"; // Error: Cannot assign to read-only property
+
+// ---------------------------------------------------------------------
+// 4. PICK - Select specific properties from a type
+// ---------------------------------------------------------------------
+interface FullUser {
+  name: string;
+  age: number;
+  email: string;
+  address: string;
+}
+
+// Only pick name and email properties
+let pickedUser: Pick<FullUser, 'name' | 'email'> = {
+  name: 'John',
+  email: 'john@email.com',
+};
+
+// ---------------------------------------------------------------------
+// 5. OMIT - Remove specific properties from a type
+// ---------------------------------------------------------------------
+interface CompleteUser {
+  name: string;
+  age: number;
+  email: string;
+  address: string;
+}
+
+// Remove age and address properties
+let omittedUser: Omit<CompleteUser, 'age' | 'address'> = {
+  name: 'John',
+  email: 'john@email.com',
+};
+
+// ---------------------------------------------------------------------
+// 6. EXCLUDE - Remove types from a union type
+// ---------------------------------------------------------------------
+type Colors = 'red' | 'green' | 'blue' | 'yellow';
+
+// Exclude "yellow" from Colors
+type PrimaryColors = Exclude<Colors, 'yellow'>;
+// Result: "red" | "green" | "blue"
+
+// ---------------------------------------------------------------------
+// 7. EXTRACT - Keep only specific types from a union
+// ---------------------------------------------------------------------
+type AllColors = 'red' | 'green' | 'blue' | 'yellow' | 'orange';
+
+// Extract only warm colors
+type WarmColors = Extract<AllColors, 'red' | 'yellow' | 'orange'>;
+// Result: "red" | "yellow" | "orange"
+
+// ---------------------------------------------------------------------
+// 8. NONNULLABLE - Remove null and undefined from a type
+// ---------------------------------------------------------------------
+type MaybeString = string | null | undefined;
+
+// Remove null and undefined
+type DefinitelyString = NonNullable<MaybeString>;
+// Result: string
+
+// ---------------------------------------------------------------------
+// 9. RECORD - Create object type with specific key-value types
+// ---------------------------------------------------------------------
+// Create object with string keys and number values
+type Scores = Record<string, number>;
+
+let examScores: Scores = {
+  math: 95,
+  science: 88,
+  english: 92,
+};
+
+// With specific keys
+type WeekDays = 'mon' | 'tue' | 'wed' | 'thu' | 'fri';
+type Schedule = Record<WeekDays, string>;
+
+let officeHours: Schedule = {
+  mon: '9-5',
+  tue: '9-5',
+  wed: '9-5',
+  thu: '9-5',
+  fri: '9-3',
+};
+
+// ---------------------------------------------------------------------
+// 10. RETURNTYPE - Get the return type of a function
+// ---------------------------------------------------------------------
+function getUser() {
+  return { name: 'John', age: 25 };
+}
+
+type UserReturnType = ReturnType<typeof getUser>;
+// Result: { name: string; age: number }
+
+// ---------------------------------------------------------------------
+// 11. PARAMETERS - Get the parameters type of a function
+// ---------------------------------------------------------------------
+function createUser(name: string, age: number, email?: string) {
+  return { name, age, email };
+}
+
+type UserParams = Parameters<typeof createUser>;
+// Result: [name: string, age: number, email?: string]
+
+// ---------------------------------------------------------------------
+// 12. AWAITED - Get the type after awaiting a Promise
+// ---------------------------------------------------------------------
+async function fetchUser(): Promise<{ name: string; age: number }> {
+  return { name: 'John', age: 25 };
+}
+
+type FetchedUser = Awaited<ReturnType<typeof fetchUser>>;
+// Result: { name: string; age: number }
+
+//! ==================== PRACTICAL EXAMPLE ====================
 interface CollegeType {
   name: string;
   location: string;
   students: number;
-  branch: number;
+  branch?: number; // optional property
 }
 
-// let CollegeData1: CollegeType = {
-//   name: 'iit delhi',
-//   location: 'delhi',
-//   students: 12,
-// };
-
-//TODO: types
-//FIXME:   1. Partial
-//! if we are not taking branch in collegeData1 then it is showing error , because in datatype we mentioned it. so for removing error we use 'Partial' thats means if we dont want to use all datatypes it's ok , or if we want to use all datatype that is also ok
-let CollegeData1: Partial<CollegeType> = {
-  name: 'iit delhi',
-  location: 'delhi',
-  students: 12,
-  // now we do not getting any error
+// Using Partial - all properties become optional
+let collegeData1: Partial<CollegeType> = {
+  name: 'IIT Delhi',
+  location: 'Delhi',
+  students: 12000,
+  // branch is optional
 };
 
-//? One more example
-
-// function getCollegeData(data: CollegeType) {}
-
-// getCollegeData({ name: 'iit madras' }); //! getting error [missing the following properties from type 'CollegeType': location, students, branch] because CollegeType has more datatypes, so we make it partial
-
-function getCollegeData(data: Partial<CollegeType>) {}
-getCollegeData({ name: 'iit madras' });
-// _________________________________________________
-
-//FIXME:    2. Required
-
-// in COllegeType let see, u have any conditional datatype means which is optional, like branch?:number; '?' mark means optional , and we want to make it required so we do
-function getCollegeData1(data: Required<CollegeType>) {}
-// now getCollegeData1 demands branch , now it is not optional
-
-// _________________________________________________
-//FIXME:   3. ReadOnly
-let CollegeData2: CollegeType = {
-  name: 'check1',
-  location: 'check',
-  students: 23,
-  branch: 5,
-};
-//? we can change data like - CollegeData2.name= "check2";
-//? which is wrong because anyone can change data, so we make it readonly
-//!  let CollegeData2: Readonly <CollegeType> = {}
-// _________________________________________________
-//FIXME:    4. Pick
-// now we have any object and we dont want to use all 4 datatypes, [n,l,s,b] , we want to use only 2 then we use 'Pick' and it takes 2 argument datatype and property u want to use
-let CollegeData3: Pick<CollegeType, 'branch' | 'location'> = {
-  branch: 1,
-  location: 'test'
+// Using Required - all properties become required
+let collegeData2: Required<CollegeType> = {
+  name: 'IIT Bombay',
+  location: 'Mumbai',
+  students: 15000,
+  branch: 8, // now required
 };
 
-// _________________________________________________
-//FIXME:    5. Omit
-// _________________________________________________
-//FIXME:    6. Exclude
-// _________________________________________________
-//FIXME:    7. Extract
-// _________________________________________________
-//FIXME:    8. NanNullable
-// _________________________________________________
-//FIXME:    9. Record
+// Using Readonly - properties cannot be modified
+let collegeData3: Readonly<CollegeType> = {
+  name: 'IIT Madras',
+  location: 'Chennai',
+  students: 13000,
+  branch: 6,
+};
+// collegeData3.name = "New Name"; // Error: Cannot assign to read-only property
+
+// Using Pick - select only specific properties
+let collegeBasicInfo: Pick<CollegeType, 'name' | 'location'> = {
+  name: 'IIT Kanpur',
+  location: 'Kanpur',
+};
+
+// Using Omit - remove specific properties
+let collegeWithoutBranch: Omit<CollegeType, 'branch'> = {
+  name: 'IIT Kharagpur',
+  location: 'Kharagpur',
+  students: 14000,
+};
+
+console.log('All utility types examples are ready!');
