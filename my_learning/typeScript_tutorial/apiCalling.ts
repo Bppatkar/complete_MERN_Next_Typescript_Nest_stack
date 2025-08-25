@@ -20,16 +20,10 @@ async function fetchUsers(): Promise<User[]> {
     return [];
   }
 }
-// Example usage
-async function main() {
-  const users = await fetchUsers();
-  users.forEach(user => {
-    console.log(`ID: ${user.id}, Name: ${user.name}, Email: ${user.email}`);
-  });
-}
 
-main();
-
+fetchUsers().then((data: User[]) => console.log(data));
 // Example output:
-// ID: 1, Name: John Doe, Email: john@example.com
-// ID: 2, Name: Jane Smith, Email: jane@example.com
+// [
+//   { id: 1, name: "John Doe", email: "john@example.com" },
+//   { id: 2, name: "Jane Smith", email: "jane@example.com" }
+// ]
