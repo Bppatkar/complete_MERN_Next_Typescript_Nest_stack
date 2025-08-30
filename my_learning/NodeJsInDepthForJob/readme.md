@@ -26,7 +26,7 @@
 
 - Node.js Concepts
 - Express.js and API Design
-- Redis
+- Redis - [search on google - "redis windows git install" ]
 - RabbitMQ
 - Docker
 - CI/CD (GitHub Actions)

@@ -18,7 +18,7 @@ app.use(addTimeStamp);
 app.use(configureCors());
 
 // app.use(createBasicRateLimiter(5, 15 * 60 * 1000)); // 5 request per 15 minutes
-app.use(createBasicRateLimiter(1000, 15 * 60 * 1000)); // 1000 requests per 15 minutes
+app.use(createBasicRateLimiter(100, 15 * 60 * 1000)); // 100 requests per 15 minutes
 app.use(express.json());
 
 app.use(urlVersoining('v1'));
