@@ -4,7 +4,7 @@ const urlVersoining = (version) => (req, res, next) => {
   } else {
     res.status(404).json({
       success: false,
-      error: 'API Version is not supported',
+      error: 'API version is not supported',
     });
   }
 };
@@ -15,7 +15,7 @@ const headerVersioning = (version) => (req, res, next) => {
   } else {
     res.status(404).json({
       success: false,
-      error: 'API Version is not supported',
+      error: 'API version is not supported',
     });
   }
 };
@@ -36,4 +36,4 @@ const contentTypeVersioning = (version) => (req, res, next) => {
   }
 };
 
-export { contentTypeVersioning, headerVersioning, urlVersoining };
+export { urlVersoining, headerVersioning, contentTypeVersioning };

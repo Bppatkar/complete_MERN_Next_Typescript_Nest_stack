@@ -1,13 +1,13 @@
 import rateLimit from 'express-rate-limit';
 
-const createBasicRateLimiter = (maxRequest, time) => {
+const createBasicRateLimiter = (maxRequests, time) => {
   return rateLimit({
-    max: maxRequest,
+    max: maxRequests,
     windowMs: time,
-    message: 'Too manu requests, please try again later',
+    message: 'Too many requests, please try again later',
     standardHeaders: true,
     legacyHeaders: false,
   });
 };
 
-export default createBasicRateLimiter;
+export { createBasicRateLimiter };
