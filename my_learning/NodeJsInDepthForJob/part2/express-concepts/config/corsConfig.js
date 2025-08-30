@@ -18,10 +18,10 @@ const configureCors = () => {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept-Version'],
     exposedHeaders: ['X-Total-Count', 'Content-Range'],
-    credentials: true, //enable support for cookies,
-    preflightContinue: false,
+    credentials: true, //enable support for cookies MIMP,
+    preflightContinue: false, // Pass the CORS preflight response to the next handler
     maxAge: 600, // cache pre flight responses for 10 mins  (600 seconds) -> avoid sending options requests multiple times
-    optionsSuccessStatus: 204,
+    optionsSuccessStatus: 204, // Provides a status code to use for successful OPTIONS requests
   });
 };
 
