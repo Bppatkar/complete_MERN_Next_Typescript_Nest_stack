@@ -43,7 +43,7 @@ async function testRedisConnection() {
     console.log(extractValue); // Bhanu Pratap
 
     const deleteCount = await client.del('name');
-    console.log(deleteCount); // 1
+    console.log(deleteCount); // 1  [means 1 key has been deleted]
 
     const extractUpdateValue = await client.get('name');
     console.log(extractUpdateValue); // null
@@ -69,3 +69,12 @@ async function testRedisConnection() {
   }
 }
 testRedisConnection();
+
+//? now move to data-structure section
+
+// _____________________
+//! for checking code - install redis from google - [search on google - "redis windows git install" ]
+// open cmd - write -- redis-server
+// redis-cli ping  -- # Should return "PONG" means server is running
+// for stopping server - run cmd as administrator and then - run cmd -- net stop redis
+// and in your file write - await client.connect()    [dont forgot to add this ]
