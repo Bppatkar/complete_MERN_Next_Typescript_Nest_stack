@@ -66,6 +66,7 @@ async function testRedisConnection() {
     console.log(error);
   } finally {
     await client.quit();
+    // this client will give you a quit method , why --> this is important to avoid leaving open connections , so there can be sometimes open connection so this will actually make sure that there is no open connections should left
   }
 }
 testRedisConnection();
