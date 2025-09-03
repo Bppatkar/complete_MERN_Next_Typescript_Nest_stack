@@ -75,8 +75,17 @@ app.use('/v1/auth', proxy(process.env.IDENTITY_SERVICE_URL), {
 });
 
 //! setting up proxy for our post service
+app.use('/v1/posts', validToken, proxy(process.env.POST_SERVICE_URL), {
+  ...proxyOptions,
+});
 //! setting up proxy for our media service
+app.use('/v1/media', validToken, proxy(process.env.MEDIA_SERVICE_URL), {
+  ...proxyOptions,
+});
 //! setting up proxy for our search service
+app.use('/v1/search', validToken, proxy(process.env.SEARCH_SERVICE_URL), {
+  ...proxyOptions,
+});
 
 app.listen(PORT, () => {
   logger.info(`API Gateway is running on port ${PORT}`);

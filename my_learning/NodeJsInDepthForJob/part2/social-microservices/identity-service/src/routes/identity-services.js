@@ -4,7 +4,7 @@ import {
   registerUser,
   loginUser,
   logoutUser,
-} from '../controllers/identity-controller';
+} from '../controllers/identity-controller.js';
 
 const router = express.Router();
 

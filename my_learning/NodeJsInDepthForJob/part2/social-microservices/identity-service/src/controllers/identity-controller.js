@@ -1,8 +1,8 @@
-import RefreshToken from '../models/RefreshToken';
-import User from '../models/User';
-import generateToken from '../utils/generateToken';
-import logger from '../utils/logger';
-import { validateRegistration, validateLogin } from '../utils/validation';
+import RefreshToken from '../models/RefreshToken.js';
+import User from '../models/User.js';
+import generateToken from '../utils/generateToken.js';
+import logger from '../utils/logger.js';
+import { validateRegistration, validateLogin } from '../utils/validation.js';
 
 //! register user
 const registerUser = async (req, res) => {

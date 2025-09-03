@@ -77,5 +77,6 @@ testRedisConnection();
 //! for checking code - install redis from google - [search on google - "redis windows git install" ]
 // open cmd - write -- redis-server
 // redis-cli ping  -- # Should return "PONG" means server is running
-// for stopping server - run cmd as administrator and then - run cmd --> net stop redis
+//? for stopping server -
+//! run cmd as administrator and then - run cmd --> net stop redis
 // and in your file write - await client.connect()    [dont forgot to add this ]
