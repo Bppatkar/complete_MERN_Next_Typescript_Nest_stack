@@ -2,8 +2,9 @@
 // express-rate-limit and rate-limit-redis  --> to protect the API from misuse by limiting the number of requests a user can make.
 
 import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
-import cors from 'corss';
+import cors from 'cors';
 import Redis from 'ioredis';
 import helmet from 'helmet';
 import logger from './utils/logger';
@@ -43,13 +44,14 @@ const rateLimitOptions = rateLimit({
 app.use(rateLimitOptions);
 
 app.use((req, res, next) => {
-  logger.info(`Recieved ${req.method} request to ${req.url}`);
+  logger.info(`Receieved ${req.method} request to ${req.url}`);
   logger.info(`Request Body , ${req.body}`);
+  next();
 });
 
 const proxyOptions = {
   proxyReqPathResolver: (req) => {
-    return req.originalUrl.replace('/^/v1/', 'api');
+    return req.originalUrl.replace(/^\/v1/, '/api');
   },
   proxyErrorHandler: (err, res, next) => {
     logger.error(`Proxy error: ${err.message}`);
@@ -63,63 +65,99 @@ const proxyOptions = {
 //! setting up proxy for our identity service
 //* skeleton
 /*
-app.use('/v1/auth', validToken, proxy(process.env.POST_SERVICE_URL), {
+app.use('/v1/auth', validToken, proxy(process.env.POST_SERVICE_URL, {
   ...proxyOptions,
   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
   userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
     logger.info(`Response received from Identity service : ${proxyRes.statusCode}`);
     return proxyResData;
   },
-}); 
+})); 
  */
-app.use('/v1/auth', proxy(process.env.IDENTITY_SERVICE_URL), {
-  ...proxyOptions,
-  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-    proxyReqOpts.header['Content-Type'] = 'application/json';
-    return proxyReqOpts;
-  },
-  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-    logger.info(
-      `Response received from Identity services: ${proxyRes.statusCode}`
-    );
+app.use(
+  '/v1/auth',
+  proxy(process.env.IDENTITY_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['Content-Type'] = 'application/json';
+      return proxyReqOpts;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from Identity services: ${proxyRes.statusCode}`
+      );
 
-    return proxyResData;
-  },
-});
+      return proxyResData;
+    },
+  })
+);
 
 //! setting up proxy for our post service
-app.use('/v1/posts', validToken, proxy(process.env.POST_SERVICE_URL), {
-  ...proxyOptions,
-  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
-  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-    logger.info(`Response received from Post service : ${proxyRes.statusCode}`);
-    return proxyResData;
-  },
-});
+app.use(
+  '/v1/posts',
+  validToken,
+  proxy(process.env.POST_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['Content-Type'] = 'application/json';
+      proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
+
+      return proxyReqOpts;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from Post service : ${proxyRes.statusCode}`
+      );
+      return proxyResData;
+    },
+  })
+);
 //! setting up proxy for our media service
-app.use('/v1/media', validToken, proxy(process.env.MEDIA_SERVICE_URL), {
-  ...proxyOptions,
-  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+app.use(
+  '/v1/media',
+  validToken,
+  proxy(process.env.MEDIA_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
+      const contentType =
+        srcReq.headers['content-type'] || srcReq.headers['Content-Type'];
+      if (!contentType || !contentType.startsWith('multipart/form-data')) {
+        proxyReqOpts.headers['Content-Type'] = 'application/json';
+      }
+      return proxyReqOpts;
+    },
 
-  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-    logger.info(
-      `Response received from Media service : ${proxyRes.statusCode}`
-    );
-    return proxyResData;
-  },
-});
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from Media service : ${proxyRes.statusCode}`
+      );
+      return proxyResData;
+    },
+    parseReqBody: false, // Added for better file upload handling
+  })
+);
 //! setting up proxy for our search service
-app.use('/v1/search', validToken, proxy(process.env.SEARCH_SERVICE_URL), {
-  ...proxyOptions,
-  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+app.use(
+  '/v1/search',
+  validToken,
+  proxy(process.env.SEARCH_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['Content-Type'] = 'application/json';
+      proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
 
-  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-    logger.info(
-      `Response received from Search service : ${proxyRes.statusCode}`
-    );
-    return proxyResData;
-  },
-});
+      return proxyReqOpts;
+    },
+
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from Search service : ${proxyRes.statusCode}`
+      );
+      return proxyResData;
+    },
+  })
+);
 
 app.use(errorHandler);
 
