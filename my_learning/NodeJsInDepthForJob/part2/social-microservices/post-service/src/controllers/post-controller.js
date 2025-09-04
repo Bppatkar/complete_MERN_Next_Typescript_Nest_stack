@@ -90,32 +90,79 @@ const getAllPosts = async (req, res) => {
 
     res.json(result);
   } catch (error) {
-    logger.error('Error creating post', error);
+    logger.error('Error Fetching post', error);
     res.status(500).json({
       success: false,
-      message: 'Error creating post',
+      message: 'Error Fetching post',
     });
   }
 };
 
 const getPost = async (req, res) => {
   try {
+    const postId = req.params.id;
+    const cachedkey = `post:${postId}`;
+    const cachedPosts = await req.redisClient.get(cachedkey);
+
+    if (cachedPosts) {
+      return res.json(JSON.parse(cachedPosts));
+    }
+    const singlePostDetailsById = await Post.findById(postId);
+
+    if (!singlePostDetailsById) {
+      return res.status(404).json({
+        message: 'Post not found',
+        success: false,
+      });
+    }
+    await req.redisClient.setex(
+      cachedPosts,
+      3600,
+      JSON.stringify(singlePostDetailsById)
+    );
+    res.json(singlePostDetailsById);
   } catch (error) {
-    logger.error('Error creating post', error);
+    logger.error('Error fetching post by Id', error);
     res.status(500).json({
       success: false,
-      message: 'Error creating post',
+      message: 'Error fetching post By Id',
     });
   }
 };
 
 const deletePost = async (req, res) => {
   try {
+    const post = await Post.findByIdAndDelete({
+      _id: req.params.id,
+      user: req.user.userId,
+    });
+
+    if (!post) {
+      return res.status(404).json({
+        message: 'Post not found',
+        success: false,
+      });
+    }
+
+    // publish post delete method
+    await publishEvent('post.deleted', {
+      postId: post._id.toString(),
+      userId: req.user.userId,
+      mediaIds: post.mediaIds,
+    });
+
+    await invalidatePostCache(req, req.params.id);
+
+    res.json({
+      message: 'Post deleted successfully',
+    });
   } catch (error) {
-    logger.error('Error creating post', error);
+    logger.error('Error deleting post', error);
     res.status(500).json({
       success: false,
-      message: 'Error creating post',
+      message: 'Error deleting post',
     });
   }
 };
+
+export { createPost, getAllPosts, getPost, deletePost };

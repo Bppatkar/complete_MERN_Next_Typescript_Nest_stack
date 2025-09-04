@@ -61,6 +61,17 @@ const proxyOptions = {
 };
 
 //! setting up proxy for our identity service
+//* skeleton
+/*
+app.use('/v1/auth', validToken, proxy(process.env.POST_SERVICE_URL), {
+  ...proxyOptions,
+  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+    logger.info(`Response received from Identity service : ${proxyRes.statusCode}`);
+    return proxyResData;
+  },
+}); 
+ */
 app.use('/v1/auth', proxy(process.env.IDENTITY_SERVICE_URL), {
   ...proxyOptions,
   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
@@ -68,7 +79,9 @@ app.use('/v1/auth', proxy(process.env.IDENTITY_SERVICE_URL), {
     return proxyReqOpts;
   },
   userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-    logger.info(`Response received from post services: ${proxyRes.statusCode}`);
+    logger.info(
+      `Response received from Identity services: ${proxyRes.statusCode}`
+    );
 
     return proxyResData;
   },
@@ -77,15 +90,38 @@ app.use('/v1/auth', proxy(process.env.IDENTITY_SERVICE_URL), {
 //! setting up proxy for our post service
 app.use('/v1/posts', validToken, proxy(process.env.POST_SERVICE_URL), {
   ...proxyOptions,
+  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+    logger.info(`Response received from Post service : ${proxyRes.statusCode}`);
+    return proxyResData;
+  },
 });
 //! setting up proxy for our media service
 app.use('/v1/media', validToken, proxy(process.env.MEDIA_SERVICE_URL), {
   ...proxyOptions,
+  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+
+  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+    logger.info(
+      `Response received from Media service : ${proxyRes.statusCode}`
+    );
+    return proxyResData;
+  },
 });
 //! setting up proxy for our search service
 app.use('/v1/search', validToken, proxy(process.env.SEARCH_SERVICE_URL), {
   ...proxyOptions,
+  proxyReqOptDecorator: (proxyReqOpts, srcReq) => {},
+
+  userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+    logger.info(
+      `Response received from Search service : ${proxyRes.statusCode}`
+    );
+    return proxyResData;
+  },
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   logger.info(`API Gateway is running on port ${PORT}`);
