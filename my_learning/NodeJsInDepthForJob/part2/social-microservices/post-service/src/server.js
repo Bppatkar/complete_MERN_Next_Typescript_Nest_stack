@@ -1,0 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import mongoose from 'mongoose';
+import Redis from 'ioredis';
+import cors from 'cors';
+import helmet from 'helmet';
+import postRoutes from './routes/post-routes.js';
+import errorHandler from './middlewares/errorHandler.js';
+import logger from './utils/logger.js';
+import { connectToRabbitMQ } from './utils/rabbitmq.js';
