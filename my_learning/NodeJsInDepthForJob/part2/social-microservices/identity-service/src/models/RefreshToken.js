@@ -20,6 +20,8 @@ const refreshTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+// FIXED: Correct TTL index configuration
 refreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema);

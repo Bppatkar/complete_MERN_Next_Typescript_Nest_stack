@@ -6,7 +6,7 @@ import { validateRegistration, validateLogin } from '../utils/validation.js';
 
 //! register user
 const registerUser = async (req, res) => {
-  logger.info('registration endpoint hit....');
+  logger.info('Registration endpoint hit....');
   try {
     //* validate the schema
     const { error } = validateRegistration(req.body);
@@ -22,10 +22,10 @@ const registerUser = async (req, res) => {
 
     let user = await User.findOne({ $or: [{ email }, { username }] });
     if (user) {
-      logger.warn('User already exist');
+      logger.warn('User already exists');
       return res.status(400).json({
         success: false,
-        message: 'User already exist',
+        message: 'User already exists',
       });
     }
 
@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
       userId: user._id,
     });
   } catch (error) {
-    logger.error('Registration error occured', error);
+    logger.error('Registration error occurred', error);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error',
@@ -83,19 +83,21 @@ const loginUser = async (req, res) => {
       logger.warn('Invalid Password');
       return res.status(400).json({
         success: false,
-        message: 'Invalid Password',
+        message: 'Invalid Credentials',
       });
     }
 
     const { accessToken, refreshToken } = await generateToken(user);
 
     res.status(200).json({
+      success: true,
       accessToken,
       refreshToken,
       userId: user._id,
+      message: 'Login successful',
     });
   } catch (error) {
-    logger.error('Login error occured', error);
+    logger.error('Login error occurred', error);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error',
@@ -132,7 +134,7 @@ const refreshTokenUser = async (req, res) => {
       await RefreshToken.deleteOne({ _id: storedToken._id });
       return res.status(401).json({
         success: false,
-        message: `Expired Refresh Token`,
+        message: 'Expired Refresh Token',
       });
     }
 
@@ -143,7 +145,7 @@ const refreshTokenUser = async (req, res) => {
       await RefreshToken.deleteOne({ _id: storedToken._id });
       return res.status(401).json({
         success: false,
-        message: `User not found`,
+        message: 'User not found',
       });
     }
 
@@ -160,7 +162,7 @@ const refreshTokenUser = async (req, res) => {
       refreshToken: newRefreshToken,
     });
   } catch (error) {
-    logger.error('Refresh Token error occured', error);
+    logger.error('Refresh Token error occurred', error);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error',

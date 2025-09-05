@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   logger.info(`Received ${req.method} request to ${req.url}`);
-  logger.info(`Request body, ${req.body}`);
+  logger.info(`Request body, ${JSON.stringify(req.body)}`);
   next();
 });
 
@@ -71,7 +71,7 @@ app.use((req, res, next) => {
     .then(() => next())
     .catch(() => {
       logger.warn(`Rate limit exceeded for IP:${req.ip}`);
-      res.status(429).json({ success: false, message: 'To many requests' });
+      res.status(429).json({ success: false, message: 'Too many requests' });
     });
 });
 
@@ -83,6 +83,7 @@ const sensitiveEndpointsLimiter = rateLimit({
   legacyHeaders: false,
   handler: (req, res) => {
     logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
+    res.status(429).json({ message: 'Too many requests' });
   },
   store: new RedisStore({
     sendCommand: (...args) => redisClient.call(...args),
@@ -99,7 +100,7 @@ app.use('/api/auth', routes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  logger.info(`Idendity service running on port ${PORT}`);
+  logger.info(`Identity service running on port ${PORT}`);
 });
 
 // unhandled promise rejection
