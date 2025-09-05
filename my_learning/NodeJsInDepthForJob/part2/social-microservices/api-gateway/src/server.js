@@ -7,17 +7,17 @@ import express from 'express';
 import cors from 'cors';
 import Redis from 'ioredis';
 import helmet from 'helmet';
-import logger from './utils/logger';
+import logger from './utils/logger.js';
 import { rateLimit } from 'express-rate-limit';
 import { RedisStore } from 'rate-limit-redis';
 import proxy from 'express-http-proxy';
-import errorHandler from './middleware/errorhandler';
-import validToken from './middleware/authMiddleware';
+import errorHandler from './middleware/errorhandler.js';
+import validToken from './middleware/authMiddleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const redisClient = new Redis(process.env.REDIS_URL);
+const redisClient = new Redis(process.env.REDIS_URI);
 
 app.use(cors());
 app.use(helmet());
@@ -30,7 +30,7 @@ const rateLimitOptions = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
-    logger.warn(`Sensitive endpoint limit exceded for IP:${req.ip}`);
+    logger.warn(`Rate limit exceeded for IP:${req.ip}`);
     res.status(429).json({
       success: false,
       message: 'Too many requests',
@@ -44,8 +44,8 @@ const rateLimitOptions = rateLimit({
 app.use(rateLimitOptions);
 
 app.use((req, res, next) => {
-  logger.info(`Receieved ${req.method} request to ${req.url}`);
-  logger.info(`Request Body , ${req.body}`);
+  logger.info(`Received ${req.method} request to ${req.url}`);
+  logger.info(`Request Body: ${JSON.stringify(req.body)}`);
   next();
 });
 
@@ -84,9 +84,8 @@ app.use(
     },
     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
       logger.info(
-        `Response received from Identity services: ${proxyRes.statusCode}`
+        `Response received from Identity service: ${proxyRes.statusCode}`
       );
-
       return proxyResData;
     },
   })
