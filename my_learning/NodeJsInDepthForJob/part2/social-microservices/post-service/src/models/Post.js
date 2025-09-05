@@ -20,7 +20,7 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const POST = mongoose.model('Post', postSchema);
-postSchema.index({ content: 'text' });
+const Post = mongoose.model('Post', postSchema);
+Post.createIndexes({ content: 'text' });
 
-export default POST;
+export default Post;

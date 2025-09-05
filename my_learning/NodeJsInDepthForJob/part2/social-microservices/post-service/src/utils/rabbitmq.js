@@ -1,4 +1,4 @@
-import amqp from 'amqp';
+import amqplib from 'amqplib';
 import logger from './logger';
 
 let connection = null;
@@ -8,7 +8,7 @@ const EXCHANGE_NAME = 'facebook_events';
 
 async function connectToRabbitMQ() {
   try {
-    connection = await amqp.connect(process.env.RABBITMQ_URL);
+    connection = await amqplib.connect(process.env.RABBITMQ_URL);
     channel = await connection.createChannel();
 
     await channel.assertExchange(EXCHANGE_NAME, 'topic', { durable: false });
@@ -19,17 +19,17 @@ async function connectToRabbitMQ() {
   }
 }
 
-async function publishEvent(routingey, message) {
+async function publishEvent(routingkey, message) {
   if (!channel) {
     await connectToRabbitMQ();
   }
 
   channel.publish(
     EXCHANGE_NAME,
-    routingey,
+    routingkey,
     Buffer.from(JSON.stringify(message))
   );
-  logger.info(`Event published: ${routingey}`);
+  logger.info(`Event published: ${routingkey}`);
 }
 
 export { connectToRabbitMQ, publishEvent };

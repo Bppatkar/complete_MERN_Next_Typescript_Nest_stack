@@ -17,7 +17,7 @@ const createPost = async (req, res) => {
   logger.info('Create post endpoint hit....');
   try {
     //validate the schema
-    const { error } = validateCreatePost(req.post);
+    const { error } = validateCreatePost(req.body);
     if (error) {
       logger.warn('Validation error', error.details[0].message);
       return res.status(400).json({
@@ -38,7 +38,7 @@ const createPost = async (req, res) => {
     await publishEvent('post.created', {
       postId: newlyCreatedPost._id.toString(),
       userId: newlyCreatedPost.user.toString(),
-      content: newlyCreatedPost.content(),
+      content: newlyCreatedPost.content,
       createdAt: newlyCreatedPost.createdAt,
     });
 
@@ -47,6 +47,7 @@ const createPost = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Post created successfully',
+      post: newlyCreatedPost,
     });
   } catch (error) {
     logger.error('Error creating post', error);
@@ -74,14 +75,15 @@ const getAllPosts = async (req, res) => {
     const posts = await Post.find({})
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(limit);
+      .limit(limit)
+      .populate('user', 'username email');
 
     const totalNoOfPosts = await Post.countDocuments();
 
     const result = {
       posts,
       currentPage: page,
-      totalPage: Math.ceil(totalNoOfPosts / limit),
+      totalPages: Math.ceil(totalNoOfPosts / limit),
       totalPosts: totalNoOfPosts,
     };
 
@@ -90,7 +92,7 @@ const getAllPosts = async (req, res) => {
 
     res.json(result);
   } catch (error) {
-    logger.error('Error Fetching post', error);
+    logger.error('Error Fetching posts', error);
     res.status(500).json({
       success: false,
       message: 'Error Fetching post',
@@ -101,13 +103,17 @@ const getAllPosts = async (req, res) => {
 const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const cachedkey = `post:${postId}`;
-    const cachedPosts = await req.redisClient.get(cachedkey);
+    const cachedKey = `post:${postId}`;
+    const cachedPost = await req.redisClient.get(cachedKey);
 
-    if (cachedPosts) {
-      return res.json(JSON.parse(cachedPosts));
+    if (cachedPost) {
+      return res.json(JSON.parse(cachedPost));
     }
-    const singlePostDetailsById = await Post.findById(postId);
+
+    const singlePostDetailsById = await Post.findById(postId).populate(
+      'user',
+      'username email'
+    );
 
     if (!singlePostDetailsById) {
       return res.status(404).json({
@@ -115,11 +121,13 @@ const getPost = async (req, res) => {
         success: false,
       });
     }
+
     await req.redisClient.setex(
-      cachedPosts,
+      cachedKey,
       3600,
       JSON.stringify(singlePostDetailsById)
     );
+
     res.json(singlePostDetailsById);
   } catch (error) {
     logger.error('Error fetching post by Id', error);
@@ -132,7 +140,7 @@ const getPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndDelete({
+    const post = await Post.findOneAndDelete({
       _id: req.params.id,
       user: req.user.userId,
     });
@@ -155,6 +163,7 @@ const deletePost = async (req, res) => {
 
     res.json({
       message: 'Post deleted successfully',
+      success: true,
     });
   } catch (error) {
     logger.error('Error deleting post', error);

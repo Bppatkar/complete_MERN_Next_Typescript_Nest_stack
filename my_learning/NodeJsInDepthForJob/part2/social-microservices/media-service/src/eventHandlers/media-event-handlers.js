@@ -6,7 +6,7 @@ const handlePostDeleted = async (event) => {
   console.log(event, 'eventEventevent');
   const { postId, mediaIds } = event;
   try {
-    const mediaToDelete = await Media.find({ _id: { _in: mediaIds } });
+    const mediaToDelete = await Media.find({ _id: { $in: mediaIds } });
 
     for (const media of mediaToDelete) {
       await deleteMediaFromCloudinary(media.publicId);
@@ -17,7 +17,7 @@ const handlePostDeleted = async (event) => {
       );
     }
   } catch (error) {
-    logger.error(error, 'Error occured while media deletion');
+    logger.error(error, 'Error occurred while media deletion');
   }
 };
 

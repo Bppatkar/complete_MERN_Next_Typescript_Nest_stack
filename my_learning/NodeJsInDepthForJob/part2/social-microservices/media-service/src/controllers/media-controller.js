@@ -60,6 +60,10 @@ const getAllMedias = async (req, res) => {
         message: "Cann't find any media for this user",
       });
     }
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
   } catch (error) {
     logger.error('Error fetching medias', error);
     res.status(500).json({
@@ -69,4 +73,4 @@ const getAllMedias = async (req, res) => {
   }
 };
 
-export default { uploadMedia, getAllMedias };
+export { uploadMedia, getAllMedias };

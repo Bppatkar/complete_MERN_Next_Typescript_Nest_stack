@@ -4,6 +4,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
+import Redis from 'ioredis';
+import RedisStore from 'rate-limit-redis';
 import mediaRoutes from './routes/media-routes.js';
 import errorHandler from './middleware/errorHandler.js';
 import logger from './utils/logger.js';
@@ -15,8 +17,10 @@ import { rateLimit } from 'express-rate-limit';
 const app = express();
 const PORT = process.env.PORT || 3003;
 
+const redisClient = new Redis(process.env.REDIS_URI);
+
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => logger.info('Connected to mongodb'))
   .catch((e) => logger.error('Mongo connection error', e));
 
@@ -26,7 +30,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   logger.info(`Received ${req.method} request to ${req.url}`);
-  logger.info(`Request body, ${req.body}`);
+  logger.info(`Request body, ${JSON.stringify(req.body)}`);
   next();
 });
 
@@ -36,13 +40,14 @@ const rateLimiter = new RateLimiterRedis({
   points: 10, // Maximum number of requests allowed from a single IP in the duration period
   duration: 1, // Time window in seconds during which the points are counted (1 second)
 });
+
 app.use((req, res, next) => {
   rateLimiter
     .consume(req.ip)
     .then(() => next())
     .catch(() => {
       logger.warn(`Rate limit exceeded for IP:${req.ip}`);
-      res.status(429).json({ success: false, message: 'To many requests' });
+      res.status(429).json({ success: false, message: 'Too many requests' });
     });
 });
 
@@ -53,24 +58,20 @@ const sensitiveEndpointsLimiter = rateLimit({
   legacyHeaders: false,
   handler: (req, res) => {
     logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
+    res.status(429).json({ message: 'Too many requests' });
   },
   store: new RedisStore({
     sendCommand: (...args) => redisClient.call(...args),
   }),
 });
 
-// apply this sensitiveEndpointsLimiter to our routes
-app.use('/api/auth/register', sensitiveEndpointsLimiter);
-
 app.use('/api/media', mediaRoutes);
-
 app.use(errorHandler);
 
 async function startServer() {
   try {
     await connectToRabbitMQ();
-
-    //consume all the events
+    //consuming event
     await consumeEvent('post.deleted', handlePostDeleted);
 
     app.listen(PORT, () => {
@@ -83,10 +84,6 @@ async function startServer() {
 }
 
 startServer();
-
-app.listen(PORT, () => {
-  logger.info(`Idendity service running on port ${PORT}`);
-});
 
 // unhandled promise rejection
 process.on('unhandledRejection', (reason, promise) => {
