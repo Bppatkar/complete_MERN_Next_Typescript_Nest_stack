@@ -14,18 +14,18 @@ import {
   handlePostDeleted,
 } from './eventHandlers/search-event-handlers.js';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import { rateLimit } from 'express-rate-limit';
+
 
 const app = express();
 const PORT = process.env.PORT || 3004;
+
+const redisClient = new Redis(process.env.REDIS_URI);
 
 //connect to mongodb
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => logger.info('Connected to mongodb'))
   .catch((e) => logger.error('Mongo connection error', e));
-
-const redisClient = new Redis(process.env.REDIS_URL);
 
 // middleware
 app.use(helmet());
@@ -34,7 +34,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   logger.info(`Received ${req.method} request to ${req.url}`);
-  logger.info(`Request body, ${req.body}`);
+  logger.info(`Request body: ${JSON.stringify(req.body)}`);
   next();
 });
 
@@ -45,30 +45,22 @@ const rateLimiter = new RateLimiterRedis({
   points: 10, // Maximum number of requests allowed from a single IP in the duration period
   duration: 1, // Time window in seconds during which the points are counted (1 second)
 });
+
 app.use((req, res, next) => {
   rateLimiter
     .consume(req.ip)
     .then(() => next())
     .catch(() => {
       logger.warn(`Rate limit exceeded for IP:${req.ip}`);
-      res.status(429).json({ success: false, message: 'To many requests' });
+      res.status(429).json({ success: false, message: 'Too many requests' });
     });
 });
 
-const sensitiveEndpointsLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
-  },
-  store: new RedisStore({
-    sendCommand: (...args) => redisClient.call(...args),
-  }),
+//*Homework - pass redis client as part of your req and then implement redis caching
+app.use('/api/search', (req, res, next) => {
+  req.redisClient = redisClient;
+  next();
 });
-
-//*** Homework - pass redis client as part of your req and then implement redis caching
 
 app.use('/api/search', searchRoutes);
 app.use(errorHandler);
@@ -85,7 +77,7 @@ async function startServer() {
       logger.info(`Search service is running on port: ${PORT}`);
     });
   } catch (e) {
-    logger.error(e, 'Failed to start search service');
+    logger.error('Failed to start search service', e);
     process.exit(1);
   }
 }

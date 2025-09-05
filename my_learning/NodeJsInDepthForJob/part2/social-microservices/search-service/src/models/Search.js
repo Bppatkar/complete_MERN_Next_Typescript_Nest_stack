@@ -27,5 +27,8 @@ const searchPostSchema = new mongoose.Schema(
 searchPostSchema.index({ content: 'text' });
 searchPostSchema.index({ createdAt: -1 });
 
-const Search = mongoose.model('Search', searchPostSchema);
-export default Search;
+const SearchPost = mongoose.model('SearchPost', searchPostSchema);
+
+SearchPost.createIndexes();
+
+export default SearchPost;
