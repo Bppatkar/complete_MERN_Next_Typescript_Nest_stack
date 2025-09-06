@@ -12,7 +12,7 @@ import logger from './utils/logger.js';
 import { connectToRabbitMQ } from './utils/rabbitmq.js';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import { rateLimit } from 'express-rate-limit';
-import { authenticateRequest } from './middlewares/authMiddleware.js';
+import authenticateRequest from './middlewares/authMiddleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -40,8 +40,8 @@ app.use((req, res, next) => {
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient, // Redis client instance to store rate limit data
   keyPrefix: 'middleware', // Prefix added to Redis keys to distinguish rate limiting data
-  points: 10, // Maximum number of requests allowed from a single IP in the duration period
-  duration: 1, // Time window in seconds during which the points are counted (1 second)
+  points: 100, // Maximum number of requests allowed from a single IP in the duration period
+  duration: 60, // Time window in seconds during which the points are counted (Per 60 seconds (1 minute))
 });
 app.use((req, res, next) => {
   rateLimiter
@@ -53,19 +53,19 @@ app.use((req, res, next) => {
     });
 });
 
-const sensitiveEndpointsLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
-    res.status(429).json({ message: 'Too many requests' });
-  },
-  store: new RedisStore({
-    sendCommand: (...args) => redisClient.call(...args),
-  }),
-});
+// const sensitiveEndpointsLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 50,
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   handler: (req, res) => {
+//     logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
+//     res.status(429).json({ message: 'Too many requests' });
+//   },
+//   store: new RedisStore({
+//     sendCommand: (...args) => redisClient.call(...args),
+//   }),
+// });
 
 // Apply authentication to all post routes
 app.use('/api/posts', authenticateRequest);

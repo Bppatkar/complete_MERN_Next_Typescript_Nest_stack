@@ -14,10 +14,10 @@ const validToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, next) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       logger.warn('Invalid token!');
-      return res.status(401).json({
+      return res.status(429).json({
         message: 'Invalid token!',
         success: false,
       });

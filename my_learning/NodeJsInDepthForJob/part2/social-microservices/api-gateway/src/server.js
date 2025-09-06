@@ -28,7 +28,7 @@ app.use(express.json());
 // rate limitting [very basic rate limit but for advanced we use rate-limitter-flexible]
 const rateLimitOptions = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {

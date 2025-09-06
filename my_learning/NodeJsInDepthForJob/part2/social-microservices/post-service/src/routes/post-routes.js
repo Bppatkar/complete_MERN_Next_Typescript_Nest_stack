@@ -9,7 +9,7 @@ import authenticateRequest from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-app.use(authenticateRequest);
+router.use(authenticateRequest);
 
 router.post('/create-post', createPost);
 router.get('/all-posts', getAllPosts);

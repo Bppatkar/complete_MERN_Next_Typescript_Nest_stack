@@ -51,19 +51,19 @@ app.use((req, res, next) => {
     });
 });
 
-const sensitiveEndpointsLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
-    res.status(429).json({ message: 'Too many requests' });
-  },
-  store: new RedisStore({
-    sendCommand: (...args) => redisClient.call(...args),
-  }),
-});
+// const sensitiveEndpointsLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 50,
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   handler: (req, res) => {
+//     logger.warn(`Sensitive endpoint rate limit exceeded for IP:${req.ip}`);
+//     res.status(429).json({ message: 'Too many requests' });
+//   },
+//   store: new RedisStore({
+//     sendCommand: (...args) => redisClient.call(...args),
+//   }),
+// });
 
 app.use('/api/media', mediaRoutes);
 app.use(errorHandler);
