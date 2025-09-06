@@ -32,7 +32,31 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   logger.info(`Received ${req.method} request to ${req.url}`);
-  logger.info(`Request body, ${JSON.stringify(req.body)}`);
+  // logger.info(`Request body, ${JSON.stringify(req.body)}`);
+  //? this above line is showing password in console of register user
+  //? so solution is here
+
+  //! way 1
+  // ✅ SAFE WAY - Password hide karo
+  /* if (req.body && req.body.password) {
+    const safeBody = { ...req.body };
+    safeBody.password = '*******'; // Password hide
+    logger.info(`Request body: ${JSON.stringify(safeBody)}`);
+  } else {
+    logger.info(`Request body: ${JSON.stringify(req.body)}`);
+  } */
+
+  //! way 2
+
+  // Create safe copy
+  const logBody = req.body ? { ...req.body } : {};
+
+  // Hide sensitive fields
+  if (logBody.password) logBody.password = '*******';
+  if (logBody.confirmPassword) logBody.confirmPassword = '*******';
+  if (logBody.token) logBody.token = '*******';
+
+  logger.info(`Request body: ${JSON.stringify(logBody)}`);
   next();
 });
 
