@@ -145,7 +145,7 @@ app.use(
       );
       return proxyResData;
     },
-    parseReqBody: false, // Added for better file upload handling
+    parseReqBody: false, // Added for better file upload handling [that line will ensure that entire request body is proxied for the file upload also]
   })
 );
 //! setting up proxy for our search service

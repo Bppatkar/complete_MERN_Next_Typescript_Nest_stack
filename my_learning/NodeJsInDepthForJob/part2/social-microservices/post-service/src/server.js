@@ -82,19 +82,23 @@ app.use(
 
 app.use(errorHandler);
 
-async function startServer() {
-  try {
-    await connectToRabbitMQ();
-    app.listen(PORT, () => {
-      logger.info(`Post service running on port ${PORT}`);
-    });
-  } catch (error) {
-    logger.error('Failed to connect to server', error);
-    process.exit(1);
-  }
-}
+// async function startServer() {
+//   try {
+//     await connectToRabbitMQ();
+//     app.listen(PORT, () => {
+//       logger.info(`Post service running on port ${PORT}`);
+//     });
+//   } catch (error) {
+//     logger.error('Failed to connect to server', error);
+//     process.exit(1);
+//   }
+// }
 
-startServer();
+// startServer();
+
+app.listen(PORT, () => {
+  logger.info(`Post service running on port ${PORT}`);
+});
 
 //unhandled promise rejection
 

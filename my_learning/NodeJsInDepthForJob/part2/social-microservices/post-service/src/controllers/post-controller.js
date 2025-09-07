@@ -7,7 +7,7 @@ async function invalidatePostCache(req, input) {
   const cachedKey = `post:${input}`;
   await req.redisClient.del(cachedKey);
 
-  const keys = await req.redisClient.keys('posts:*');
+  const keys = await req.redisClient.keys('post:*');
   if (keys.length > 0) {
     await req.redisClient.del(keys);
   }
@@ -75,8 +75,7 @@ const getAllPosts = async (req, res) => {
     const posts = await Post.find({})
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(limit)
-      .populate('user', 'username email');
+      .limit(limit);
 
     const totalNoOfPosts = await Post.countDocuments();
 
@@ -87,7 +86,7 @@ const getAllPosts = async (req, res) => {
       totalPosts: totalNoOfPosts,
     };
 
-    // save your posts in redis cache
+    // save your posts in redis cache [300 means 5 min]
     await req.redisClient.setex(cachedKey, 300, JSON.stringify(result));
 
     res.json(result);
@@ -110,11 +109,7 @@ const getPost = async (req, res) => {
       return res.json(JSON.parse(cachedPost));
     }
 
-    const singlePostDetailsById = await Post.findById(postId).populate(
-      'user',
-      'username email'
-    );
-
+    const singlePostDetailsById = await Post.findById(postId);
     if (!singlePostDetailsById) {
       return res.status(404).json({
         message: 'Post not found',

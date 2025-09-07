@@ -1,7 +1,8 @@
 import logger from '../utils/logger.js';
 
 const authenticateRequest = (req, res, next) => {
-  const userId = req.headers['x-client-id'];
+  // console.log('All headers received:', req.headers);
+  const userId = req.headers['x-user-id'];
 
   if (!userId) {
     logger.warn(`Access attempted without user ID`);

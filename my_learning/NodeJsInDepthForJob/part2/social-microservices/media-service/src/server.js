@@ -5,14 +5,14 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 import Redis from 'ioredis';
-import RedisStore from 'rate-limit-redis';
+// import RedisStore from 'rate-limit-redis';
 import mediaRoutes from './routes/media-routes.js';
 import errorHandler from './middleware/errorHandler.js';
 import logger from './utils/logger.js';
 import { connectToRabbitMQ, consumeEvent } from './utils/rabbitmq.js';
-import { handlePostDeleted } from './eventHandlers/media-event-handlers.js';
+import handlePostDeleted from './eventHandlers/media-event-handlers.js';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import { rateLimit } from 'express-rate-limit';
+// import { rateLimit } from 'express-rate-limit';
 
 const app = express();
 const PORT = process.env.PORT || 3003;
