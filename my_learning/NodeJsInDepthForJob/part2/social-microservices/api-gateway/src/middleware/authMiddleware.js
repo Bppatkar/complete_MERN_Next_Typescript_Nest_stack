@@ -2,6 +2,7 @@ import logger from '../utils/logger.js';
 import jwt from 'jsonwebtoken';
 
 const validToken = (req, res, next) => {
+  // console.log('JWT_SECRET in gateway:', process.env.JWT_SECRET);
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

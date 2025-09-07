@@ -85,6 +85,10 @@ async function startServer() {
 
 startServer();
 
+// app.listen(PORT, () => {
+//       logger.info(`Media service running on port ${PORT}`);
+//     });
+
 // unhandled promise rejection
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled Rejection at', promise, 'reason:', reason);
