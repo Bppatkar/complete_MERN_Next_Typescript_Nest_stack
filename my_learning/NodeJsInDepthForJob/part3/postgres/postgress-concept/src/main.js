@@ -5,6 +5,11 @@ import {
   insertUser,
   updateUserInfo,
 } from './concepts/basic-queries.js';
+import {
+  getPaginatedUsers,
+  getSortedUsers,
+  getUsersWhere,
+} from './concepts/filtering-sorting.js';
 
 async function testBasicQueries() {
   try {
@@ -21,22 +26,39 @@ async function testBasicQueries() {
 
     //! all inserted data
     const allUsers = await fetchAllUsers();
-    console.log(allUsers);
+    console.log('Fetching all users', allUsers);
 
     //! update data
-    const updatedUser = await updateUserInfo('Bhanu Pratap', 'bp@gmail.com');
-    console.log(updatedUser);
+    const updatedUser = await updateUserInfo('Zyx', 'bp@gmail.com');
+    console.log('Here is updated user', updatedUser);
 
     //! deleting data
-    const deleteUser = await deleteInfo('Bhanu Pratap');
-    console.log(deleteUser);
+    const deleteUser = await deleteInfo('Zyx');
+    console.log('Deleted User ', deleteUser);
+  } catch (error) {
+    console.error('Error', error);
+  }
+}
+
+async function testFilterAndSortQueries() {
+  try {
+    //! get user with a username whose username starting with z
+    const zFilteredUsers = await getUsersWhere("username LIKE 'Z%' ");
+    console.log('Filtered user', zFilteredUsers);
+
+    const sortedUsers = await getSortedUsers('created_at', 'ASC');
+    console.log('Sorted Users are', sortedUsers);
+
+    const paginatedUsers = await getPaginatedUsers(2, 1);
+    console.log('PaginatedUsers', paginatedUsers);
   } catch (error) {
     console.error('Error', error);
   }
 }
 
 async function testAllQueries() {
-  await testBasicQueries();
+  // await testBasicQueries();
+  // await testFilterAndSortQueries();
 }
 
 testAllQueries();

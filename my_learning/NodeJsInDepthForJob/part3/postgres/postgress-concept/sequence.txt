@@ -4,7 +4,7 @@
 // database connection
 // concept folder
   --> basic-queries.js   [CRUD]
-  -->
+  --> filtering-sorting.js [filter using WHERE clause]
   -->
   -->
   -->

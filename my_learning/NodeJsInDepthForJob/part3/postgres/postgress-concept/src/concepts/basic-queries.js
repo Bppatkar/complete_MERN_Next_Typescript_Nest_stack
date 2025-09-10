@@ -12,7 +12,7 @@ async function createUsersTable() {
   `;
 
   try {
-    await db.query(createTableQuery);
+    await db(createTableQuery);
     console.log('Users table created successfully');
   } catch (error) {
     console.log('Error while creating users table', error);
@@ -27,7 +27,7 @@ async function insertUser(username, email) {
   RETURNING *
   `;
   try {
-    const res = await db.query(insertUserQuery, [username, email]);
+    const res = await db(insertUserQuery, [username, email]);
     console.log('User inserted successfully', res.rows[0]);
 
     return res.rows[0];
@@ -40,7 +40,7 @@ async function insertUser(username, email) {
 async function fetchAllUsers() {
   const getAllUsersFromUsersTable = 'SELECT * FROM users';
   try {
-    const res = await db.query(getAllUsersFromUsersTable);
+    const res = await db(getAllUsersFromUsersTable);
     console.log('Fetched all users', res);
     return res.rows;
   } catch (error) {
@@ -57,7 +57,7 @@ async function updateUserInfo(username, newEmail) {
   RETURNING *`;
 
   try {
-    const res = await db.query(updateUserQuery, [username, newEmail]);
+    const res = await db(updateUserQuery, [username, newEmail]);
 
     if (res.rows.length > 0) {
       console.log('User Updated Successfully', res.rows[0]);
@@ -80,7 +80,7 @@ async function deleteInfo(username) {
  `;
 
   try {
-    const res = await db.query(deleteQuery, [username]);
+    const res = await db(deleteQuery, [username]);
 
     if (res.rows.length > 0) {
       console.log('User deleted successfully!', res.rows[0]);
@@ -94,7 +94,7 @@ async function deleteInfo(username) {
   }
 }
 
-export {
+export {      
   createUsersTable,
   insertUser,
   fetchAllUsers,
