@@ -26,4 +26,5 @@ async function query(text, params) {
   }
 }
 
+
 export default query;

@@ -4,7 +4,7 @@ import {
   fetchAllUsers,
   insertUser,
   updateUserInfo,
-} from './concepts/basic-queries';
+} from './concepts/basic-queries.js';
 
 async function testBasicQueries() {
   try {
