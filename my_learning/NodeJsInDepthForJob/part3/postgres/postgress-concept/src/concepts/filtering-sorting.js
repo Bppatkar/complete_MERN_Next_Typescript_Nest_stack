@@ -35,6 +35,8 @@ async function getPaginatedUsers(limit, offset) {
 
   try {
     const result = await db(getPaginatedQuery, [limit, offset]);
+    // if we take limit 10 and offset 20 for example then it is
+    // like limit [show only 10 users] and offset means start from 21 to 30
     return result.rows;
   } catch (error) {
     console.error(error);

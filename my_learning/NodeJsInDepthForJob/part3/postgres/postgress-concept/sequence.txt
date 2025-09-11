@@ -5,6 +5,6 @@
 // concept folder
   --> basic-queries.js   [CRUD]
   --> filtering-sorting.js [filter using WHERE clause]
-  -->
-  -->
-  -->
+  --> relationships [primarykey, foreign key, and relationships]
+  --> joins [Inner and left join] (joins as the name suggest are used to combine rows from two or more tables based on the relation column between them)
+  --> aggregation [group by clause, count etc]
