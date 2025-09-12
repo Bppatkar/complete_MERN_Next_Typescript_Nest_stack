@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import authorRoutes from './routes/authorRoutes';
+import bookRoutes from './routes/bookRoutes';
 
 const app = express();
 
@@ -25,8 +27,8 @@ app.use((req, res, next) => {
 //   res.end(await register.metrics());
 // });
 
-// app.use('/api/author', authorRoutes);
-// app.use('/api/book', bookRoutes);
+app.use('/api/author', authorRoutes);
+app.use('/api/book', bookRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
