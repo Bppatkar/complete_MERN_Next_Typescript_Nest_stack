@@ -1,0 +1,21 @@
+{
+  "name": "postgres-with-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx prisma generate && nodemon src/server.js",
+    "start": "npx prisma generate && nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Bhanu Pratap Patkar",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.16.1",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "prisma": "^6.16.1"
+  }
+}
