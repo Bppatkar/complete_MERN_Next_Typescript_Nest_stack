@@ -25,7 +25,7 @@
 ### part 2
 
 - Node.js Concepts
-- Express.js and API Design
+- Express.js and API Design [ratelimit, proxy]
 - Redis - [search on google - "redis windows git install" ]
 - RabbitMQ
 - Docker
