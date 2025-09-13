@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/index.js';
 const prisma = new PrismaClient();
 
 async function addBook(title, publishedDate, authorId) {
@@ -49,6 +49,42 @@ async function getBookById(id) {
 
 async function updateBook(id, newTitle) {
   try {
+    // const book = await prisma.book.findUnique({
+    //   where: { id },
+    //   include: { author: true },
+    // });
+
+    // if (!book) {
+    //   throw new Error(`Book with ${id} not found`);
+    // }
+    // const updateBook = await prisma.book.update({
+    //   where: { id },
+    //   data: {
+    //     title: newTitle,
+    //   },
+    //   include: {
+    //     author: true,
+    //   },
+    // });
+    // return updateBook;
+
+    //! using transactions
+    const updateBook = await prisma.$transaction(async (prisma) => {
+      const book = await prisma.book.findUnique({ where: { id } });
+      if (!book) {
+        throw new Error(`Book with ${id} not found`);
+      }
+      return prisma.book.update({
+        where: { id },
+        data: {
+          title: newTitle,
+        },
+        include: {
+          author: true,
+        },
+      });
+    });
+    return updateBook;
   } catch (error) {
     console.error(error);
     throw error;
@@ -68,4 +104,4 @@ async function deleteBook(id) {
   }
 }
 
-export { addBook, getAllBooks, getBookById, updateBook, deleteBook };
+export default { addBook, getAllBooks, getBookById, updateBook, deleteBook };

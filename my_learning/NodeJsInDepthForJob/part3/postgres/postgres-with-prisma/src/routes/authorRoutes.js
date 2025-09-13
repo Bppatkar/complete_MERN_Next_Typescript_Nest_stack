@@ -1,9 +1,12 @@
 import express from 'express';
-import {authorController} from '../controllers/authorController';
+import {
+  addAuthorController,
+  deleteAuthorController,
+} from '../controllers/authorController.js';
 
 const router = express.Router();
 
-router.post('/add-author', authorController.addAuthor);
-router.delete('/:id', authorController.deleteAuthor);
+router.post('/add-author', addAuthorController);
+router.delete('/:id', deleteAuthorController);
 
-module.exports = router;
+export default router;

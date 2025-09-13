@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/index.js';
 const prisma = new PrismaClient();
 
 async function addAuthor(name) {
@@ -17,11 +17,11 @@ async function addAuthor(name) {
 
 async function deleteAuthor(id) {
   try {
-    const deleteAuthor = await prisma.author.delete({
+    const deletedAuthor = await prisma.author.delete({
       where: { id },
       include: { books: true },
     });
-    return deleteAuthor;
+    return deletedAuthor;
   } catch (error) {
     console.error(error);
     throw new Error(error.message);
