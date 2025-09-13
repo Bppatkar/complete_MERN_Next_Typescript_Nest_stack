@@ -4,10 +4,22 @@ dotenv.config();
 import express from 'express';
 import authorRoutes from './routes/authorRoutes';
 import bookRoutes from './routes/bookRoutes';
+import promClient from 'prom-client';
 
 const app = express();
 
 app.use(express.json());
+
+const register = new promClient.Registry();
+promClient.collectDefaultMetrics({ register });
+
+const httpRequestCounter = new promClient.Counter({
+  name: 'http_request_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status'],
+});
+
+register.registerMetric(httpRequestCounter);
 
 // middleware to track API requests
 app.use((req, res, next) => {
@@ -21,11 +33,11 @@ app.use((req, res, next) => {
   next();
 });
 
-//Expose the metrcs endpoint for prometheus
-// app.get('/metrics', async (req, res) => {
-//   res.set('Content-type', register.contentType);
-//   res.end(await register.metrics());
-// });
+// Expose the metrcs endpoint for prometheus
+app.get('/metrics', async (req, res) => {
+  res.set('Content-type', register.contentType);
+  res.end(await register.metrics());
+});
 
 app.use('/api/author', authorRoutes);
 app.use('/api/book', bookRoutes);
