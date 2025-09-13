@@ -53,6 +53,7 @@
 - Grafana
 
 * Prometheus and Grafana are two distinct yet complementary open-source tools frequently used together for system and application monitoring.
+* Prometheus and Grafana work together to provide comprehensive monitoring and visualization solutions for applications and infrastructure
 
 ---
 
