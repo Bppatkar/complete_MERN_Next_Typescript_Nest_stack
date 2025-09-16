@@ -47,6 +47,12 @@ export default function Home() {
           >
             Error Example
           </Link>
+          <Link
+            href="/about"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md transition-colors shadow-lg"
+          >
+            Routes Group using group()
+          </Link>
         </div>
       </div>
     </div>
