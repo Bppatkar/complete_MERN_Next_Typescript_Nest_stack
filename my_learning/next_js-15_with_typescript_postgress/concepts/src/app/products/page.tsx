@@ -17,7 +17,7 @@ function Products() {
       inStock: true,
     },
     {
-      id: 3,
+      id: Number(3),
       name: 'Shirt',
       category: 'Clothing',
       price: 99.95,
