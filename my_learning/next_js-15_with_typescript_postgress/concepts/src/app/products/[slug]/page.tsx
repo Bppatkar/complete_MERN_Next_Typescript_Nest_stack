@@ -5,10 +5,11 @@ export default async function ProductDetail({
 }) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
+  const productId = Number(slug);
   return (
     <div>
-      My Post: {slug}
-      <h1>Type: {typeof slug}</h1>
+      My Post: {productId}
+      <h1>Type: {typeof productId}</h1>
     </div>
   );
 }
