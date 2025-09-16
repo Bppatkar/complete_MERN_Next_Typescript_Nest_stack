@@ -10,7 +10,7 @@ export default function Home() {
       <div className="text-center">
         <p className="text-white text-lg mb-6">click Here ▲</p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-4 max-w-screen">
           <Link
             href="/profile"
             className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md transition-colors shadow-lg"
@@ -34,6 +34,18 @@ export default function Home() {
             className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md transition-colors shadow-lg"
           >
             Optional Catch-all-route
+          </Link>
+          <Link
+            href="/loading-example"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md transition-colors shadow-lg"
+          >
+            Loading Example
+          </Link>
+          <Link
+            href="/error-example"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md transition-colors shadow-lg"
+          >
+            Error Example
           </Link>
         </div>
       </div>
