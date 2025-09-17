@@ -26,16 +26,39 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen flex flex-col`}
       >
-        <header className="p-4  border-b-2">
-          <nav className="flex gap-4">
-            <Link href={'/'}>Home</Link>
-            <Link href={'/products'}>Products</Link>
-            <Link href={'/dashboard'}>Dashboard</Link>
+        <header className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 shadow-lg">
+          <nav className="flex justify-center gap-8 p-4">
+            <Link
+              href={'/'}
+              className="text-white hover:text-yellow-200 font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
+            >
+              Home
+            </Link>
+            <Link
+              href={'/products'}
+              className="text-white hover:text-green-200 font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
+            >
+              Products
+            </Link>
+            <Link
+              href={'/dashboard'}
+              className="text-white hover:text-cyan-200 font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
+            >
+              Dashboard
+            </Link>
           </nav>
         </header>
-        {children}
+
+        <main className="flex-1">{children}</main>
+
+        <footer className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white text-center p-4">
+          <p className="font-semibold">🌈 Colorful Next.js App</p>
+          <p className="text-sm opacity-80">
+            Built with vibrant colors and gradients
+          </p>
+        </footer>
       </body>
     </html>
   );
