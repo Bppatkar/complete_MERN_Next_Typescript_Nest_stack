@@ -7,11 +7,13 @@ interface Recipe {
   name: string;
   image: string;
   ingredients: string[];
+  instructions: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   servings: number;
   difficulty: string;
   cuisine: string;
+  caloriesPerServing: number;
   rating: number;
 }
 
@@ -27,14 +29,15 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 function SWRExample() {
   const { data, error, isLoading } = useSWR<RecipesResponse>(
     'https://dummyjson.com/recipes',
-    fetcher,
+    fetcher, // Added the fetcher function here
     {
       revalidateOnFocus: true,
       refreshInterval: 5000,
       errorRetryCount: 3,
     }
   );
-  // console.log(data);
+  
+  console.log('API Response:', data);
 
   if (isLoading)
     return (
@@ -45,14 +48,14 @@ function SWRExample() {
         </div>
       </div>
     );
-
+  
   if (error)
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 text-lg">Failed to load recipes</p>
           <p className="text-gray-400 text-sm mt-2">Error: {error.message}</p>
-          <button
+          <button 
             onClick={() => window.location.reload()}
             className="mt-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
           >
@@ -82,7 +85,7 @@ function SWRExample() {
 
         {/* Recipes Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data?.recipes?.slice(0, 9).map((recipe) => (
+          {data?.recipes?.map((recipe) => (
             <div
               key={recipe.id}
               className="bg-gray-800 rounded-xl shadow-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 p-6 border border-gray-700/50"
@@ -93,6 +96,9 @@ function SWRExample() {
                   src={recipe.image}
                   alt={recipe.name}
                   className="w-full h-48 object-cover rounded-lg"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://via.placeholder.com/300x200/333/fff?text=No+Image';
+                  }}
                 />
               </div>
 
@@ -125,20 +131,20 @@ function SWRExample() {
                   </span>
                 </div>
 
-                <div
-                  className={`text-sm px-3 py-1 rounded-full inline-block ${
-                    recipe.difficulty === 'Easy'
-                      ? 'bg-green-900/30 text-green-300'
-                      : recipe.difficulty === 'Medium'
-                      ? 'bg-yellow-900/30 text-yellow-300'
-                      : 'bg-red-900/30 text-red-300'
-                  }`}
-                >
+                <div className={`text-sm px-3 py-1 rounded-full inline-block ${
+                  recipe.difficulty === 'Easy' ? 'bg-green-900/30 text-green-300' :
+                  recipe.difficulty === 'Medium' ? 'bg-yellow-900/30 text-yellow-300' :
+                  'bg-red-900/30 text-red-300'
+                }`}>
                   {recipe.difficulty}
                 </div>
 
                 <p className="text-sm text-gray-400">
                   {recipe.ingredients.length} ingredients
+                </p>
+                
+                <p className="text-sm text-gray-400">
+                  {recipe.caloriesPerServing} calories/serving
                 </p>
               </div>
 
@@ -153,8 +159,7 @@ function SWRExample() {
         {/* Footer */}
         <div className="text-center mt-10">
           <p className="text-gray-500 text-sm">
-            Showing {Math.min(data?.recipes?.length || 0, 9)} of{' '}
-            {data?.recipes?.length || 0} recipes
+            Showing {data?.recipes?.length || 0} of {data?.total || 0} recipes
           </p>
         </div>
 

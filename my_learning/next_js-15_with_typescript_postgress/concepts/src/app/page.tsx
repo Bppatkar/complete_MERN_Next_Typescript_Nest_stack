@@ -8,25 +8,75 @@ export default function Home() {
         <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-4">
           Next.js Learning Hub
         </h1>
-        <p className="text-gray-500 text-lg mb-8">
-          Select a topic to explore:
-        </p>
+        <p className="text-gray-500 text-lg mb-8">Select a topic to explore:</p>
 
         <div className="flex flex-wrap items-center justify-center gap-6 max-w-4xl">
           {[
-            { href: "/profile", text: "Profile", color: "from-blue-400 to-cyan-400" },
-            { href: "/products", text: "Products", color: "from-green-400 to-emerald-400" },
-            { href: "/catch-all-routes", text: "Catch-all-routes", color: "from-orange-400 to-red-400" },
-            { href: "/optional-catch-all-route", text: "Optional Catch-all-route", color: "from-purple-400 to-pink-400" },
-            { href: "/loading-example", text: "Loading Example", color: "from-yellow-400 to-amber-400" },
-            { href: "/error-example", text: "Error Example", color: "from-red-400 to-rose-400" },
-            { href: "/about", text: "Routes Group using group()", color: "from-indigo-400 to-blue-400" },
-            { href: "/metadata-example", text: "Meta Data", color: "from-teal-400 to-green-400" },
-            { href: "/data-fetching/server-fetch", text: "Data Fetching Server Components", color: "from-cyan-400 to-blue-400" },
-            { href: "/data-fetching/use-hook", text: "Data Fetching use hook", color: "from-fuchsia-400 to-purple-400" },
-            { href: "/data-fetching/react-query", text: "React Query", color: "from-red-400 to-orange-400" },
-            { href: "/data-fetching/swr-example", text: "SWR Example", color: "from-purple-400 to-indigo-400" },
-            { href: "/data-fetching/use-effect-example", text: "useEffect Example", color: "from-green-400 to-teal-400" },
+            {
+              href: '/profile',
+              text: 'Profile',
+              color: 'from-blue-400 to-cyan-400',
+            },
+            {
+              href: '/products',
+              text: 'Products',
+              color: 'from-green-400 to-emerald-400',
+            },
+            {
+              href: '/catch-all-routes',
+              text: 'Catch-all-routes',
+              color: 'from-orange-400 to-red-400',
+            },
+            {
+              href: '/optional-catch-all-route',
+              text: 'Optional Catch-all-route',
+              color: 'from-purple-400 to-pink-400',
+            },
+            {
+              href: '/loading-example',
+              text: 'Loading Example',
+              color: 'from-yellow-400 to-amber-400',
+            },
+            {
+              href: '/error-example',
+              text: 'Error Example',
+              color: 'from-red-400 to-rose-400',
+            },
+            {
+              href: '/about',
+              text: 'Routes Group using group()',
+              color: 'from-indigo-400 to-blue-400',
+            },
+            {
+              href: '/metadata-example',
+              text: 'Meta Data',
+              color: 'from-teal-400 to-green-400',
+            },
+            {
+              href: '/data-fetching/server-fetch',
+              text: 'Data Fetching Server Components',
+              color: 'from-cyan-400 to-blue-400',
+            },
+            {
+              href: '/data-fetching/use-hook',
+              text: 'Data Fetching use hook',
+              color: 'from-fuchsia-400 to-purple-400',
+            },
+            {
+              href: '/data-fetching/use-effect-example',
+              text: 'useEffect Example',
+              color: 'from-green-400 to-teal-400',
+            },
+            {
+              href: '/data-fetching/swr-example',
+              text: 'SWR Example',
+              color: 'from-purple-400 to-indigo-400',
+            },
+            {
+              href: '/data-fetching/react-query',
+              text: 'React Query',
+              color: 'from-red-400 to-orange-400',
+            },
           ].map((link, index) => (
             <Link
               key={index}
