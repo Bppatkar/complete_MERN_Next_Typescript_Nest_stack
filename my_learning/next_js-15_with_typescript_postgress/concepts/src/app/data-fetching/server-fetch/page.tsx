@@ -158,3 +158,5 @@ Ingredients brought to table (initial HTML)
 Cooking happens at table (client-side fetching)
 Customer watches it prepare
 */
+
+//? In interview: "Server components fetch data during server rendering, sending complete HTML to client. Client components fetch after JavaScript loads, making them better for dynamic user-specific data but worse for SEO and initial load performance."
