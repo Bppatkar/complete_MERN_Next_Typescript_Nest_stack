@@ -19,14 +19,20 @@ interface ProductResponse {
 }
 
 async function getProducts(): Promise<ProductResponse> {
-  const res = await fetch('https://dummyjson.com/products');
+  const res = await fetch('https://dummyjson.com/products', {
+    // cache: 'no-store',   //? no store never cache your response (it'll always fetch fresh response)
+    // cache: "force-cache" //? it'll look for matching request in data cache , if match and it is fresh --> return from cache, if not matched --> fetch from server and update cache
+    cache: 'reload', //? reload will goint to bypass the cache and fetch fresh response and update the cache
+  });
+
+  //! MIMP - this is all u need based on ur requirement --> u need to apply cache strategy
   if (!res.ok) throw new Error('Failed to fetch data');
   return res.json();
 }
 
 export default async function ServerSideFetchExample() {
   const products = await getProducts();
-  
+
   return (
     <div className=" bg-gradient-to-br from-gray-900 to-gray-800 p-6">
       <div className="max-w-6xl mx-auto">
@@ -40,7 +46,8 @@ export default async function ServerSideFetchExample() {
           </p>
           <div className="mt-4 bg-blue-900/30 text-blue-300 px-4 py-2 rounded-lg inline-block backdrop-blur-sm">
             <h3 className="text-xl font-semibold">
-              {products.total} products found (showing {products.products.length})
+              {products.total} products found (showing{' '}
+              {products.products.length})
             </h3>
           </div>
         </div>
@@ -73,7 +80,11 @@ export default async function ServerSideFetchExample() {
                   </p>
                   {product.discountPercentage && (
                     <p className="text-sm text-red-400 line-through">
-                      ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
+                      $
+                      {(
+                        product.price /
+                        (1 - product.discountPercentage / 100)
+                      ).toFixed(2)}
                     </p>
                   )}
                 </div>
@@ -115,7 +126,8 @@ export default async function ServerSideFetchExample() {
               <span className="font-mono text-blue-400">dummyjson.com</span>
               <br />
               <span className="text-sm text-gray-400">
-                Showing {products.skip + 1}-{products.skip + products.products.length} of {products.total}
+                Showing {products.skip + 1}-
+                {products.skip + products.products.length} of {products.total}
               </span>
             </p>
           </div>
@@ -124,10 +136,6 @@ export default async function ServerSideFetchExample() {
     </div>
   );
 }
-
-
-
-
 
 //! 🏢 Server Component Fetching --Vs-- 💻 Client Component Fetching
 
