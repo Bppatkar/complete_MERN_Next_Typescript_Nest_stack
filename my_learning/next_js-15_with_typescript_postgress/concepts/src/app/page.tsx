@@ -21,7 +21,10 @@ export default function Home() {
             { href: "/about", text: "Routes Group using group()", color: "from-indigo-400 to-blue-400" },
             { href: "/metadata-example", text: "Meta Data", color: "from-teal-400 to-green-400" },
             { href: "/data-fetching/server-fetch", text: "Data Fetching Server Components", color: "from-cyan-400 to-blue-400" },
-            { href: "/data-fetching/use-hook", text: "Data Fetching use hook", color: "from-fuchsia-400 to-purple-400" },
+            { href: "/data-fetching/use-hook", text: "Data Fetching 'use' Hook", color: "from-fuchsia-400 to-purple-400" },
+            { href: "/data-fetching/use-effect-example", text: "Data Fetching useEffect Example", color: "from-green-400 to-teal-400" },
+            { href: "/data-fetching/swr-example", text: "Data Fetching SWR Example", color: "from-purple-400 to-indigo-400" },
+            { href: "/data-fetching/react-query", text: "Data Fetching React Query", color: "from-red-400 to-orange-400" },
           ].map((link, index) => (
             <Link
               key={index}
