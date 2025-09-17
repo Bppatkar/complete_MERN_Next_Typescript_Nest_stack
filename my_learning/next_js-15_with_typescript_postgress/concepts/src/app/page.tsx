@@ -5,10 +5,12 @@ export default function Home() {
     <div className="font-sans flex flex-col items-center justify-center min-h-[calc(100vh-200px)] p-8 gap-16 sm:p-20">
       {/* Main Content */}
       <div className="text-center">
-        <h1 className="text-transparent text-4xl font-bold bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 mb-4">
-          Learning NEXT Js
+        <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-4">
+          Next.js Learning Hub
         </h1>
-        <p className="text-gray-600 text-lg mb-8">Click Here 👇🏻</p>
+        <p className="text-gray-500 text-lg mb-8">
+          Select a topic to explore:
+        </p>
 
         <div className="flex flex-wrap items-center justify-center gap-6 max-w-4xl">
           {[
@@ -21,10 +23,10 @@ export default function Home() {
             { href: "/about", text: "Routes Group using group()", color: "from-indigo-400 to-blue-400" },
             { href: "/metadata-example", text: "Meta Data", color: "from-teal-400 to-green-400" },
             { href: "/data-fetching/server-fetch", text: "Data Fetching Server Components", color: "from-cyan-400 to-blue-400" },
-            { href: "/data-fetching/use-hook", text: "Data Fetching 'use' Hook", color: "from-fuchsia-400 to-purple-400" },
-            { href: "/data-fetching/use-effect-example", text: "Data Fetching useEffect Example", color: "from-green-400 to-teal-400" },
-            { href: "/data-fetching/swr-example", text: "Data Fetching SWR Example", color: "from-purple-400 to-indigo-400" },
-            { href: "/data-fetching/react-query", text: "Data Fetching React Query", color: "from-red-400 to-orange-400" },
+            { href: "/data-fetching/use-hook", text: "Data Fetching use hook", color: "from-fuchsia-400 to-purple-400" },
+            { href: "/data-fetching/react-query", text: "React Query", color: "from-red-400 to-orange-400" },
+            { href: "/data-fetching/swr-example", text: "SWR Example", color: "from-purple-400 to-indigo-400" },
+            { href: "/data-fetching/use-effect-example", text: "useEffect Example", color: "from-green-400 to-teal-400" },
           ].map((link, index) => (
             <Link
               key={index}

@@ -1,3 +1,6 @@
+'use client';
+
+
 function SWRExample() {
   return (
     <div>

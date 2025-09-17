@@ -56,7 +56,7 @@ export default function RootLayout({
         <footer className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white text-center p-4">
           <p className="font-semibold">🌈 Colorful Next.js App</p>
           <p className="text-sm opacity-80">
-            Built with vibrant colors and gradients
+            By &copy; Bhanu Pratap Patkar
           </p>
         </footer>
       </body>
