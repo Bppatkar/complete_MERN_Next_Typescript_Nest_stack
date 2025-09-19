@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { signIn } from '@/lib/auth-client';
+// import { signUp } from "@/lib/auth-client";
 // import { toast } from "sonner";
 import z from 'zod';
 import {
@@ -58,6 +58,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
     setIsLoading(true);
 
     try {
+      // console.log(values);
       // const { error } = await signUp.email({
       // name:values.name,
       // email: values.email,
@@ -81,8 +82,11 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
   };
 
   return (
-    <Form  {...form}>
-      <form onSubmit={form.handleSubmit(onRegisterSubmit)}  className="space-y-4">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onRegisterSubmit)}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="name"

@@ -43,15 +43,19 @@ export default function LoginForm() {
     setIsLoading(true);
 
     try {
+      // console.log(values);
       // const { error } = await signIn.email({
       //   email: values.email,
       //   password: values.password,
       //   rememberMe: true,
       // });
-      //  if (error) {
-      //   toast("Login Failed!");
+      // if (error) {
+      //   toast('Login Failed!');
       //   return;
       // }
+
+      // toast('Login Success');
+      router.push('/');
     } catch (error) {
       console.error(error);
     } finally {
