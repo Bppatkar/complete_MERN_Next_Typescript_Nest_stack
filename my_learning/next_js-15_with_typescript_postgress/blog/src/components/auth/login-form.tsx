@@ -1,3 +1,5 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -59,7 +61,7 @@ export default function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onLoginSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onLoginInput)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
