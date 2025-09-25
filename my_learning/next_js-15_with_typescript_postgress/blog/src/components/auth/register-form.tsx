@@ -58,6 +58,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
     setIsLoading(true);
 
     try {
+      //? account creation
       // console.log(values);
       // const { error } = await signUp.email({
       // name:values.name,
