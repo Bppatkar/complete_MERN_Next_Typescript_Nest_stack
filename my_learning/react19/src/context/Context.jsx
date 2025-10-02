@@ -15,3 +15,5 @@ export default Context;
 //! step 4 - now after import create context with any name u want and export it [make sure it has a capital letter ]
 //! step 5 - wrap your return with provider and pass  that context which we created using capital letter
 //! step 6 - value prop is neccessary to pass data otherwise it will throw an error
+
+
