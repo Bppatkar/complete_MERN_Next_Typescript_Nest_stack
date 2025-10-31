@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/auth-client';
 import UserMenu from '../auth/user-menu';
-// import ThemeToggle from '../theme/theme-toggle';
+import ThemeToggle from '../theme/theme-toggle';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
@@ -45,10 +45,41 @@ function Header() {
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
-            {/* Keep an placeholder for search */}
+            {/* Placeholder for search */}
+            <form role="search" className="flex items-center">
+              <div className="relative">
+                <input
+                  type="search"
+                  placeholder="Search..."
+                  className="w-56 px-3 py-1.5 rounded-md border bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary pr-16"
+                />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-0 px-2">
+                  <button
+                    type="submit"
+                    className="p-1 text-muted-foreground hover:text-primary"
+                    aria-label="Submit search"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
           {/* placeholder for theme toggle */}
-          {/* <ThemeToggle /> */}
+          <ThemeToggle />
           <div className="flex items-center gap-2">
             {isPending ? null : session?.user ? (
               <UserMenu user={session?.user} />
