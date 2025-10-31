@@ -7,15 +7,25 @@ import UserMenu from '../auth/user-menu';
 import ThemeToggle from '../theme/theme-toggle';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { Search } from 'lucide-react';
 
 function Header() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const navItems = [
     { label: 'Home', href: '/' },
     { label: 'Create', href: '/post/create' },
   ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,7 +44,7 @@ function Header() {
                 key={navItem.href}
                 href={navItem.href}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-primary relative group'
+                  'text-sm font-medium transition-colors hover:text-primary text-foreground relative group'
                 )}
               >
                 {navItem.label}
@@ -45,36 +55,23 @@ function Header() {
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
-            {/* Placeholder for search */}
-            <form role="search" className="flex items-center">
+            <form onSubmit={handleSearch} className="flex items-center">
               <div className="relative">
                 <input
                   type="search"
-                  placeholder="Search..."
-                  className="w-56 px-3 py-1.5 rounded-md border bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary pr-16"
+                  placeholder="Search posts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-56 px-3 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent pr-10 transition-colors placeholder:text-muted-foreground"
                 />
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-0 px-2">
-                  <button
-                    type="submit"
-                    className="p-1 text-muted-foreground hover:text-primary"
-                    aria-label="Submit search"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-                      />
-                    </svg>
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Search"
+                  disabled={!searchQuery.trim()}
+                >
+                  <Search className="h-4 w-4" />
+                </button>
               </div>
             </form>
           </div>

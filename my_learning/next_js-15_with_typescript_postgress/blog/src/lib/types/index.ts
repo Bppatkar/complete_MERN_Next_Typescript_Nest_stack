@@ -37,7 +37,7 @@ export interface PostContentProps {
       name: string;
     };
   };
-  isAuthor: Boolean;
+  isAuthor: boolean;
 }
 
 export interface DeletePostButtonProps {

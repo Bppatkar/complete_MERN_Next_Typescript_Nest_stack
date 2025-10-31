@@ -1,5 +1,5 @@
 import { PostListProps } from '@/lib/types';
-import PostCard from './post-card';
+import PostCard from "./post-card";
 
 function PostList({ posts }: PostListProps) {
   return (

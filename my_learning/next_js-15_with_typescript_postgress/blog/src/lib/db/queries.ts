@@ -13,7 +13,7 @@ export async function getAllPosts() {
     });
 
     return allPosts;
-  } catch (e) {
+  } catch (e) { 
     console.log(e);
     return [];
   }

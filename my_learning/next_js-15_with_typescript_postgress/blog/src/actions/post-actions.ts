@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { posts } from "@/lib/db/schema";
-import { slugify } from "@/lib/utils";
-import { and, eq, ne } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
+import { auth } from '@/lib/auth';
+import { db } from '@/lib/db';
+import { posts } from '@/lib/db/schema';
+import { slugify } from '@/lib/utils';
+import { and, eq, ne } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 
 export async function createPost(formData: FormData) {
   try {
@@ -18,14 +18,14 @@ export async function createPost(formData: FormData) {
     if (!session || !session?.user) {
       return {
         success: false,
-        message: "You must be logged in to create a post",
+        message: 'You must be logged in to create a post',
       };
     }
 
     //get form data
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const content = formData.get("content") as string;
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const content = formData.get('content') as string;
 
     // homework -> implement a extra validation check
 
@@ -41,7 +41,7 @@ export async function createPost(formData: FormData) {
       return {
         success: false,
         message:
-          "A post with the same title already exists! Please try with a diff one",
+          'A post with the same title already exists! Please try with a diff one',
       };
     }
 
@@ -57,21 +57,21 @@ export async function createPost(formData: FormData) {
       .returning();
 
     //revalidate the homepage to get the latest posts
-    revalidatePath("/");
+    revalidatePath('/');
     revalidatePath(`/post/${slug}`);
-    revalidatePath("/profile");
+    revalidatePath('/profile');
 
     return {
       success: true,
-      message: "Post created successfully",
+      message: 'Post created successfully',
       slug,
     };
   } catch (e) {
-    console.log(e, "failed to add");
+    console.log(e, 'failed to add');
 
     return {
       success: false,
-      message: "Failed to create new post",
+      message: 'Failed to create new post',
     };
   }
 }
@@ -85,14 +85,14 @@ export async function updatePost(postId: number, formData: FormData) {
     if (!session || !session.user) {
       return {
         success: false,
-        message: "You must logged in to edit a post!",
+        message: 'You must logged in to edit a post!',
       };
     }
 
     //get form data
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const content = formData.get("content") as string;
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const content = formData.get('content') as string;
 
     // homework -> implement a extra validation check
 
@@ -104,7 +104,7 @@ export async function updatePost(postId: number, formData: FormData) {
     if (existingPost) {
       return {
         success: false,
-        message: "A post with this title already exists",
+        message: 'A post with this title already exists',
       };
     }
 
@@ -115,7 +115,7 @@ export async function updatePost(postId: number, formData: FormData) {
     if (post?.authorId !== session.user.id) {
       return {
         success: false,
-        message: "You can only edit your own posts!",
+        message: 'You can only edit your own posts!',
       };
     }
 
@@ -130,21 +130,21 @@ export async function updatePost(postId: number, formData: FormData) {
       })
       .where(eq(posts.id, postId));
 
-    revalidatePath("/");
+    revalidatePath('/');
     revalidatePath(`/post/${slug}`);
-    revalidatePath("/profile");
+    revalidatePath('/profile');
 
     return {
       success: true,
-      message: "Post edited succesfully",
+      message: 'Post edited succesfully',
       slug,
     };
   } catch (e) {
-    console.log(e, "failed to edit");
+    console.log(e, 'failed to edit');
 
     return {
       success: false,
-      message: "Failed to create new post",
+      message: 'Failed to create new post',
     };
   }
 }
@@ -158,7 +158,7 @@ export async function deletePost(postId: number) {
     if (!session || !session.user) {
       return {
         success: false,
-        message: "You must logged in to delete post",
+        message: 'You must logged in to delete post',
       };
     }
 
@@ -169,31 +169,31 @@ export async function deletePost(postId: number) {
     if (!postToDelete) {
       return {
         success: false,
-        message: "Post not found",
+        message: 'Post not found',
       };
     }
     if (postToDelete?.authorId !== session.user.id) {
       return {
         success: false,
-        message: "You can only delete your own posts!",
+        message: 'You can only delete your own posts!',
       };
     }
 
     await db.delete(posts).where(eq(posts.id, postId));
 
-    revalidatePath("/");
-    revalidatePath("/profile");
+    revalidatePath('/');
+    revalidatePath('/profile');
 
     return {
       success: true,
-      message: "Post deleted successfully",
+      message: 'Post deleted successfully',
     };
   } catch (e) {
-    console.log(e, "failed to edit");
+    console.log(e, 'failed to edit');
 
     return {
       success: false,
-      message: "Failed to create new post",
+      message: 'Failed to create new post',
     };
   }
 }

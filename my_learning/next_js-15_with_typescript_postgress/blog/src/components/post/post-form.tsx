@@ -90,6 +90,7 @@ function PostForm({ isEditing, post }: PostFormProps) {
           toast(res.message);
         }
       } catch (e) {
+        console.error(e);
         toast('Failed to create post');
       }
     });
@@ -110,7 +111,7 @@ function PostForm({ isEditing, post }: PostFormProps) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">Post Description</Label>
         <Textarea
           id="description"
           placeholder="Enter a short post description"
@@ -122,7 +123,7 @@ function PostForm({ isEditing, post }: PostFormProps) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="content">Description</Label>
+        <Label htmlFor="content">Post Content (Description</Label>
         <Textarea
           id="content"
           placeholder="Enter post content"
