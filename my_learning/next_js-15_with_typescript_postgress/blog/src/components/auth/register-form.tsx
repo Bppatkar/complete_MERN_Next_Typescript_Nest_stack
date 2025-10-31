@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { signUp } from "@/lib/auth-client";
-// import { toast } from "sonner";
+import { signUp } from '@/lib/auth-client';
+import { toast } from 'sonner';
 import z from 'zod';
 import {
   Form,
@@ -59,22 +59,22 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
 
     try {
       //? account creation
-      // console.log(values);
-      // const { error } = await signUp.email({
-      // name:values.name,
-      // email: values.email,
-      // password: values.password,
-      // });
-      //  if (error) {
-      //   toast("Login Failed!");
-      //   return;
-      // }
-      //  toast(
-      //   "Your account has been created successfully. Please sign in with email & password"
-      // );
-      // if (onSuccess) {
-      //   onSuccess();
-      // }
+      console.log(values);
+      const { error } = await signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+      if (error) {
+        toast('Login Failed!');
+        return;
+      }
+      toast(
+        'Your account has been created successfully. Please sign in with email & password'
+      );
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       console.error(error);
     } finally {
