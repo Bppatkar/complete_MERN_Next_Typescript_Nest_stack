@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// import { useSession } from '@/lib/auth-client';
-// import UserMenu from '../auth/user-menu';
+import { useSession } from '@/lib/auth-client';
+import UserMenu from '../auth/user-menu';
 // import ThemeToggle from '../theme/theme-toggle';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
 function Header() {
+  const { data: session, isPending } = useSession();
   const router = useRouter();
 
   const navItems = [
@@ -48,7 +49,7 @@ function Header() {
           </div>
           {/* placeholder for theme toggle */}
           {/* <ThemeToggle /> */}
-          {/* <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             {isPending ? null : session?.user ? (
               <UserMenu user={session?.user} />
             ) : (
@@ -59,14 +60,6 @@ function Header() {
                 Login
               </Button>
             )}
-          </div> */}
-          <div className="flex items-center gap-2">
-            <Button
-              className="cursor-pointer"
-              onClick={() => router.push('/auth')}
-            >
-              Login
-            </Button>
           </div>
         </div>
       </div>
